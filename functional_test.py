@@ -8,7 +8,7 @@ class NewVisitorTest(unittest.TestCase):
     
     def setUp(self):
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
+        self.browser.implicitly_wait(1)
         
     def tearDown(self):
         self.browser.quit()
@@ -31,7 +31,8 @@ class NewVisitorTest(unittest.TestCase):
         
         results = self.browser.find_elements_by_class_name('search_result')
         self.assertIn('A1B2C3D4E5F6G7H8I',
-                      any(result.id for result in results))
+                      any(result.id for result in results),
+                      "There are no results matching your search")
         
         self.fail('Finish the test!')
         
