@@ -89,16 +89,23 @@ class NewVisitorTest(unittest.TestCase):
         # Enzo notices the title is NoLemon, and at the top
         # of the page, there is a header that also says NoLemon
         self.assertIn("NoLemon", self.browser.title)
-        header = self.browser.find_element_by_tag_name("h1")
+        header = self.browser.find_element_by_tag_name("h1").text
         self.assertIn("NoLemon", header)
-        self.fail("Finish the test!")
         
         # Enzo sees that there is a search bar that invites him
         # to search for a vehicle using it's VIN
+        searchbox = self.browser.find_element_by_id('vin-search-bar')
+        self.assertEqual(searchbox.get_attribute("placeholder"),
+                         "Enter a VIN")
         
         # Enzo types in the VIN for the car he's looking at, and
         # when he hits enter he sees a list of inspections done
         # on the car, the most recent inspection at the top
+        searchbox.send_keys('A1B2C3D4E5F6G7H8I')
+        searchbox.send_keys(Keys.ENTER)
+        
+        self.assertIn("Vehicle Inspections", self.browser.title)
+        self.fail("Finish the test!")
         
         # he clicks on what looks to be the most recent inspection
         # done and it takes him to the page that shows more detail
