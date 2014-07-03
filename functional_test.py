@@ -8,6 +8,7 @@ class NewVisitorTest(unittest.TestCase):
     
     def setUp(self):
         self.browser = webdriver.Firefox()
+        self.browser.get('http://localhost:8080')
         
     def tearDown(self):
         self.browser.quit()
@@ -82,9 +83,9 @@ class NewVisitorTest(unittest.TestCase):
 #         # After she choses a mechanic, Dot closes her browser.
 #         
 #         
+    
     def test_can_search_for_car_inspection_video(self):
         # Enzo browses to NoLemon.ca
-        self.browser.get('http://localhost:8080')
         
         # Enzo notices the title is NoLemon, and at the top
         # of the page, there is a header that also says NoLemon
@@ -101,8 +102,10 @@ class NewVisitorTest(unittest.TestCase):
         # Enzo types in the VIN for the car he's looking at, and
         # when he hits enter he sees a list of inspections done
         # on the car, the most recent inspection at the top
-        searchbox.send_keys('A1B2C3D4E5F6G7H8I')
-        searchbox.send_keys(Keys.ENTER)
+        searchButton = self.browser.find_element_by_id("vin-search-btn")
+        searchbox.send_keys('A1B2C3D4E5F6G7H8J')
+        searchButton.click()
+        self.browser.implicitly_wait(3)
         
         self.assertIn("Vehicle Inspections", self.browser.title)
         self.fail("Finish the test!")

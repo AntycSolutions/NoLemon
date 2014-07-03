@@ -16,12 +16,12 @@ class HomePageTest(TestCase):
     def test_home_page_returns_correct_html(self):
         request = HttpRequest()
         response = home_page(request)
-        expected_html = render_to_string('index.html')
+        expected_html = render_to_string('testindex.html')
         self.assertEqual(response.content.decode(), expected_html)
         
 
 class VehiclePageTest(TestCase):
     
     def test_vehicle_detail_url_resolves_to_vehicle_detail_view(self):
-        found = resolve('/vehicles/A1B2C3D4E5F6G7H8I')
+        found = resolve('/vehicles/A1B2C3D4E5F6G7H8J')
         self.assertEqual(found.func, VehicleDetail.as_view())

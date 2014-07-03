@@ -8,6 +8,9 @@ class User(models.Model):
     
     class Meta:
         ordering = ('first_name', 'last_name', 'email')
+        
+    def __str__():
+        return first_name + last_name
     
 
 class Seller(User):
@@ -22,6 +25,7 @@ class Mechanic(User):
 
 class Inspection(models.Model):
     comments = models.TextField()
+    date = models.DateField()
     #TODO: a video should be here... not sure how to handle
     # that just yet
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NoLemon - Vehicles for Sale</title>
+</head>
+
+<body>
+	{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+	{% endif %}
+
+	{% for vehicle in vehicles %}
+	<h1>This vehicle's VIN is {{ vehicle.vin }}</h1>
+	{% endfor %}
+</body>
+</html>

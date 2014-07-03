@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>NoLemon</title>
+</head>
+
+<body>
+	<h1>Search NoLemon for a vehicle inspection!</h1>
+    <input type="text" name="vin-search" id="vin-search-bar" value="" placeholder="Enter a VIN">
+    <input type="submit" name="" id="vin-search-btn" onclick=clickEvent() value="Search">
+
+	<script type="text/javascript">
+	clickEvent = function () {
+		searchBar = document.getElementsByName('vin-search')[0];
+		url = "vehicles/" + searchBar.value.toUpperCase();
+		window.location.pathname = url;
+	};
+	</script>
+
+</body>
+</html>
