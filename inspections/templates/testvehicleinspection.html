@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>NoLemon - Vehicle Inspections</title>
-</head>
+{% extends "base.html" %}
+{% block title %}NoLemon - Vehicle Inspections{% endblock %}
 
-<body>
+{% block content %}
 	<h1>{{ vehicle.owner }}'s {{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h1>
-</body>
-</html>
+{% endblock %}
