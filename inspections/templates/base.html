@@ -2,14 +2,14 @@
 {% load staticfiles %}
 <html>
 <head>
-<title>{% block title %}{% endblock %}</title>
+<title>NoLemon{% block title %}{% endblock %}</title>
 </head>
 
 <body>
 {% if user.is_authenticated %}
 <p>You're logged in as {{ user }}</p>
 {% else %}
-<p>You need to register</p>
+Have a car you want to sell? <a href="/register/seller">Register Here!</a>
 {% endif %}
 <hr>
 {% block content %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 
-from inspections.models import Inspection, Vehicle, Seller
+from inspections.models import Vehicle
 
 
 def home_page(request):
