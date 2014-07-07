@@ -34,10 +34,12 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration',
     'inspections',
 )
 
@@ -55,6 +57,8 @@ ROOT_URLCONF = 'no_lemon.urls'
 WSGI_APPLICATION = 'no_lemon.wsgi.application'
 
 AUTH_USER_MODEL = "inspections.BaseUser"
+
+ACCOUNT_ACTIVATION_DAYS = 7
 
 
 # Database

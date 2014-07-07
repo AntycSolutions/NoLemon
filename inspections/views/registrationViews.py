@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.views.generic import FormView
 
 from inspections.forms import SellerCreationForm
@@ -16,5 +17,7 @@ class RegisterSellerView(FormView):
 
         user.set_password(user.password)
         user.save()
+
+        login(self.request, user)
 
         return super(RegisterSellerView, self).form_valid(form)
