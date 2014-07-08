@@ -6,9 +6,12 @@
 </head>
 
 <body>
+<a href="/">NoLemon</a>
 {% if user.is_authenticated %}
 <p>You're logged in as {{ user }}</p>
+<a href="/logout/">Logout Here</a>
 {% else %}
+Already have an account? <a href="/login/">Login Here</a>
 Have a car you want to sell? <a href="/register/seller">Register Here!</a>
 {% endif %}
 <hr>
