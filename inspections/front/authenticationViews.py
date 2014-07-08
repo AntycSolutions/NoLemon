@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http.response import HttpResponseRedirect
 from django.views.generic import FormView, View
 
-from inspections.forms.registration import SellerCreationForm
+from inspections.forms.registration import SellerCreationForm, CustomerCreationForm
 
 
 class RegisterSellerView(FormView):
@@ -27,6 +27,46 @@ class RegisterSellerView(FormView):
 #                             password=self.request.POST['password'])
 
         return super(RegisterSellerView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests and instantiates a blank version of the form.
+        """
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form,
+                                                             url_end='seller'))
+
+
+class RegisterCustomerView(FormView):
+    template_name = 'testregistration.html'
+    form_class = CustomerCreationForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        user = form.save()
+
+        user.set_password(user.password)
+        user.save()
+
+        user.backend = "django.contrib.auth.backends.ModelBackend"
+        auth_login(self.request, user)
+#         user = authenticate(username=self.request.POST['email'],
+#                             password=self.request.POST['password'])
+
+        return super(RegisterCustomerView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests and instantiates a blank version of the form.
+        """
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(self.get_context_data(form=form,
+                                                             url_end='customer'))
 
 
 class Login(FormView):

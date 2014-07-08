@@ -5,7 +5,7 @@
 {% block content %}
 <strong>register here!</strong><br />
 
-<form id="user_form" method="post" action="/register/seller"
+<form id="user_form" method="post" action="/register/{{ url_end }}"
         enctype="multipart/form-data">
 
     {% csrf_token %}
