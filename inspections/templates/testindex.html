@@ -10,7 +10,7 @@
 	<script type="text/javascript">
 	clickEvent = function () {
 		searchBar = document.getElementsByName('vin-search')[0];
-		url = "vehicles/" + searchBar.value.toUpperCase();
+		url = "vehicles/" + searchBar.value.toLowerCase();
 		window.location.pathname = url;
 	};
 	</script>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %} - Vehicle Detail{% endblock %}
+
+{% block content %}
+{% if vehicle %}
+<p>{{ vehicle }}</p>
+{% else %}
+<p>MOFUCKA AINT HERE!</p>
+{% endif %}
+{% endblock %}
