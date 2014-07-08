@@ -3,6 +3,7 @@ from django.db import models
 
 
 class BaseUserManager(BaseUserManager):
+
     def create_user(self, email, first_name, last_name, password=None):
         """
         Creates and saves a User with the given email, date of
@@ -27,10 +28,10 @@ class BaseUserManager(BaseUserManager):
         birth and password.
         """
         user = self.create_user(email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-        )
+                                password=password,
+                                first_name=first_name,
+                                last_name=last_name,
+                                )
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -76,7 +77,6 @@ class BaseUser(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
-
     class Meta:
         ordering = ('first_name', 'last_name', 'email')
 
@@ -111,11 +111,11 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
-    inspections = models.ForeignKey(Inspection, blank=True)
+    inspections = models.ForeignKey(Inspection, blank=True, null=True)
     vin = models.CharField(max_length=17, unique=True)
 
     def __str__(self):
-        return self.year + " " + self.make + " " + self.model
+        return self.year.__str__() + " " + self.make + " " + self.model
 
     class Meta:
         ordering = ('owner', 'year', 'make', 'model', 'vin', 'inspections')

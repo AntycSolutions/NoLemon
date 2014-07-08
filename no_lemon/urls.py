@@ -3,12 +3,14 @@ from django.contrib import admin
 
 from inspections.front.authenticationViews import RegisterSellerView, Login, \
     Logout
-from inspections.views import VehicleDetail
+from inspections.views import VehicleDetail, VehicleList
 admin.autodiscover()
 
 
 vehiclepatterns = patterns('',
-                           url(r'^(?P<vin>0-9a-hj-npr-z]{1,17})',
+                           url(r'^$', VehicleList.as_view(),
+                               name='vehicle_list'),
+                           url(r'^(?P<vin>[0-9a-hj-npr-z]{1,17})',
                                VehicleDetail.as_view(), name='vehicle_detail'),
                            )
 
