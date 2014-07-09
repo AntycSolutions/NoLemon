@@ -4,7 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http.response import HttpResponseRedirect
 from django.views.generic import FormView, View
 
-from inspections.forms.registration import SellerCreationForm, CustomerCreationForm
+from inspections.forms.registration import SellerCreationForm, \
+    CustomerCreationForm
 
 
 class RegisterSellerView(FormView):
@@ -65,8 +66,10 @@ class RegisterCustomerView(FormView):
         """
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        return self.render_to_response(self.get_context_data(form=form,
-                                                             url_end='customer'))
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  _end='customer')
+        )
 
 
 class Login(FormView):

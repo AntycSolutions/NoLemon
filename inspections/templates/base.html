@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load class_tag %}
+
 <html>
 <head>
 <title>NoLemon{% block title %}{% endblock %}</title>
@@ -9,6 +11,9 @@
 <a href="/">NoLemon</a>
 {% if user.is_authenticated %}
 <p>You're logged in as {{ user }}</p>
+{% if user|get_class == "Seller" %}
+Request a new inspection <a href="#">here!</a>
+{% endif %}
 <a href="/logout/">Logout Here</a>
 {% else %}
 Already have an account? <a href="/login/">Login Here</a>
