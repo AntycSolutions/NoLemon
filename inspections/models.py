@@ -1,3 +1,6 @@
+# http://michalcodes4life.wordpress.com/2014/02/08
+# /multiple-user-types-in-django-1-6/
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, \
     BaseUserManager as DjangoBaseUserManager
