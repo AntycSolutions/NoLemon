@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http.response import HttpResponseRedirect
 from django.views.generic import FormView, View
 
-from inspections.forms.registration import SellerCreationForm, \
+from inspections.forms.forms import SellerCreationForm, \
     CustomerCreationForm
 
 
@@ -19,8 +19,9 @@ class RegisterSellerView(FormView):
 
         user = form.save()
 
-        user.set_password(user.password)
-        user.save()
+        # set the password again?
+        # user.set_password(user.password)
+        # user.save()
 
         user.backend = "django.contrib.auth.backends.ModelBackend"
         auth_login(self.request, user)
@@ -50,8 +51,9 @@ class RegisterCustomerView(FormView):
 
         user = form.save()
 
-        user.set_password(user.password)
-        user.save()
+        # set the password again?
+        # user.set_password(user.password)
+        # user.save()
 
         user.backend = "django.contrib.auth.backends.ModelBackend"
         auth_login(self.request, user)
