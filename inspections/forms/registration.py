@@ -93,7 +93,7 @@ class SellerCreationForm(BaseUserCreationForm):
         model = Seller
 
 
-class CustomerCreationForm(UserCreationForm):
+class CustomerCreationForm(BaseUserCreationForm):
     """ Form to be used in creation of a new Customer or User instance. """
 
     class Meta:
@@ -101,7 +101,7 @@ class CustomerCreationForm(UserCreationForm):
         model = Customer
 
 
-class MechanicCreationForm(UserCreationForm):
+class MechanicCreationForm(BaseUserCreationForm):
     """ Form to be used in creation of a new Mechanic or User instance. """
 
     class Meta:
