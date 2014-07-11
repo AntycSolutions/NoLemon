@@ -6,8 +6,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 
-from .models import Seller, Customer, Mechanic, \
-    Vehicle, Inspection, BaseUser
+from .models import BaseUser, Seller, Customer, Mechanic, \
+    Vehicle, Inspection
 from .forms.forms import BaseUserCreationForm, SellerCreationForm, \
     CustomerCreationForm, MechanicCreationForm, \
     BaseUserChangeForm, SellerChangeForm, \
