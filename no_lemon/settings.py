@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
     'inspections',
 )
 
@@ -59,8 +58,6 @@ ROOT_URLCONF = 'no_lemon.urls'
 WSGI_APPLICATION = 'no_lemon.wsgi.application'
 
 AUTH_USER_MODEL = "inspections.BaseUser"
-
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
@@ -81,7 +78,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-ca'
 
 TIME_ZONE = 'UTC'
 
