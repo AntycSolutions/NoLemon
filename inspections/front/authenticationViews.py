@@ -1,10 +1,11 @@
 from django.conf import settings
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, \
+    logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http.response import HttpResponseRedirect
 from django.views.generic import FormView, View
 
-from inspections.forms.forms import SellerCreationForm, \
+from ..forms.registration import SellerCreationForm, \
     CustomerCreationForm
 
 
@@ -16,17 +17,22 @@ class RegisterSellerView(FormView):
     def form_valid(self, form):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-
         user = form.save()
 
-        # set the password again?
-        # user.set_password(user.password)
-        # user.save()
-
-        user.backend = "django.contrib.auth.backends.ModelBackend"
-        auth_login(self.request, user)
-#         user = authenticate(username=self.request.POST['email'],
-#                             password=self.request.POST['password'])
+        user = authenticate(
+            email=user.email,
+            password=form.cleaned_data["password1"])  # get plaintext
+        if user is not None:
+            if user.is_active:
+                auth_login(self.request, user)
+                # Redirect to a success page.
+                print("login success")
+            else:
+                # Return a 'disabled account' error message
+                print ("account inactive")
+        else:
+            # Return an 'invalid login' error message.
+            print ("user not authenticated")
 
         return super(RegisterSellerView, self).form_valid(form)
 
@@ -48,17 +54,22 @@ class RegisterCustomerView(FormView):
     def form_valid(self, form):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-
         user = form.save()
 
-        # set the password again?
-        # user.set_password(user.password)
-        # user.save()
-
-        user.backend = "django.contrib.auth.backends.ModelBackend"
-        auth_login(self.request, user)
-#         user = authenticate(username=self.request.POST['email'],
-#                             password=self.request.POST['password'])
+        user = authenticate(
+            email=user.email,
+            password=form.cleaned_data["password1"])  # get plaintext
+        if user is not None:
+            if user.is_active:
+                auth_login(self.request, user)
+                # Redirect to a success page.
+                print("login success")
+            else:
+                # Return a 'disabled account' error message
+                print ("account inactive")
+        else:
+            # Return an 'invalid login' error message.
+            print ("user not authenticated")
 
         return super(RegisterCustomerView, self).form_valid(form)
 
@@ -70,7 +81,7 @@ class RegisterCustomerView(FormView):
         form = self.get_form(form_class)
         return self.render_to_response(
             self.get_context_data(form=form,
-                                  _end='customer')
+                                  url_end='customer')
         )
 
 
