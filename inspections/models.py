@@ -1,38 +1,99 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, \
+    BaseUserManager as DjangoBaseUserManager
 
 
-class BaseUserManager(BaseUserManager):
-
+class BaseUserManager(DjangoBaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
         """
-        Creates and saves a User with the given email, date of
-        birth and password.
+        Creates and saves a User with the given email and password.
         """
         if not email:
             raise ValueError('Users must have an email address')
 
-        user = self.model(
-            email=self.normalize_email(email),
+        user = BaseUser(
+            email=BaseUserManager.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
-        )
-
+            is_admin=False
+            )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, first_name, last_name, password):
         """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
+        Creates and saves a superuser with the given email and password.
         """
-        user = self.create_user(email,
-                                password=password,
-                                first_name=first_name,
-                                last_name=last_name,
-                                )
+        user = self.create_user(
+            email=BaseUserManager.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name,
+            )
+        user.set_password(password)
         user.is_admin = True
+        user.save(using=self._db)
+        return user
+
+
+class SellerManager(DjangoBaseUserManager):
+    def create_user(self, email, first_name, last_name,
+                    rating,
+                    password=None):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = Seller(
+            email=SellerManager.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name,
+            rating=rating
+            )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class CustomerManager(DjangoBaseUserManager):
+    def create_user(self, email, first_name, last_name,
+                    password=None):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = Customer(
+            email=CustomerManager.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name
+            )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class MechanicManager(DjangoBaseUserManager):
+    def create_user(self, email, first_name, last_name,
+                    phone_number, address,
+                    password=None):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = Mechanic(
+            email=MechanicManager.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
+            address=address
+            )
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
@@ -40,17 +101,17 @@ class BaseUserManager(BaseUserManager):
 class BaseUser(AbstractBaseUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField(verbose_name='email address',
-                              max_length=255,
-                              unique=True,
-                              )
+    email = models.EmailField(
+        "email address",
+        max_length=255,
+        unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
-    objects = BaseUserManager()
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    objects = BaseUserManager()
 
     def get_full_name(self):
         return self.first_name + " " + self.last_name
@@ -77,17 +138,19 @@ class BaseUser(AbstractBaseUser):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
-    class Meta:
-        ordering = ('first_name', 'last_name', 'email')
+    # class Meta:
+    #     ordering = ('first_name', 'last_name', 'email')
 
 
 class Seller(BaseUser):
     # TODO: a seller needs a rating
-    pass
+    rating = models.IntegerField(blank=True, null=True)
+
+    objects = SellerManager()
 
 
 class Customer(BaseUser):
-    pass
+    objects = CustomerManager()
 
 
 class Mechanic(BaseUser):
@@ -95,6 +158,8 @@ class Mechanic(BaseUser):
     address = models.CharField(max_length=255)
 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+
+    objects = MechanicManager()
 
 
 class Inspection(models.Model):
@@ -105,6 +170,9 @@ class Inspection(models.Model):
     # that just yet
     # video = ?
 
+    def __str__(self):
+        return self.comments + " " + self.date.__str__()
+
 
 class Vehicle(models.Model):
     owner = models.ForeignKey(Seller)
@@ -112,7 +180,8 @@ class Vehicle(models.Model):
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     inspections = models.ForeignKey(Inspection, blank=True, null=True)
-    vin = models.CharField(max_length=17, unique=True)
+    vin = models.CharField(
+        "vehicle identifiation number", max_length=17, unique=True)
 
     def __str__(self):
         return self.year.__str__() + " " + self.make + " " + self.model
