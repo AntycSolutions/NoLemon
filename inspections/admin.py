@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 
 from .models import BaseUser, Seller, Customer, Mechanic, \
     Vehicle, Inspection
-from .forms.forms import BaseUserCreationForm, SellerCreationForm, \
+from .forms.registration import BaseUserCreationForm, SellerCreationForm, \
     CustomerCreationForm, MechanicCreationForm, \
     BaseUserChangeForm, SellerChangeForm, \
     CustomerChangeForm, MechanicChangeForm
