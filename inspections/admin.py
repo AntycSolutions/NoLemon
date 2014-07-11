@@ -1,17 +1,113 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 
-from inspections.forms.registration import BaseUserAdmin
-from inspections.models import BaseUser, Seller, Customer, Vehicle, Inspection, Mechanic
+#from inspections.forms.registration import BaseUserAdmin
+from .models import Seller, Customer, Mechanic, \
+    Vehicle, Inspection, BaseUser
+from .forms.forms import BaseUserCreationForm, SellerCreationForm, \
+    CustomerCreationForm, MechanicCreationForm, SellerChangeForm
 
 
-# Now register the new UserAdmin...
+class BaseUserAdmin(UserAdmin):
+    list_display = ('email',)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2',
+                       'first_name', 'last_name')}
+         ),
+    )
+    fieldsets = (
+        (None, {'fields': ('email', 'password',)}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
+        (_('Important dates'), {'fields': ('last_login',)}),
+    )
+    list_filter = ('is_admin',)
+    filter_horizontal = ()
+    ordering = ('email',)
+    search_fields = ('email',)
+    add_form = BaseUserCreationForm
+
 admin.site.register(BaseUser, BaseUserAdmin)
-admin.site.register(Seller)
-admin.site.register(Customer)
+
+
+class SellerAdmin(UserAdmin):
+    list_display = ('email',)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2',
+                       'first_name', 'last_name')}
+         ),
+    )
+    fieldsets = (
+        (None, {'fields': ('email', 'password',)}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name',
+                                         'rating')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
+        (_('Important dates'), {'fields': ('last_login',)}),
+    )
+    list_filter = ('is_admin',)
+    filter_horizontal = ()
+    ordering = ('email',)
+    search_fields = ('email',)
+    form = SellerChangeForm
+    add_form = SellerCreationForm
+
+admin.site.register(Seller, SellerAdmin)
+
+
+class CustomerAdmin(UserAdmin):
+    list_display = ('email',)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2',
+                       'first_name', 'last_name')}
+         ),
+    )
+    fieldsets = (
+        (None, {'fields': ('email', 'password',)}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
+        (_('Important dates'), {'fields': ('last_login',)}),
+    )
+    list_filter = ()
+    filter_horizontal = ()
+    ordering = ('email',)
+    add_form = CustomerCreationForm
+
+admin.site.register(Customer, CustomerAdmin)
+
+
+class MechanicAdmin(UserAdmin):
+    list_display = ('email',)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2',
+                       'first_name', 'last_name',
+                       'phone_number', 'address')}
+         ),
+    )
+    fieldsets = (
+        (None, {'fields': ('email', 'password',)}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name',
+                                         'phone_number', 'address')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
+        (_('Important dates'), {'fields': ('last_login',)}),
+    )
+    list_filter = ()
+    filter_horizontal = ()
+    ordering = ('email',)
+    add_form = MechanicCreationForm
+
+admin.site.register(Mechanic, MechanicAdmin)
+
 admin.site.register(Vehicle)
 admin.site.register(Inspection)
-admin.site.register(Mechanic)
-# ... and, since we're not using Django's built-in permissions,
-# unregister the Group model from admin.
+
 admin.site.unregister(Group)
