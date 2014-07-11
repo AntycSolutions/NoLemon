@@ -133,13 +133,13 @@ class SellerChangeForm(BaseUserChangeForm):
         fields = '__all__'
 
 
-class CustomerChangeForm(forms.ModelForm):
+class CustomerChangeForm(BaseUserChangeForm):
     class Meta:
         model = Customer
         fields = '__all__'
 
 
-class MechanicChangeForm(forms.ModelForm):
+class MechanicChangeForm(BaseUserChangeForm):
     class Meta:
         model = Mechanic
         fields = '__all__'
