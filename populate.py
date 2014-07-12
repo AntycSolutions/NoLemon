@@ -34,19 +34,20 @@ def populate():
     wendyMechanic = add_mechanic(
         "wendy@mechanic.ca", "Wendy", "Wendyson", password, "7805", "456 ave")
 
-    now = datetime.datetime.now()
-    goodInspection = add_inspection(sarahMechanic, "Good", now)
-    alrightInspection = add_inspection(sarahMechanic, "Alright", now)
-    badInspection = add_inspection(sarahMechanic, "Bad", now)
-
-    #goodInspection.Vehicle
-
     aleroVehicle = add_vehicle(
-        "123", bobSeller, goodInspection, "Oldsmobile", "Alero", 2004)
+        "123", bobSeller, "Oldsmobile", "Alero", 2004)
     lebaronVehicle = add_vehicle(
-        "456", bobSeller, alrightInspection, "Chrysler", "Le Baron", 1989)
+        "456", bobSeller, "Chrysler", "Le Baron", 1989)
     grandcherokeeVehicle = add_vehicle(
-        "789", bobSeller, badInspection, "Jeep", "Grand Cherokee", 2011)
+        "789", bobSeller, "Jeep", "Grand Cherokee", 2011)
+
+    now = datetime.datetime.now()
+    goodInspection = add_inspection(
+        sarahMechanic, aleroVehicle, "Good", now, 0)
+    alrightInspection = add_inspection(
+        sarahMechanic, lebaronVehicle, "Alright", now, 0)
+    badInspection = add_inspection(
+        sarahMechanic, grandcherokeeVehicle, "Bad", now, 0)
 
     print_all_sellers()
     print_all_customers()
@@ -73,7 +74,7 @@ def add_seller(email, firstName, lastName, rating, password):
 def add_customer(email, firstName, lastName, password):
     customer = None
     try:
-        customer = customer.objects.get(email=email)
+        customer = Customer.objects.get(email=email)
         return customer
     except:
         pass
@@ -89,7 +90,7 @@ def add_mechanic(email, firstName, lastName, phoneNumber, address,
                  password):
     mechanic = None
     try:
-        mechanic = mechanic.objects.get(email=email)
+        mechanic = Mechanic.objects.get(email=email)
         return mechanic
     except:
         pass
@@ -101,9 +102,10 @@ def add_mechanic(email, firstName, lastName, phoneNumber, address,
     return mechanic
 
 
-def add_inspection(mechanic, comments, date):
+def add_inspection(mechanic, vehicle, comments, date, views):
     inspection, created = Inspection.objects.get_or_create(
-        mechanic=mechanic, comments=comments, date=date)
+        mechanic=mechanic, comments=comments, date=date,
+        vehicle=vehicle, views=views)
     if created:
         inspection.save()
     else:
@@ -111,9 +113,9 @@ def add_inspection(mechanic, comments, date):
     return inspection
 
 
-def add_vehicle(vin, owner, inspections, make, model, year):
+def add_vehicle(vin, owner, make, model, year):
     vehicle, created = Vehicle.objects.get_or_create(
-        vin=vin, owner=owner, inspections=inspections,
+        vin=vin, owner=owner,
         make=make, model=model, year=year)
     if created:
         vehicle.save()
