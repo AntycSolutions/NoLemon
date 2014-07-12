@@ -43,11 +43,13 @@ def populate():
 
     now = datetime.datetime.now()
     goodInspection = add_inspection(
-        sarahMechanic, aleroVehicle, "Good", now, 0)
+        0, sarahMechanic, aleroVehicle, "Good", now, 0)
+    duplicateInspection = add_inspection(
+        1, sarahMechanic, aleroVehicle, "Good", now, 0)
     alrightInspection = add_inspection(
-        sarahMechanic, lebaronVehicle, "Alright", now, 0)
+        2, sarahMechanic, lebaronVehicle, "Alright", now, 0)
     badInspection = add_inspection(
-        sarahMechanic, grandcherokeeVehicle, "Bad", now, 0)
+        3, sarahMechanic, grandcherokeeVehicle, "Bad", now, 0)
 
     print_all_sellers()
     print_all_customers()
@@ -102,9 +104,9 @@ def add_mechanic(email, firstName, lastName, phoneNumber, address,
     return mechanic
 
 
-def add_inspection(mechanic, vehicle, comments, date, views):
+def add_inspection(pk, mechanic, vehicle, comments, date, views):
     inspection, created = Inspection.objects.get_or_create(
-        mechanic=mechanic, comments=comments, date=date,
+        pk=pk, mechanic=mechanic, comments=comments, date=date,
         vehicle=vehicle, views=views)
     if created:
         inspection.save()
