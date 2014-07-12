@@ -165,24 +165,11 @@ class Mechanic(BaseUser):
     objects = MechanicManager()
 
 
-class Inspection(models.Model):
-    comments = models.TextField()
-    date = models.DateField()
-    mechanic = models.ForeignKey(Mechanic)
-    # TODO: a video should be here... not sure how to handle
-    # that just yet
-    # video = ?
-
-    def __str__(self):
-        return self.comments + " " + self.date.__str__()
-
-
 class Vehicle(models.Model):
     owner = models.ForeignKey(Seller)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
-    inspections = models.ForeignKey(Inspection, blank=True, null=True)
     vin = models.CharField(
         "vehicle identifiation number", max_length=17, unique=True)
 
@@ -190,4 +177,18 @@ class Vehicle(models.Model):
         return self.year.__str__() + " " + self.make + " " + self.model
 
     class Meta:
-        ordering = ('owner', 'year', 'make', 'model', 'vin', 'inspections')
+        ordering = ('owner', 'year', 'make', 'model', 'vin')
+
+
+class Inspection(models.Model):
+    comments = models.TextField()
+    date = models.DateField()
+    views = models.IntegerField()
+    mechanic = models.ForeignKey(Mechanic)
+    vehicle = models.ForeignKey(Vehicle)
+    # TODO: a video should be here... not sure how to handle
+    # that just yet
+    # video = ?
+
+    def __str__(self):
+        return self.comments + " " + self.date.__str__()
