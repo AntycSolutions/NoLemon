@@ -4,24 +4,26 @@
 
 <html>
 <head>
-<title>NoLemon{% block title %}{% endblock %}</title>
+    <title>NoLemon{% block title %}{% endblock %}</title>
 </head>
 
 <body>
+
 <a href="/">NoLemon</a>
 {% if user.is_authenticated %}
-<p>You're logged in as {{ user }}</p>
+    <p>You're logged in as {{ user }}</p>
 {% if user|get_class == "Seller" %}
-Request a new inspection <a href="#">here!</a>
+    Request a new inspection <a href="#">here!</a>
 {% endif %}
-<a href="/logout/">Logout Here</a>
+    <a href="/logout/">Logout Here</a>
 {% else %}
-Already have an account? <a href="/login/">Login Here</a>
-Have a car you want to sell? <a href="/register/seller">Register Here!</a>
-Looking to buy a car? <a href="/register/customer">Make an account here!</a>
+    Already have an account? <a href="/login/">Login Here</a>
+    Have a car you want to sell? <a href="/register/seller/">Register Here!</a>
+    Looking to buy a car? <a href="/register/customer">Make an account here!</a>
+    Site Statistics <a href="/statistics/">Here</a>
 {% endif %}
 <hr>
-{% block content %}
-{% endblock %}
+{% block content %}{% endblock %}
+
 </body>
 </html>
