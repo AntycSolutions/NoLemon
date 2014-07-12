@@ -5,9 +5,13 @@
 {% block content %}
 
 {% if vehicle %}
-<p>{{ vehicle }}</p>
+    <p>VIN: {{ vehicle.vin }}</p>
+    <p>Owner: {{ vehicle.owner }}</p>
+    <p>Make: {{ vehicle.make }}</p>
+    <p>Year: {{ vehicle.year }}</p>
+    <a href="/inspections/{{ vehicle.bin }}">Click here to see this vehicle's inspections</a>
 {% else %}
-<p>You shouldn't be seeing this</p>
+    <p>You shouldn't be seeing this</p>
 {% endif %}
 
 {% endblock %}
