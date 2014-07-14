@@ -41,7 +41,6 @@ class BaseUserManager(DjangoBaseUserManager):
 
 class SellerManager(DjangoBaseUserManager):
     def create_user(self, email, first_name, last_name,
-                    rating,
                     password=None):
         """
         Creates and saves a User with the given email and password.
@@ -52,8 +51,7 @@ class SellerManager(DjangoBaseUserManager):
         user = Seller(
             email=SellerManager.normalize_email(email),
             first_name=first_name,
-            last_name=last_name,
-            rating=rating
+            last_name=last_name
             )
         user.set_password(password)
         user.save(using=self._db)
@@ -146,10 +144,17 @@ class BaseUser(AbstractBaseUser):
 
 
 class Seller(BaseUser):
-    # TODO: a seller needs a rating
-    rating = models.IntegerField(blank=True, null=True)
-
     objects = SellerManager()
+
+    def rating(self):
+        ratings = Rating.objects.filter(seller=self)
+        number = 0
+        for rating in ratings:
+            number += rating.rating
+        if ratings.count() is not 0:
+            return number / ratings.count()
+        return None
+    rating.allow_tags = True
 
 
 class Customer(BaseUser):
@@ -165,6 +170,31 @@ class Mechanic(BaseUser):
     objects = MechanicManager()
 
 
+class Rating(models.Model):
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    SELLER_RATING = ((ONE, 'ONE'),
+                     (TWO, 'TWO'),
+                     (THREE, 'THREE'),
+                     (FOUR, 'FOUR'),
+                     (FIVE, 'FIVE')
+                     )
+    rating = models.IntegerField(choices=SELLER_RATING)
+    seller = models.ForeignKey(Seller)
+    customer = models.ForeignKey(Customer)
+
+    def __str__(self):
+        return str(self.rating) \
+            + " " + str(self.seller) \
+            + " " + str(self.customer)
+
+    class Meta:
+        unique_together = (('seller', 'customer'),)
+
+
 class Vehicle(models.Model):
     owner = models.ForeignKey(Seller)
     make = models.CharField(max_length=100)
@@ -174,7 +204,10 @@ class Vehicle(models.Model):
         "vehicle identifiation number", max_length=17, unique=True)
 
     def __str__(self):
-        return self.year.__str__() + " " + self.make + " " + self.model
+        return str(self.year) \
+            + " " + self.make \
+            + " " + self.model \
+            + " " + str(self.owner)
 
     class Meta:
         ordering = ('owner', 'year', 'make', 'model', 'vin')
@@ -191,4 +224,7 @@ class Inspection(models.Model):
     # video = ?
 
     def __str__(self):
-        return self.comments + " " + self.date.__str__()
+        return self.comments \
+            + " " + str(self.date) \
+            + " " + str(self.mechanic) \
+            + " " + str(self.vehicle)
