@@ -3,8 +3,7 @@
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.forms import UserCreationForm, \
-    ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from ..models import BaseUser, Seller, Customer, Mechanic
 
