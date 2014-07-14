@@ -215,7 +215,7 @@ class Vehicle(models.Model):
 
 class Inspection(models.Model):
     comments = models.TextField()
-    date = models.DateField()
+    date = models.DateTimeField()
     views = models.IntegerField()
     mechanic = models.ForeignKey(Mechanic)
     vehicle = models.ForeignKey(Vehicle)
@@ -228,3 +228,12 @@ class Inspection(models.Model):
             + " " + str(self.date) \
             + " " + str(self.mechanic) \
             + " " + str(self.vehicle)
+
+
+class RequestInspection(models.Model):
+    vehicle = models.ForeignKey(Vehicle)
+    seller = models.ForeignKey(Seller)
+    request_date = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.vehicle) + " " + str(self.seller)
