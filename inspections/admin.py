@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 
 from .models import BaseUser, Seller, Customer, Mechanic, \
-    Vehicle, Inspection, Rating
+    Vehicle, Inspection, Rating, RequestInspection
 from .forms.registration import BaseUserCreationForm, SellerCreationForm, \
     CustomerCreationForm, MechanicCreationForm, \
     BaseUserChangeForm, SellerChangeForm, \
@@ -120,6 +120,7 @@ admin.site.register(Mechanic, MechanicAdmin)
 admin.site.register(Vehicle)
 admin.site.register(Inspection)
 admin.site.register(Rating)
+admin.site.register(RequestInspection)
 
 admin.site.unregister(Group)
 admin.site.unregister(Site)
