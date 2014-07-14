@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %} - Seller Detail{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if seller %}
+    <p>Email address: {{ seller.email }}</p>
+    <p>First name: {{ seller.first_name }}</p>
+    <p>Last name: {{ seller.last_name }}</p>
+    <p>Rating: {{ seller.rating|floatformat:"1" }}</p>
+    {% if form %}
+        <form method="post" action="{{ path }}">
+        {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Rate" />
+        </form>
+    {% else %}
+        Only customers can rate sellers.
+    {% endif %}
+{% else %}
+    <p>You shouldn't be seeing this</p>
+{% endif %}
+
+{% endblock %}
