@@ -5,9 +5,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
+from django.contrib.sites.models import Site
 
 from .models import BaseUser, Seller, Customer, Mechanic, \
-    Vehicle, Inspection
+    Vehicle, Inspection, Rating
 from .forms.registration import BaseUserCreationForm, SellerCreationForm, \
     CustomerCreationForm, MechanicCreationForm, \
     BaseUserChangeForm, SellerChangeForm, \
@@ -40,7 +41,7 @@ admin.site.register(BaseUser, BaseUserAdmin)
 
 
 class SellerAdmin(UserAdmin):
-    list_display = ('email',)
+    list_display = ('email', 'rating')
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -51,7 +52,7 @@ class SellerAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password',)}),
         (_('Personal info'), {'fields': ('first_name', 'last_name',
-                                         'rating')}),
+                                         )}),
         (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
         (_('Important dates'), {'fields': ('last_login',)}),
     )
@@ -118,5 +119,7 @@ admin.site.register(Mechanic, MechanicAdmin)
 
 admin.site.register(Vehicle)
 admin.site.register(Inspection)
+admin.site.register(Rating)
 
 admin.site.unregister(Group)
+admin.site.unregister(Site)
