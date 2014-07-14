@@ -26,6 +26,11 @@
     {% else %}
         Only customers can rate sellers.
     {% endif %}
+    {% for vehicle in seller.vehicle_set.all %}
+        <p>VIN: <a href="/vehicles/{{ vehicle.vin }}">{{ vehicle.vin }}</a></p>
+    {% empty %}
+        <p>There are no vehicles owned by this seller.</p>
+    {% endfor %}
 {% else %}
     <p>You shouldn't be seeing this</p>
 {% endif %}
