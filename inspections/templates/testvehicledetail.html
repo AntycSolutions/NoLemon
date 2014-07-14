@@ -4,13 +4,36 @@
 
 {% block content %}
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 {% if vehicle %}
     <p>VIN: {{ vehicle.vin }}</p>
-    <p>Owner: <a href="/sellers/{{ vehicle.owner }}">{{ vehicle.owner }}</a></p>
+    <p>Owner: <a href="/sellers/{{ vehicle.owner }}/">{{ vehicle.owner }}</a></p>
     <p>Make: {{ vehicle.make }}</p>
     <p>Year: {{ vehicle.year }}</p>
+    {% if request_inspection %}
+        Your request for an inspection on {{ request_inspection.request_date }} is pending.
+        <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a>
+    {% endif %}
+    {% if form %}
+        <form method="post" action="{{ path }}" >
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Request New Inspection" />
+        </form>
+    {% else %}
+        {% if not request_inspection %}
+            <p>Contact the seller about requesting an inspection.</p>
+        {% endif %}
+    {% endif %}
     {% for inspection in vehicle.inspection_set.all %}
-        <p>Inspection: <a href="/inspections/{{ inspection.pk }}">{{ inspection.date }}</a></p>
+        <p>Inspection: <a href="/inspections/{{ inspection.pk }}/">{{ inspection.date }}</a></p>
     {% empty %}
         <p>There are no inspections for this vehicle.</p>
     {% endfor %}
