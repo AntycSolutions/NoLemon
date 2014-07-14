@@ -6,11 +6,11 @@ import datetime
 def populate():
     password = "nolemon"
 
-    bobSeller = add_seller("bob@seller.ca", "Bob", "Bobson", 5, password)
-    samSeller = add_seller("sam@seller.ca", "Sam", "Samson", 4, password)
-    timSeller = add_seller("tim@seller.ca", "Tim", "Timson", 3, password)
-    tomSeller = add_seller("tom@seller.ca", "Tom", "Tomson", 2, password)
-    patSeller = add_seller("pat@seller.ca", "Pat", "Patson", 1, password)
+    bobSeller = add_seller("bob@seller.ca", "Bob", "Bobson", password)
+    samSeller = add_seller("sam@seller.ca", "Sam", "Samson", password)
+    timSeller = add_seller("tim@seller.ca", "Tim", "Timson", password)
+    tomSeller = add_seller("tom@seller.ca", "Tom", "Tomson", password)
+    patSeller = add_seller("pat@seller.ca", "Pat", "Patson", password)
 
     johnCustomer = add_customer(
         "john@customer.ca", "John", "Johnson", password)
@@ -22,6 +22,18 @@ def populate():
         "jack@customer.ca", "Jack", "Johnson", password)
     jillCustomer = add_customer(
         "jill@customer.ca", "Jill", "Johnson", password)
+
+    add_rating(Rating.FIVE, bobSeller, johnCustomer)
+    add_rating(Rating.FOUR, samSeller, johnCustomer)
+    add_rating(Rating.THREE, timSeller, johnCustomer)
+    add_rating(Rating.TWO, tomSeller, johnCustomer)
+    add_rating(Rating.ONE, patSeller, johnCustomer)
+
+    add_rating(Rating.FIVE, patSeller, janeCustomer)
+    add_rating(Rating.FOUR, bobSeller, janeCustomer)
+    add_rating(Rating.THREE, samSeller, janeCustomer)
+    add_rating(Rating.TWO, timSeller, janeCustomer)
+    add_rating(Rating.ONE, tomSeller, janeCustomer)
 
     sarahMechanic = add_mechanic(
         "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801", "123 st")
@@ -52,39 +64,55 @@ def populate():
         3, sarahMechanic, grandcherokeeVehicle, "Bad", now, 0)
 
     print_all_sellers()
+    print_all_ratings()
     print_all_customers()
     print_all_mechanics()
     print_all_inspections()
     print_all_vehicles()
 
 
-def add_seller(email, firstName, lastName, rating, password):
+def add_seller(email, firstName, lastName, password):
     seller = None
     try:
         seller = Seller.objects.get(email=email)
+        print ("Already exists, seller:", seller)
         return seller
     except:
         pass
     seller = Seller.objects.create_user(
         email=email, first_name=firstName, last_name=lastName,
-        password=password, rating=rating)
+        password=password
+        )
     if not seller:
-        print ("Did not create seller: ", seller)
+        print ("Did not create seller:", seller)
     return seller
+
+
+def add_rating(number, seller, customer):
+    rating, created = Rating.objects.get_or_create(
+        rating=number, seller=seller, customer=customer
+        )
+    if created:
+        rating.save()
+    else:
+        print ("Did not create rating:", number)
+    return rating
 
 
 def add_customer(email, firstName, lastName, password):
     customer = None
     try:
         customer = Customer.objects.get(email=email)
+        print ("Already exists, customer:", customer)
         return customer
     except:
         pass
     customer = Customer.objects.create_user(
         email=email, first_name=firstName, last_name=lastName,
-        password=password)
+        password=password
+        )
     if not customer:
-        print ("Did not create customer: ", customer)
+        print ("Did not create customer:", customer)
     return customer
 
 
@@ -93,36 +121,40 @@ def add_mechanic(email, firstName, lastName, phoneNumber, address,
     mechanic = None
     try:
         mechanic = Mechanic.objects.get(email=email)
+        print ("Already exists, mechanic:", mechanic)
         return mechanic
     except:
         pass
     mechanic = Mechanic.objects.create_user(
         email=email, first_name=firstName, last_name=lastName,
-        password=password, phone_number=phoneNumber, address=address)
+        password=password, phone_number=phoneNumber, address=address
+        )
     if not mechanic:
-        print ("Did not create mechanic: ", mechanic)
+        print ("Did not create mechanic:", mechanic)
     return mechanic
 
 
 def add_inspection(pk, mechanic, vehicle, comments, date, views):
     inspection, created = Inspection.objects.get_or_create(
         pk=pk, mechanic=mechanic, comments=comments, date=date,
-        vehicle=vehicle, views=views)
+        vehicle=vehicle, views=views
+        )
     if created:
         inspection.save()
     else:
-        print ("Did not create inspection: ", comments)
+        print ("Did not create inspection:", comments)
     return inspection
 
 
 def add_vehicle(vin, owner, make, model, year):
     vehicle, created = Vehicle.objects.get_or_create(
         vin=vin, owner=owner,
-        make=make, model=model, year=year)
+        make=make, model=model, year=year
+        )
     if created:
         vehicle.save()
     else:
-        print ("Did not create vehicle: ", vin)
+        print ("Did not create vehicle:", vin)
     return vehicle
 
 
@@ -130,6 +162,12 @@ def print_all_sellers():
     print ("Sellers:")
     for seller in Seller.objects.all():
         print (seller)
+
+
+def print_all_ratings():
+    print ("Ratings:")
+    for rating in Rating.objects.all():
+        print (rating)
 
 
 def print_all_customers():
@@ -160,6 +198,6 @@ if __name__ == '__main__':
     print("Starting NoLemon database population script...")
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'no_lemon.settings')
     from inspections.models import Seller, Customer, Mechanic, \
-        Inspection, Vehicle
+        Inspection, Vehicle, Rating
     populate()
     print("Finished populate script.")
