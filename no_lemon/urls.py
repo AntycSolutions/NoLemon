@@ -5,24 +5,40 @@ from inspections.front.authenticationViews import RegisterSellerView, Login, \
     Logout, RegisterCustomerView
 from inspections.views import VehicleDetail, VehicleList, \
     InspectionList, InspectionDetail, SellerList, SellerDetail, \
-    RatingFormCreateView, RatingFormUpdateView
+    RatingFormCreateView, RatingFormUpdateView, \
+    RequestInspectionCreateView, RequestInspectionUpdateView
 from inspections.front.statistics import Statistics
 admin.autodiscover()
 
+
+request_inspection_patterns = patterns(
+    '',
+    url(r'^$',
+        RequestInspectionCreateView.as_view(),
+        name='request_inspection_create'),
+    url(r'^(?P<pk>\d+)/$',
+        RequestInspectionUpdateView.as_view(),
+        name='request_inspection_update'),
+    url(r'^(?P<pk>\d+)/print/$',
+        'inspections.views.create_request_inspection_pdf',
+        name='print_request_inspection')
+    )
 
 vehicle_patterns = patterns(
     '',
     url(r'^$',
         VehicleList.as_view(), name='vehicle_list'),
-    url(r'^(?P<vin>[0-9a-hj-npr-z]{1,17})',
+    url(r'^(?P<vin>[0-9a-hj-npr-z]{1,17})/$',
         VehicleDetail.as_view(), name='vehicle_detail'),
+    url(r'^(?P<vin>[0-9a-hj-npr-z]{1,17})/request/inspection/',
+        include(request_inspection_patterns))
     )
 
 seller_patterns = patterns(
     '',
     url(r'^$',
         SellerList.as_view(), name='seller_list'),
-    url(r'^(?P<email>.+)',
+    url(r'^(?P<email>.+)/$',
         SellerDetail.as_view(), name='seller_detail'),
     )
 
@@ -30,7 +46,7 @@ rating_patterns = patterns(
     '',
     url(r'^$',
         RatingFormCreateView.as_view(), name='rating_create'),
-    url(r'(?P<pk>\d+)/$',
+    url(r'^(?P<pk>\d+)/$',
         RatingFormUpdateView.as_view(), name='rating_update'),
     # url(r'(?P<pk>\d+)/delete/$',
     #     RatingFormDeleteView.as_view(), name='rating_delete')
@@ -40,7 +56,7 @@ inspection_patterns = patterns(
     '',
     url(r'^$',
         InspectionList.as_view(), name='inspection_list'),
-    url(r'^(?P<pk>\d+)',
+    url(r'^(?P<pk>\d+)/$',
         InspectionDetail.as_view(), name='inspection_detail')
     )
 
@@ -66,5 +82,5 @@ urlpatterns = patterns(
     url(r'^inspections/', include(inspection_patterns)),
     url(r'^sellers/', include(seller_patterns)),
     url(r'^ratings/', include(rating_patterns)),
-    url(r'^statistics/', Statistics.as_view(), name='statistics')
+    url(r'^statistics/$', Statistics.as_view(), name='statistics'),
     )
