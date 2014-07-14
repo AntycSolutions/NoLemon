@@ -3,14 +3,13 @@
 {% block title %} - Register with NoLemon{% endblock %}
 
 {% block content %}
-<strong>register here!</strong><br />
+
+<strong>Register here!</strong><br />
 
 <form id="user_form" method="post" action="/register/{{ url_end }}">
-
     {% csrf_token %}
-
     {{ form.as_p }}
-
-    <input type="submit" name="submit" value="Register" />
+    <input type="submit" value="Register" />
 </form>
+
 {% endblock %}
