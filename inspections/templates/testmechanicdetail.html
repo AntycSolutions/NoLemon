@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} - Mechanic Detail{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if mechanic %}
+    <p>Email address: {{ mechanic.email }}</p>
+    <p>First name: {{ mechanic.first_name }}</p>
+    <p>Last name: {{ mechanic.last_name }}</p>
+    <p>Phone number: {{ mechanic.phone_number }}</p>
+    <p>Address: {{ mechanic.address }}</p>
+    <img src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;markers={{ mechanic.address.split|join:"+" }}+{{ mechanic.city.split|join:"+" }}+{{ mechanic.province.split|join:"+" }}" alt="Mechanic map"/>
+{% else %}
+    <p>You shouldn't be seeing this</p>
+{% endif %}
+
+{% endblock %}
