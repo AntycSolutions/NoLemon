@@ -98,13 +98,14 @@ class MechanicAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2',
                        'first_name', 'last_name',
-                       'phone_number', 'address')}
+                       'phone_number', 'address', 'city', 'province')}
          ),
     )
     fieldsets = (
         (None, {'fields': ('email', 'password',)}),
         (_('Personal info'), {'fields': ('first_name', 'last_name',
-                                         'phone_number', 'address')}),
+                                         'phone_number', 'address',
+                                         'city', 'province')}),
         (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
         (_('Important dates'), {'fields': ('last_login',)}),
     )
