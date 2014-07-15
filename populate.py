@@ -36,15 +36,20 @@ def populate():
     add_rating(Rating.ONE, tomSeller, janeCustomer)
 
     sarahMechanic = add_mechanic(
-        "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801", "123 st")
+        "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801",
+        "123 st nw", "edmonton", "ab")
     andreMechanic = add_mechanic(
-        "andre@mechanic.ca", "Andre", "Andreson", password, "7802", "456 st")
+        "andre@mechanic.ca", "Andre", "Andreson", password, "7802",
+        "23 st nw", "edmonton", "ab")
     barryMechanic = add_mechanic(
-        "barry@mechanic.ca", "Barry", "Barryson", password, "7803", "789 st")
+        "barry@mechanic.ca", "Barry", "Barryson", password, "7803",
+        "83 st nw", "edmonton", "ab")
     susanMechanic = add_mechanic(
-        "susan@mechanic.ca", "Susan", "Susanson", password, "7804", "123 ave")
+        "susan@mechanic.ca", "Susan", "Susanson", password, "7804",
+        "123 ave nw", "edmonton", "ab")
     wendyMechanic = add_mechanic(
-        "wendy@mechanic.ca", "Wendy", "Wendyson", password, "7805", "456 ave")
+        "wendy@mechanic.ca", "Wendy", "Wendyson", password, "7805",
+        "23 ave nw", "edmonton", "ab")
 
     aleroVehicle = add_vehicle(
         "123", bobSeller, "Oldsmobile", "Alero", 2004)
@@ -116,8 +121,8 @@ def add_customer(email, firstName, lastName, password):
     return customer
 
 
-def add_mechanic(email, firstName, lastName, phoneNumber, address,
-                 password):
+def add_mechanic(email, firstName, lastName, password,
+                 phoneNumber, address, city, province):
     mechanic = None
     try:
         mechanic = Mechanic.objects.get(email=email)
@@ -127,7 +132,8 @@ def add_mechanic(email, firstName, lastName, phoneNumber, address,
         pass
     mechanic = Mechanic.objects.create_user(
         email=email, first_name=firstName, last_name=lastName,
-        password=password, phone_number=phoneNumber, address=address
+        password=password, phone_number=phoneNumber, address=address,
+        city=city, province=province
         )
     if not mechanic:
         print ("Did not create mechanic:", mechanic)
