@@ -9,11 +9,50 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .forms.rating import RatingForm
 from .forms.request_inspection import RequestInspectionForm
 from .models import Vehicle, Inspection, Seller, Customer, Rating, \
-    RequestInspection
+    RequestInspection, Mechanic
 
 
 def home_page(request):
     return render(request, 'testindex.html')
+
+
+class MechanicList(ListView):
+    #fix me
+    template_name = "testmechaniclist.html"
+    model = Mechanic
+    context_object_name = "mechanics"
+
+    def get_context_data(self, **kwargs):
+        context = super(MechanicList, self).get_context_data(**kwargs)
+        context["map"] = ""
+        for mechanic in self.get_queryset():
+            address = mechanic.address.replace(" ", "+")
+            city = mechanic.city.replace(" ", "+")
+            province = mechanic.province.replace(" ", "+")
+            context["map"] += address + "+" + city + "+" + province + "|"
+        context["map"] = context["map"][:-1]
+        return context
+
+
+class MechanicDetail(DetailView):
+    template_name = "testmechanicdetail.html"
+    model = Mechanic
+    slug_field = "email"
+    slug_url_kwarg = "email"
+
+    def get(self, request, *args, **kwargs):
+        self.context = None
+        try:
+            self.object = self.get_object()
+            self.context = self.get_context_data(object=self.object)
+        except:
+            messages.add_message(
+                request, messages.INFO,
+                "We're sorry, we don't seem to have any mechanics "
+                "you're looking for.")
+            #fix me
+            return redirect('/mechanics/', self.context)
+        return self.render_to_response(self.context)
 
 
 class VehicleList(ListView):
@@ -25,7 +64,6 @@ class VehicleList(ListView):
 class VehicleDetail(DetailView):
     template_name = "testvehicledetail.html"
     model = Vehicle
-    context_object_name = "vehicle"
     slug_field = "vin"
     slug_url_kwarg = "vin"
 
@@ -86,7 +124,6 @@ class InspectionList(ListView):
 class InspectionDetail(DetailView):
     template_name = "testinspectiondetail.html"
     model = Inspection
-    context_object_name = "inspection"
     slug_field = "pk"
     slug_url_kwarg = "pk"
 
@@ -113,7 +150,6 @@ class SellerList(ListView):
 class SellerDetail(DetailView):
     template_name = "testsellerdetail.html"
     model = Seller
-    context_object_name = "seller"
     slug_field = "email"
     slug_url_kwarg = "email"
 
