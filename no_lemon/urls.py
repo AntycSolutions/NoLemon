@@ -40,7 +40,7 @@ seller_patterns = patterns(
     '',
     url(r'^$',
         SellerList.as_view(), name='seller_list'),
-    url(r'^(?P<email>.+)/$',
+    url(r'^(?P<pk>.+)/$',
         SellerDetail.as_view(), name='seller_detail'),
 )
 
@@ -48,9 +48,9 @@ mechanic_patterns = patterns(
     '',
     url(r'^$',
         MechanicList.as_view(), name='mechanic_list'),
-    url(r'^(?P<email>.+)/$',
+    url(r'^(?P<pk>.+)/$',
         MechanicDetail.as_view(), name='mechanic_detail'),
-    )
+)
 
 rating_patterns = patterns(
     '',

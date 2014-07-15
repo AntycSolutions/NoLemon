@@ -12,7 +12,8 @@
 
 <a href="/">NoLemon</a>
 {% if user.is_authenticated %}
-    <p>You're logged in as {{ user }}</p>
+    <span>You're logged in as {{ user }}</span>
+    <span><a href="/sellers/{{ user.pk }}">Your Account</a></span>
 {% if user|get_class == "Seller" %}
     Request a new inspection <a href="#">here!</a>
 {% endif %}
