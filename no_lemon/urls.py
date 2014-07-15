@@ -6,7 +6,8 @@ from inspections.front.authenticationViews import RegisterSellerView, Login, \
 from inspections.views import VehicleDetail, VehicleList, \
     InspectionList, InspectionDetail, SellerList, SellerDetail, \
     RatingFormCreateView, RatingFormUpdateView, \
-    RequestInspectionCreateView, RequestInspectionUpdateView
+    RequestInspectionCreateView, RequestInspectionUpdateView, \
+    MechanicList, MechanicDetail
 from inspections.front.statistics import Statistics
 admin.autodiscover()
 
@@ -40,6 +41,14 @@ seller_patterns = patterns(
         SellerList.as_view(), name='seller_list'),
     url(r'^(?P<email>.+)/$',
         SellerDetail.as_view(), name='seller_detail'),
+    )
+
+mechanic_patterns = patterns(
+    '',
+    url(r'^$',
+        MechanicList.as_view(), name='mechanic_list'),
+    url(r'^(?P<email>.+)/$',
+        MechanicDetail.as_view(), name='mechanic_detail'),
     )
 
 rating_patterns = patterns(
@@ -81,6 +90,7 @@ urlpatterns = patterns(
     url(r'^vehicles/', include(vehicle_patterns)),
     url(r'^inspections/', include(inspection_patterns)),
     url(r'^sellers/', include(seller_patterns)),
+    url(r'^mechanics/', include(mechanic_patterns)),
     url(r'^ratings/', include(rating_patterns)),
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
     )
