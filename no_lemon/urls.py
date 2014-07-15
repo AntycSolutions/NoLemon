@@ -3,12 +3,13 @@ from django.contrib import admin
 
 from inspections.front.authenticationViews import RegisterSellerView, Login, \
     Logout, RegisterCustomerView
+from inspections.front.payments import PaymentView
+from inspections.front.statistics import Statistics
 from inspections.views import VehicleDetail, VehicleList, \
     InspectionList, InspectionDetail, SellerList, SellerDetail, \
     RatingFormCreateView, RatingFormUpdateView, \
     RequestInspectionCreateView, RequestInspectionUpdateView, \
     MechanicList, MechanicDetail
-from inspections.front.statistics import Statistics
 admin.autodiscover()
 
 
@@ -23,7 +24,7 @@ request_inspection_patterns = patterns(
     url(r'^(?P<pk>\d+)/print/$',
         'inspections.views.create_request_inspection_pdf',
         name='print_request_inspection')
-    )
+)
 
 vehicle_patterns = patterns(
     '',
@@ -33,7 +34,7 @@ vehicle_patterns = patterns(
         VehicleDetail.as_view(), name='vehicle_detail'),
     url(r'^(?P<vin>[0-9a-hj-npr-z]{1,17})/request/inspection/',
         include(request_inspection_patterns))
-    )
+)
 
 seller_patterns = patterns(
     '',
@@ -41,7 +42,7 @@ seller_patterns = patterns(
         SellerList.as_view(), name='seller_list'),
     url(r'^(?P<email>.+)/$',
         SellerDetail.as_view(), name='seller_detail'),
-    )
+)
 
 mechanic_patterns = patterns(
     '',
@@ -59,7 +60,7 @@ rating_patterns = patterns(
         RatingFormUpdateView.as_view(), name='rating_update'),
     # url(r'(?P<pk>\d+)/delete/$',
     #     RatingFormDeleteView.as_view(), name='rating_delete')
-    )
+)
 
 inspection_patterns = patterns(
     '',
@@ -67,7 +68,7 @@ inspection_patterns = patterns(
         InspectionList.as_view(), name='inspection_list'),
     url(r'^(?P<pk>\d+)/$',
         InspectionDetail.as_view(), name='inspection_detail')
-    )
+)
 
 registration_patterns = patterns(
     '',
@@ -77,7 +78,12 @@ registration_patterns = patterns(
     url(r'^customer/$',
         RegisterCustomerView.as_view(),
         name='register_customer'),
-    )
+)
+
+payment_patterns = patterns(
+    '',
+    url(r'^$', PaymentView.as_view(), name='payment'),
+)
 
 urlpatterns = patterns(
     '',
@@ -93,4 +99,5 @@ urlpatterns = patterns(
     url(r'^mechanics/', include(mechanic_patterns)),
     url(r'^ratings/', include(rating_patterns)),
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
-    )
+    url(r'^payments/', include(payment_patterns)),
+)

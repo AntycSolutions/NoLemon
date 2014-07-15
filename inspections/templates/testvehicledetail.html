@@ -22,6 +22,17 @@
         <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a>
     {% endif %}
     {% if form %}
+    	<form action="/payments/" method="POST">
+    		{% csrf_token %}
+    	  <script
+    	    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    	    data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+    	    data-amount="20000"
+    	    data-name="Demo Site"
+    	    data-description="1 Inspection ($200.00)"
+    	    data-image="/128x128.png">
+    	  </script>
+    	</form>
         <form method="post" action="{{ path }}" >
             {% csrf_token %}
             {{ form }}

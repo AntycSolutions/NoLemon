@@ -2,9 +2,12 @@ import datetime
 
 from django import forms
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 from .forms.rating import RatingForm
 from .forms.request_inspection import RequestInspectionForm
@@ -89,14 +92,14 @@ class VehicleDetail(DetailView):
                     'seller': seller,
                     'vehicle': self.object,
                     'request_date': datetime.datetime.now()}
-                    )
+                )
                 context['path'] = reverse_lazy("request_inspection_create",
                                                kwargs={'vin': self.object.vin}
                                                )
             form.fields['seller'].widget = forms.HiddenInput()
             form.fields['vehicle'].widget = forms.HiddenInput()
         except Exception as e:
-            print ("Exception:", e)
+            print("Exception:", e)
         context['form'] = form
         context['request_inspection'] = request_inspection
         return context
@@ -174,7 +177,7 @@ class SellerDetail(DetailView):
             form.fields['seller'].widget = forms.HiddenInput()
             form.fields['customer'].widget = forms.ReadOnlyInput()
         except Exception as e:
-            print ("Exception:", e)
+            print("Exception:", e)
         context['form'] = form
         return context
 
@@ -231,7 +234,7 @@ class RatingFormUpdateView(UpdateView):
 
 # class RatingFormDeleteView(DeleteView):
 #     model = Rating
-#     success_url = reverse_lazy(#fix me)
+# success_url = reverse_lazy(#fix me)
 
 
 class RequestInspectionCreateView(CreateView):
@@ -272,11 +275,6 @@ class RequestInspectionUpdateView(UpdateView):
         return super(RequestInspectionUpdateView, self).form_valid(form)
 
 
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from django.http import HttpResponse
-
-
 def create_request_inspection_pdf(request, vin, pk):
     request_inspection = RequestInspection.objects.get(pk=pk)
 
@@ -299,24 +297,24 @@ def create_request_inspection_pdf(request, vin, pk):
     p.drawString(100, start, "Your request for a vehicle inspection "
                  "is outlined below:")
 
-    p.drawString(100, start - line*2, "Vehicle:")
-    p.drawString(100, start - line*3,
+    p.drawString(100, start - line * 2, "Vehicle:")
+    p.drawString(100, start - line * 3,
                  "VIN:  " + vin
                  + "    Make:  " + request_inspection.vehicle.make
                  + "   Model:  " + request_inspection.vehicle.model
                  + "   Year:  " + str(request_inspection.vehicle.year))
 
-    p.drawString(100, start - line*5, "Seller:")
-    p.drawString(100, start - line*6,
+    p.drawString(100, start - line * 5, "Seller:")
+    p.drawString(100, start - line * 6,
                  "Email:  " + request_inspection.seller.email
                  + "    First name:  " + request_inspection.seller.first_name
                  + "    Last name:  " + request_inspection.seller.last_name)
 
     # needs human readable date
-    p.drawString(100, start - line*8,
+    p.drawString(100, start - line * 8,
                  "Request date:  " + str(request_inspection.request_date))
 
-    p.drawString(100, start - line*11, "Signature:  ______________________")
+    p.drawString(100, start - line * 11, "Signature:  ______________________")
 
     p.drawString(100, 100, "No Lemon - nolemon.ca")
 
