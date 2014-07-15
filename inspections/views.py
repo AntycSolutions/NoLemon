@@ -175,7 +175,7 @@ class SellerDetail(DetailView):
                                   )
                 context['path'] = reverse_lazy("rating_create")
             form.fields['seller'].widget = forms.HiddenInput()
-            form.fields['customer'].widget = forms.ReadOnlyInput()
+            form.fields['customer'].widget = forms.HiddenInput()
         except Exception as e:
             print("Exception:", e)
         context['form'] = form
