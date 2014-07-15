@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %} - Mechanics{% endblock %}
+
+{% block head_content %}
+<script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo">
+</script>
+<script type="text/javascript">
+    function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng(-34.397, 150.644),
+            zoom: 8
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+<img src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;markers={{ map|urlencode }}" alt="Mechanic map" />
+<div style="display: inline">
+<div style="height: 640px; width: 640px; position: relative" id="map-canvas"></div>
+</div>
+{% for mechanic in mechanics %}
+    <p>This mechanics's email address is <a href="/mechanics/{{ mechanic.email }}">{{ mechanic.email }}</a></p>
+{% empty %}
+   There are no mechanics here.
+{% endfor %}
+
+{% endblock %}
