@@ -79,7 +79,7 @@ class CustomerManager(DjangoBaseUserManager):
 
 class MechanicManager(DjangoBaseUserManager):
     def create_user(self, email, first_name, last_name,
-                    phone_number, address,
+                    phone_number, address, city, province,
                     password=None):
         """
         Creates and saves a User with the given email and password.
@@ -92,7 +92,9 @@ class MechanicManager(DjangoBaseUserManager):
             first_name=first_name,
             last_name=last_name,
             phone_number=phone_number,
-            address=address
+            address=address,
+            city=city,
+            province=province
             )
         user.set_password(password)
         user.save(using=self._db)
@@ -164,6 +166,8 @@ class Customer(BaseUser):
 class Mechanic(BaseUser):
     phone_number = models.CharField(max_length=10)
     address = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    province = models.CharField(max_length=255)
 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
 
