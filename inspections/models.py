@@ -173,6 +173,12 @@ class Mechanic(BaseUser):
 
     objects = MechanicManager()
 
+    def full_address(self):
+        return self.address \
+            + " " + self.city \
+            + " " + self.province
+    full_address.allow_tags = True
+
 
 class Rating(models.Model):
     ONE = 1
