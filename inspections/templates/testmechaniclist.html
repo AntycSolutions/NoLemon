@@ -3,18 +3,86 @@
 {% block title %} - Mechanics{% endblock %}
 
 {% block head_content %}
+<style type="text/css">
+    .container
+    {
+        width: 100%;
+    }
+    .left
+    {
+        float: left;
+        width: 40%;
+    }
+    .right
+    {
+        margin-left: 40%;
+    }
+</style>
+
 <script type="text/javascript"
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo">
 </script>
 <script type="text/javascript">
+    var geocoder;
+    var map;
+    var markers;
+
     function initialize() {
+        markers = [];
+        geocoder = new google.maps.Geocoder();
+        // edmonton,ab
+        var latlng = new google.maps.LatLng(53.5333, -113.5000);
         var mapOptions = {
-            center: new google.maps.LatLng(-34.397, 150.644),
-            zoom: 8
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
+            zoom: 11, // arbitrary
+            center: latlng
+        }
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        {% for mechanic in mechanics %}
+            codeAddress("{{ intera_map.pop }}");
+        {% endfor %}
+
+        // let geocode locations load before centering the map
+        sleep(1000, centerMap);
     }
+
+    function centerMap() {
+        var fullBounds = new google.maps.LatLngBounds();
+        for(var i = 0; i < markers.length; i++) {
+            fullBounds.extend(markers[i].position);
+        }
+        map.fitBounds(fullBounds);
+
+        if(markers.length == 1) {
+            var mSum = 0;
+            var mZoom = map.getZoom();
+            mSum = parseInt(mZoom) - 8;
+            map.setZoom(mSum);
+        }
+    }
+
+    function codeAddress(address) {
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                addMarker(results[0].geometry.location);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+    function addMarker(location) {
+        var marker = new google.maps.Marker({
+            map: map,
+            position: location
+        });
+        markers.push(marker);
+    }
+
+    function sleep(millis, callback) {
+        setTimeout(function() { callback(); }, millis);
+    }
+
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 {% endblock %}
@@ -29,15 +97,19 @@
     </ul>
 {% endif %}
 
-
-<img src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;markers={{ map|urlencode }}" alt="Mechanic map" />
-<div style="display: inline">
-<div style="height: 640px; width: 640px; position: relative" id="map-canvas"></div>
+<div class="container">
+    <p>Locations of mechanics: (right side is interactive)</p>
+    <div class="left">
+        <img width="640" height="640" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;markers={{ static_map|urlencode }}" alt="Mechanic map" />
+        {% for mechanic in mechanics %}
+            <p>This mechanics's email address is <a href="/mechanics/{{ mechanic.email }}">{{ mechanic.email }}</a></p>
+        {% empty %}
+           There are no mechanics here.
+        {% endfor %}
+    </div>
+    <div class="right">
+        <div style="height: 640px; width: 640px" id="map-canvas"></div>
+    </div>
 </div>
-{% for mechanic in mechanics %}
-    <p>This mechanics's email address is <a href="/mechanics/{{ mechanic.email }}">{{ mechanic.email }}</a></p>
-{% empty %}
-   There are no mechanics here.
-{% endfor %}
 
 {% endblock %}
