@@ -21,7 +21,8 @@
         Your request for an inspection on {{ request_inspection.request_date }} is pending.
         <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a>
     {% endif %}
-    {% if form %}
+    {% if vehicle.owner.email == user.email %}
+	    {% if form %}
     	<form action="/payments/" method="POST">
     		{% csrf_token %}
     	  <script
@@ -38,6 +39,7 @@
             {{ form }}
             <input type="submit" value="Request New Inspection" />
         </form>
+        {% endif %}
     {% else %}
         {% if not request_inspection %}
             <p>Contact the seller about requesting an inspection.</p>
