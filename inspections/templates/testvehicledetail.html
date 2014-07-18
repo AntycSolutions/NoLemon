@@ -22,24 +22,11 @@
         <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a>
     {% endif %}
     {% if vehicle.owner.email == user.email %}
-	    {% if form %}
-    	<form action="/payments/" method="POST">
-    		{% csrf_token %}
-    	  <script
-    	    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    	    data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
-    	    data-amount="20000"
-    	    data-name="Demo Site"
-    	    data-description="1 Inspection ($200.00)"
-    	    data-image="/128x128.png">
-    	  </script>
+    	<form method="get" action="/requests/payment/">
+	    	{% csrf_token %}
+    		<input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
+    		<input type="submit" value="Request New Inspection">
     	</form>
-        <form method="post" action="{{ path }}" >
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Request New Inspection" />
-        </form>
-        {% endif %}
     {% else %}
         {% if not request_inspection %}
             <p>Contact the seller about requesting an inspection.</p>
