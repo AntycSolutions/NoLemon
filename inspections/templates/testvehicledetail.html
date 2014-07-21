@@ -14,7 +14,7 @@
 
 {% if vehicle %}
     <p>VIN: {{ vehicle.vin }}</p>
-    <p>Owner: <a href="/sellers/{{ vehicle.owner }}/">{{ vehicle.owner }}</a></p>
+    <p>Owner: <a href="/sellers/{{ vehicle.owner.pk }}/">{{ vehicle.owner }}</a></p>
     <p>Make: {{ vehicle.make }}</p>
     <p>Year: {{ vehicle.year }}</p>
     {% if request_inspection %}
