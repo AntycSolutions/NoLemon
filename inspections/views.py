@@ -56,7 +56,7 @@ class MechanicDetail(DetailView):
             self.context = self.get_context_data(object=self.object)
         except:
             messages.add_message(
-                request, messages.INFO,
+                request, messages.ERROR,
                 "We're sorry, we don't seem to have any mechanics "
                 "you're looking for.")
             # fix me
@@ -117,7 +117,7 @@ class VehicleDetail(DetailView):
             self.context = self.get_context_data(object=self.object)
         except:
             messages.add_message(
-                request, messages.INFO,
+                request, messages.ERROR,
                 "We're sorry, we don't seem to have any inspections "
                 "for the vehicle you're looking for.")
             return redirect('/vehicles/', self.context)
@@ -143,7 +143,7 @@ class InspectionDetail(DetailView):
             self.context = self.get_context_data(object=self.object)
         except:
             messages.add_message(
-                request, messages.INFO,
+                request, messages.ERROR,
                 "We're sorry, we don't seem to have any inspections "
                 "you're looking for.")
             return redirect('/inspections/', self.context)
@@ -194,7 +194,7 @@ class SellerDetail(DetailView):
             self.context = self.get_context_data(object=self.object)
         except:
             messages.add_message(
-                request, messages.INFO,
+                request, messages.ERROR,
                 "We're sorry, we don't seem to have any sellers "
                 "you're looking for.")
             return redirect('/sellers/', self.context)
@@ -209,7 +209,7 @@ class RatingFormCreateView(CreateView):
 
     def form_valid(self, form):
         messages.add_message(
-            self.request, messages.INFO,
+            self.request, messages.SUCCESS,
             "You've successfully rated " + form.instance.seller.email)
         self.success_url += form.instance.seller.email
         return super(RatingFormCreateView, self).form_valid(form)
@@ -218,7 +218,7 @@ class RatingFormCreateView(CreateView):
         for field, errors in form.errors.items():
             for error in errors:
                 messages.add_message(
-                    self.request, messages.INFO,
+                    self.request, messages.ERROR,
                     form.fields[field].label
                     + ". " + error)
         return redirect('/sellers/' + form.instance.seller.email)
@@ -232,7 +232,7 @@ class RatingFormUpdateView(UpdateView):
 
     def form_valid(self, form):
         messages.add_message(
-            self.request, messages.INFO,
+            self.request, messages.SUCCESS,
             "You've successfully rated " + form.instance.seller.email)
         self.success_url += form.instance.seller.email
         return super(RatingFormUpdateView, self).form_valid(form)
@@ -306,7 +306,7 @@ class RequestInspectionCreateView(CreateView):
 
     def form_valid(self, form):
         messages.add_message(
-            self.request, messages.INFO,
+            self.request, messages.SUCCESS,
             "You've successfully requested an inspection for "
             + form.instance.seller.email)
         self.success_url += form.instance.vehicle.vin
@@ -334,7 +334,7 @@ class RequestInspectionUpdateView(UpdateView):
 
     def form_valid(self, form):
         messages.add_message(
-            self.request, messages.INFO,
+            self.request, messages.SUCCESS,
             "You've successfully updated a request for an inspection for "
             + form.instance.vehicle.vin)
         self.success_url += form.instance.vehicle.vin
