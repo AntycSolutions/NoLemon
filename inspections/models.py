@@ -1,12 +1,13 @@
 # http://michalcodes4life.wordpress.com/2014/02/08
 # /multiple-user-types-in-django-1-6/
 
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, \
     BaseUserManager as DjangoBaseUserManager
+from django.db import models
 
 
 class BaseUserManager(DjangoBaseUserManager):
+
     def create_user(self, email, first_name, last_name, password=None):
         """
         Creates and saves a User with the given email and password.
@@ -19,7 +20,7 @@ class BaseUserManager(DjangoBaseUserManager):
             first_name=first_name,
             last_name=last_name,
             is_admin=False
-            )
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -32,7 +33,7 @@ class BaseUserManager(DjangoBaseUserManager):
             email=BaseUserManager.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
-            )
+        )
         user.set_password(password)
         user.is_admin = True
         user.save(using=self._db)
@@ -40,6 +41,7 @@ class BaseUserManager(DjangoBaseUserManager):
 
 
 class SellerManager(DjangoBaseUserManager):
+
     def create_user(self, email, first_name, last_name,
                     password=None):
         """
@@ -52,13 +54,14 @@ class SellerManager(DjangoBaseUserManager):
             email=SellerManager.normalize_email(email),
             first_name=first_name,
             last_name=last_name
-            )
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
 
 class CustomerManager(DjangoBaseUserManager):
+
     def create_user(self, email, first_name, last_name,
                     password=None):
         """
@@ -71,13 +74,14 @@ class CustomerManager(DjangoBaseUserManager):
             email=CustomerManager.normalize_email(email),
             first_name=first_name,
             last_name=last_name
-            )
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
 
 class MechanicManager(DjangoBaseUserManager):
+
     def create_user(self, email, first_name, last_name,
                     phone_number, address, city, province,
                     password=None):
@@ -95,7 +99,7 @@ class MechanicManager(DjangoBaseUserManager):
             address=address,
             city=city,
             province=province
-            )
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -211,13 +215,12 @@ class Vehicle(models.Model):
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     vin = models.CharField(
-        "vehicle identifiation number", max_length=17, unique=True)
+        "vehicle identification number", max_length=17, unique=True)
 
     def __str__(self):
         return str(self.year) \
             + " " + self.make \
-            + " " + self.model \
-            + " " + str(self.owner)
+            + " " + self.model
 
     class Meta:
         ordering = ('owner', 'year', 'make', 'model', 'vin')

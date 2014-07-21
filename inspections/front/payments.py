@@ -1,12 +1,24 @@
-from django.views.generic import RedirectView
+from django.core.urlresolvers import reverse
+from django.http.response import Http404, HttpResponsePermanentRedirect
+from django.views.generic import TemplateView
 import stripe
 
+from inspections.models import Vehicle
 
-class PaymentView(RedirectView):
 
-    url = '/'
+class PaymentView(TemplateView):
+
+    template_name = 'testpayment.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        vin = request.GET['vehicle']
+        vehicle = Vehicle.objects.get(vin=vin)
+        context['vehicle'] = vehicle
+        return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
+        vin = request.POST['vehicle']
         # Set your secret key: remember to change this to your live secret key in production
         # See your keys here https://dashboard.stripe.com/account
         stripe.api_key = "sk_test_y8HvZWWtuKZAMrQsRPtRro6F"
@@ -25,5 +37,7 @@ class PaymentView(RedirectView):
             )
         except stripe.CardError as e:
             # The card has been declined
-            pass
-        return RedirectView.post(self, request, *args, **kwargs)
+            return Http404()
+        paid = True
+        request.session['vehicle'] = vin
+        return HttpResponsePermanentRedirect(reverse('request_inspection_create'))

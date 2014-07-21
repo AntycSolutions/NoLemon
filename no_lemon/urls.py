@@ -18,6 +18,9 @@ request_inspection_patterns = patterns(
     url(r'^$',
         RequestInspectionCreateView.as_view(),
         name='request_inspection_create'),
+    url(r'^payment/$',
+        PaymentView.as_view(),
+        name='pay_for_inspection'),
     url(r'^(?P<pk>\d+)/$',
         RequestInspectionUpdateView.as_view(),
         name='request_inspection_update'),
@@ -99,5 +102,6 @@ urlpatterns = patterns(
     url(r'^mechanics/', include(mechanic_patterns)),
     url(r'^ratings/', include(rating_patterns)),
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
-    url(r'^payments/', include(payment_patterns)),
+    #     url(r'^payments/', include(payment_patterns)),
+    url(r'^requests/', include(request_inspection_patterns)),
 )

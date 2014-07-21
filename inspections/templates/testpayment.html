@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %} - Payment Received{% endblock %}
+
+{% block content %}
+
+<div>
+You've requested an inspection for the following vehicle:
+{{ vehicle }}
+with the VIN {{ vehicle.vin }}
+</div>
+<div>
+Click the button the pay the fee of $200, you will then be redirected to a place where you can view, download, and print your request.
+</div>
+
+<form action="" method="POST">
+	{% csrf_token %}
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+    data-amount="20000"
+    data-name="Demo Site"
+    data-description="1 Inspection ($200.00)"
+    data-image="/128x128.png">
+  </script>
+  <input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
+</form>
+
+{% endblock %}

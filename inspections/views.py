@@ -20,7 +20,7 @@ def home_page(request):
 
 
 class MechanicList(ListView):
-    #fix me
+    # fix me
     template_name = "testmechaniclist.html"
     model = Mechanic
     context_object_name = "mechanics"
@@ -59,7 +59,7 @@ class MechanicDetail(DetailView):
                 request, messages.INFO,
                 "We're sorry, we don't seem to have any mechanics "
                 "you're looking for.")
-            #fix me
+            # fix me
             return redirect('/mechanics/', self.context)
         return self.render_to_response(self.context)
 
@@ -244,9 +244,65 @@ class RatingFormUpdateView(UpdateView):
 
 
 class RequestInspectionCreateView(CreateView):
+
     model = RequestInspection
     success_url = '/vehicles/'
     form_class = RequestInspectionForm
+    template_name = 'testrequestinspection.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            RequestInspectionCreateView, self).get_context_data(**kwargs)
+        vehicle = kwargs['vehicle']
+        form = None
+        request_inspection = None
+        try:
+            seller = Seller.objects.get(email=self.request.user.email)
+            requests = RequestInspection.objects.filter(seller=seller,
+                                                        vehicle=vehicle
+                                                        )
+            if requests.count() > 0:
+                # This is for later if the form needs to be updated
+                # form = RequestInspectionForm(instance=requests[0])
+                # context['path'] = reverse_lazy("request_inspection_update",
+                #                                kwargs={'vin': self.object.vin,
+                #                                        'pk': requests[0].pk}
+                #                                )
+                request_inspection = requests[0]
+            else:
+                form = RequestInspectionForm(initial={
+                    'seller': seller,
+                    'vehicle': vehicle,
+                    'request_date': datetime.datetime.now()}
+                )
+                context['path'] = reverse_lazy("request_inspection_create",
+                                               kwargs={'vin': vehicle.vin}
+                                               )
+            form.fields['seller'].widget = forms.HiddenInput()
+            form.fields['vehicle'].widget = forms.HiddenInput()
+        except Exception as e:
+            print("Exception:", e)
+        context['form'] = form
+        context['request_inspection'] = request_inspection
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        vin = None
+        if 'vehicle' in request.GET:
+            vin = request.GET['vehicle']
+        else:
+            vin = request.session.get('vehicle')
+        vehicle = Vehicle.objects.get(vin=vin)
+        print(vehicle)
+        kwargs['vehicle'] = vehicle
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        kwargs['form'] = form
+
+        return self.render_to_response(self.get_context_data(form=form,
+                                                             vehicle=vehicle))
 
     def form_valid(self, form):
         messages.add_message(
@@ -259,8 +315,12 @@ class RequestInspectionCreateView(CreateView):
     def form_invalid(self, form):
         for field, errors in form.errors.items():
             for error in errors:
+                error_msg = form.fields[field].label + ". "
+                print("This error is: ", error_msg)
+                error_msg += error
+                print("This error is: ", error_msg)
                 messages.add_message(
-                    self.request, messages.INFO,
+                    self.request, messages.ERROR,
                     form.fields[field].label
                     + ". " + error)
         return redirect('/vehicles/' + form.instance.vehicle.vin
