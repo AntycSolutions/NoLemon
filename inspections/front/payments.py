@@ -19,7 +19,8 @@ class PaymentView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         vin = request.POST['vehicle']
-        # Set your secret key: remember to change this to your live secret key in production
+        # Set your secret key: remember to change this to your live secret key
+        # in production
         # See your keys here https://dashboard.stripe.com/account
         stripe.api_key = "sk_test_y8HvZWWtuKZAMrQsRPtRro6F"
 
@@ -37,7 +38,7 @@ class PaymentView(TemplateView):
             )
         except stripe.CardError as e:
             # The card has been declined
+            print("Error: ", e)
             return Http404()
-        paid = True
         request.session['vehicle'] = vin
         return HttpResponsePermanentRedirect(reverse('request_inspection_create'))
