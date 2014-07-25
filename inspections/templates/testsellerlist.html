@@ -13,7 +13,7 @@
 {% endif %}
 
 {% for seller in sellers %}
-    <p>This sellers's email address is <a href="/sellers/{{ seller.pk }}">{{ seller.email }}</a></p>
+    <p>This sellers's email address is <a href="{% url 'seller_detail' seller.pk %}">{{ seller.email }}</a></p>
 {% empty %}
    There are no sellers here.
 {% endfor %}
