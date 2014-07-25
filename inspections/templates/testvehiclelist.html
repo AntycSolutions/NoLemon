@@ -13,7 +13,7 @@
 {% endif %}
 
 {% for vehicle in vehicles %}
-    <p>This vehicle's VIN is <a href="/vehicles/{{ vehicle.vin }}">{{ vehicle.vin }}</a></p>
+    <p>This vehicle's VIN is <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></p>
 {% empty %}
    There are no vehicles here.
 {% endfor %}
