@@ -5,13 +5,14 @@
 
 <html>
 <head>
+    <link href="{% static 'NL yellow.png' %}" rel="icon" type="image/x-icon">
     <title>NoLemon{% block title %}{% endblock %}</title>
     {% block head_content %}{% endblock %}
 </head>
 
 <body>
 
-<a href="/" draggable="false"><img src="{% static "img/NoLemon Yellow.png" %}" alt="NoLemon" width="100" draggable="false"></a>
+<a href="/" draggable="false"><img src="{% static 'img/NoLemon Yellow.png' %}" alt="NoLemon" width="100" draggable="false"></a>
 {% if user.is_authenticated %}
     <span>You're logged in as {{ user }}</span>
     <!-- TODO: fix me, generalize to all users -->
