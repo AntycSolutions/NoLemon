@@ -6,7 +6,7 @@
 
 <strong>Register here!</strong><br />
 
-<form id="user_form" method="post" action="/register/{{ url_end }}">
+<form id="user_form" method="post" action="/register/{{ url_end }}/">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Register" />

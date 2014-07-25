@@ -2,12 +2,11 @@ import datetime
 
 from django import forms
 from django.contrib import messages
+from django.core.mail import send_mass_mail
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.core.mail import send_mass_mail
-
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
@@ -244,88 +243,9 @@ class RatingFormUpdateView(UpdateView):
 # success_url = reverse_lazy(#fix me)
 
 
-class RequestInspectionCreateView(CreateView):
-
-    model = RequestInspection
-    success_url = reverse_lazy('vehicle_list')
-    form_class = RequestInspectionForm
-    template_name = 'testrequestinspection.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(
-            RequestInspectionCreateView, self).get_context_data(**kwargs)
-        vehicle = kwargs['vehicle']
-        form = None
-        request_inspection = None
-        try:
-            seller = Seller.objects.get(email=self.request.user.email)
-            requests = RequestInspection.objects.filter(seller=seller,
-                                                        vehicle=vehicle
-                                                        )
-            if requests.count() > 0:
-                form = RequestInspectionForm(instance=requests[0])
-                context['path'] = reverse_lazy("request_inspection_update",
-                                               kwargs={'vin': self.object.vin,
-                                                       'pk': requests[0].pk}
-                                               )
-                request_inspection = requests[0]
-            else:
-                form = RequestInspectionForm(initial={
-                    'seller': seller,
-                    'vehicle': vehicle,
-                    'request_date': datetime.datetime.now()}
-                )
-                context['path'] = reverse_lazy("request_inspection_create",
-                                               kwargs={'vin': vehicle.vin}
-                                               )
-            form.fields['seller'].widget = forms.HiddenInput()
-            form.fields['vehicle'].widget = forms.HiddenInput()
-        except Exception as e:
-            print("Exception:", e)
-        context['form'] = form
-        context['request_inspection'] = request_inspection
-        return context
-
-    def get(self, request, *args, **kwargs):
-        self.object = None
-        vin = None
-        if 'vehicle' in request.GET:
-            vin = request.GET['vehicle']
-        else:
-            vin = request.session.get('vehicle')
-        vehicle = Vehicle.objects.get(vin=vin)
-        print(vehicle)
-        kwargs['vehicle'] = vehicle
-
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        kwargs['form'] = form
-
-        return self.render_to_response(self.get_context_data(form=form,
-                                                             vehicle=vehicle))
-
-    def form_valid(self, form):
-        admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
-        send_email(admin_emails)
-        messages.add_message(
-            self.request, messages.SUCCESS,
-            "You've successfully requested an inspection for "
-            + form.instance.seller.email)
-        self.success_url += form.instance.vehicle.vin
-        return super(RequestInspectionCreateView, self).form_valid(form)
-
-    def form_invalid(self, form):
-        for field, errors in form.errors.items():
-            for error in errors:
-                error_msg = form.fields[field].label + ". "
-                error_msg += error
-                print("This error is: ", error_msg)
-                messages.add_message(
-                    self.request, messages.ERROR,
-                    form.fields[field].label
-                    + ". " + error)
-        return redirect(reverse_lazy('request_inspection_create',
-                        kwargs={'vin': form.instance.vehicle.vin}))
+# class RequestInspectionCreateView(CreateView):
+#
+#     pass
 
 
 class RequestInspectionUpdateView(UpdateView):
@@ -382,7 +302,7 @@ def create_request_inspection_pdf(request, vin, pk):
         "%Y-%m-%d %H:%M:%S")
     p.drawString(100, start - line * 8,
                  "Request date:  "
-                 #2014-07-25 20:11:36
+                 # 2014-07-25 20:11:36
                  + human_readable_request_datetime)
 
     p.drawString(100, start - line * 11, "Signature:  ______________________")
@@ -408,6 +328,6 @@ def send_email(emails):
     datatuple = []
     for email in emails:
         datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
-                         [email['email']]))
+                          [email['email']]))
 
     send_mass_mail(datatuple, fail_silently=False)

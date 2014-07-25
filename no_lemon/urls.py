@@ -8,16 +8,16 @@ from inspections.front.statistics import Statistics
 from inspections.views import VehicleDetail, VehicleList, \
     InspectionList, InspectionDetail, SellerList, SellerDetail, \
     RatingFormCreateView, RatingFormUpdateView, \
-    RequestInspectionCreateView, RequestInspectionUpdateView, \
+    RequestInspectionUpdateView, \
     MechanicList, MechanicDetail
 admin.autodiscover()
 
 
 request_inspection_patterns = patterns(
     '',
-    url(r'^$',
-        RequestInspectionCreateView.as_view(),
-        name='request_inspection_create'),
+    #     url(r'^$',
+    #         RequestInspectionCreateView.as_view(),
+    #         name='request_inspection_create'),
     url(r'^payment/$',
         PaymentView.as_view(),
         name='pay_for_inspection'),

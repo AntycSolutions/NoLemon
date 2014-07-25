@@ -48,7 +48,9 @@ class PaymentView(CreateView):
         messages.add_message(
             self.request, messages.SUCCESS,
             "You've successfully requested an inspection for "
-            + form.instance.seller.email)
+            + form.instance.vehicle.__str__() + ". " +
+            "You will be contacted by a NoLemon administrator " +
+            "within 1 business days to confirm your request.")
         self.success_url += form.instance.vehicle.vin
         return super(PaymentView, self).form_valid(form)
 
