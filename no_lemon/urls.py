@@ -104,4 +104,6 @@ urlpatterns = patterns(
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
     #     url(r'^payments/', include(payment_patterns)),
     url(r'^requests/', include(request_inspection_patterns)),
+    url(r'^email/(?P<email>.+)/$', 'inspections.views.test_email',
+        name='test_email')
 )
