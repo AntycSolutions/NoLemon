@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %} - Payment Received{% endblock %}
 
@@ -15,15 +16,15 @@ Click the button the pay the fee of $200, you will then be redirected to a place
 
 <form action="" method="POST">
 	{% csrf_token %}
+	{{ form }}
   <script
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
     data-amount="20000"
     data-name="Demo Site"
     data-description="1 Inspection ($200.00)"
-    data-image="/128x128.png">
+    data-image="{% static "img/NL yellow-icon.png" %}">
   </script>
-  <input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
 </form>
 
 {% endblock %}

@@ -1,11 +1,14 @@
+import datetime
+
 from django import forms
-from django.core.urlresolvers import reverse
-from django.http.response import Http404, HttpResponsePermanentRedirect
+from django.contrib import messages
+from django.http.response import Http404
+from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 import stripe
 
 from inspections.forms.request_inspection import RequestInspectionForm
-from inspections.models import RequestInspection
+from inspections.models import RequestInspection, Seller, Vehicle
 
 
 class PaymentView(CreateView):
@@ -17,31 +20,53 @@ class PaymentView(CreateView):
 
     def get(self, request, *args, **kwargs):
         self.object = None
-        kwargs['vehicle'] = request.GET['vehicle']
-        context = self.get_context_data(**kwargs)
+        vehicle = Vehicle.objects.get(vin=request.GET['vehicle'])
+        seller = Seller.objects.get(email=request.user.email)
+
+        form = RequestInspectionForm(initial={
+            'seller': seller,
+            'vehicle': vehicle,
+            'request_date': datetime.datetime.now()}
+        )
+        form.fields['seller'].widget = forms.HiddenInput()
+        form.fields['vehicle'].widget = forms.HiddenInput()
+        form.fields['request_date'].widget = forms.HiddenInput()
+
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+
+        self._handle_stripe(request)
 
         form_class = self.get_form_class()
         form = self.get_form(form_class)
 
-        context['form'] = form
+        return super(PaymentView, self).post(request, args, kwargs)
 
-        print(request.GET)
+    def form_valid(self, form):
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            "You've successfully requested an inspection for "
+            + form.instance.seller.email)
+        self.success_url += form.instance.vehicle.vin
+        return super(PaymentView, self).form_valid(form)
 
-        return self.render_to_response(context)
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                error_msg = form.fields[field].label + ". "
+                print("This error is: ", error_msg)
+                error_msg += error
+                print("This error is: ", error_msg)
+                messages.add_message(
+                    self.request, messages.ERROR,
+                    form.fields[field].label
+                    + ". " + error)
+        return redirect('/vehicles/' + form.instance.vehicle.vin
+                        + "/request/inspection/")
 
-    def get_context_data(self, **kwargs):
-        context = super(PaymentView, self).get_context_data(**kwargs)
-        return context
-
-    def get_form(self, form_class):
-        form = form_class(**self.get_form_kwargs())
-        form.fields['seller'].widget = forms.HiddenInput()
-        form.fields['vehicle'].widget = forms.HiddenInput()
-        form.fields['request_date'].widget = forms.HiddenInput()
-        return form
-
-    def post(self, request, *args, **kwargs):
-        vin = request.POST['vehicle']
+    def _handle_stripe(self, request):
         # Set your secret key: remember to change this to your live secret key in production
         # See your keys here https://dashboard.stripe.com/account
         stripe.api_key = "sk_test_y8HvZWWtuKZAMrQsRPtRro6F"
@@ -61,6 +86,3 @@ class PaymentView(CreateView):
         except stripe.CardError as e:
             # The card has been declined
             return Http404()
-        paid = True
-        request.session['vehicle'] = vin
-        return HttpResponsePermanentRedirect(reverse('request_inspection_create'))
