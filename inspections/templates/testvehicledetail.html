@@ -14,15 +14,16 @@
 
 {% if vehicle %}
     <p>VIN: {{ vehicle.vin }}</p>
-    <p>Owner: <a href="/sellers/{{ vehicle.owner.pk }}/">{{ vehicle.owner }}</a></p>
+    <p>Owner: <a href="{% url 'seller_detail' vehicle.owner.pk %}">{{ vehicle.owner }}</a></p>
     <p>Make: {{ vehicle.make }}</p>
+    <p>Model: {{ vehicle.model }}</p>
     <p>Year: {{ vehicle.year }}</p>
     {% if request_inspection %}
         Your request for an inspection on {{ request_inspection.request_date }} is pending.
         <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a>
     {% endif %}
     {% if vehicle.owner.email == user.email %}
-    	<form method="get" action="/requests/payment/">
+    	<form method="get" action="{% url 'pay_for_inspection' %}">
 	    	{% csrf_token %}
     		<input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
     		<input type="submit" value="Request New Inspection">
@@ -35,11 +36,11 @@
     <h1>Inspections</h1>
     {% for inspection in vehicle.inspection_set.all %}
         <div>
-        <p>Vehicle: <a href="/vehicles/{{ inspection.vehicle.vin }}">{{ inspection.vehicle }}</a></p>
+        <p>Vehicle: <a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle }}</a></p>
         <p>Date: {{ inspection.date }}</p>
         <p>Comments: {{ inspection.comments }}</p>
         <p>Views: {{ inspection.views }}</p>
-        <p>Mechanic: <a href="/mechanics/{{ inspection.mechanic.email }}">{{ inspection.mechanic }}</a></p>
+        <p>Mechanic: <a href="{% url 'mechanic_detail' inspection.mechanic.pk %}">{{ inspection.mechanic }}</a></p>
         <hr>
         </div>
     {% empty %}
