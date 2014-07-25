@@ -6,13 +6,15 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.core.mail import send_mass_mail
+
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 from .forms.rating import RatingForm
 from .forms.request_inspection import RequestInspectionForm
 from .models import Vehicle, Inspection, Seller, Customer, Rating, \
-    RequestInspection, Mechanic
+    RequestInspection, Mechanic, BaseUser
 
 
 def home_page(request):
@@ -20,7 +22,6 @@ def home_page(request):
 
 
 class MechanicList(ListView):
-    # fix me
     template_name = "testmechaniclist.html"
     model = Mechanic
     context_object_name = "mechanics"
@@ -60,8 +61,7 @@ class MechanicDetail(DetailView):
                 request, messages.ERROR,
                 "We're sorry, we don't seem to have any mechanics "
                 "you're looking for.")
-            # fix me
-            return redirect('/mechanics/', self.context)
+            return redirect(reverse_lazy('mechanic_list'), self.context)
         return self.render_to_response(self.context)
 
 
@@ -121,7 +121,7 @@ class VehicleDetail(DetailView):
                 request, messages.ERROR,
                 "We're sorry, we don't seem to have any inspections "
                 "for the vehicle you're looking for.")
-            return redirect('/vehicles/', self.context)
+            return redirect(reverse_lazy('vehicle_list'), self.context)
         return self.render_to_response(self.context)
 
 
@@ -147,7 +147,7 @@ class InspectionDetail(DetailView):
                 request, messages.ERROR,
                 "We're sorry, we don't seem to have any inspections "
                 "you're looking for.")
-            return redirect('/inspections/', self.context)
+            return redirect(reverse_lazy('inspections_list'), self.context)
         return self.render_to_response(self.context)
 
 
@@ -198,14 +198,14 @@ class SellerDetail(DetailView):
                 request, messages.ERROR,
                 "We're sorry, we don't seem to have any sellers "
                 "you're looking for.")
-            return redirect('/sellers/', self.context)
+            return redirect(reverse_lazy('seller_list'), self.context)
         return self.render_to_response(self.context)
 
 
 class RatingFormCreateView(CreateView):
     model = Rating
     fields = ['rating']
-    success_url = '/sellers/'
+    success_url = reverse_lazy('seller_list')
     form_class = RatingForm
 
     def form_valid(self, form):
@@ -228,7 +228,7 @@ class RatingFormCreateView(CreateView):
 class RatingFormUpdateView(UpdateView):
     model = Rating
     fields = ['rating']
-    success_url = '/sellers/'
+    success_url = reverse_lazy('seller_list')
     form_class = RatingForm
 
     def form_valid(self, form):
@@ -247,7 +247,7 @@ class RatingFormUpdateView(UpdateView):
 class RequestInspectionCreateView(CreateView):
 
     model = RequestInspection
-    success_url = '/vehicles/'
+    success_url = reverse_lazy('vehicle_list')
     form_class = RequestInspectionForm
     template_name = 'testrequestinspection.html'
 
@@ -263,12 +263,11 @@ class RequestInspectionCreateView(CreateView):
                                                         vehicle=vehicle
                                                         )
             if requests.count() > 0:
-                # This is for later if the form needs to be updated
-                # form = RequestInspectionForm(instance=requests[0])
-                # context['path'] = reverse_lazy("request_inspection_update",
-                #                                kwargs={'vin': self.object.vin,
-                #                                        'pk': requests[0].pk}
-                #                                )
+                form = RequestInspectionForm(instance=requests[0])
+                context['path'] = reverse_lazy("request_inspection_update",
+                                               kwargs={'vin': self.object.vin,
+                                                       'pk': requests[0].pk}
+                                               )
                 request_inspection = requests[0]
             else:
                 form = RequestInspectionForm(initial={
@@ -306,6 +305,8 @@ class RequestInspectionCreateView(CreateView):
                                                              vehicle=vehicle))
 
     def form_valid(self, form):
+        admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
+        send_email(admin_emails)
         messages.add_message(
             self.request, messages.SUCCESS,
             "You've successfully requested an inspection for "
@@ -317,20 +318,19 @@ class RequestInspectionCreateView(CreateView):
         for field, errors in form.errors.items():
             for error in errors:
                 error_msg = form.fields[field].label + ". "
-                print("This error is: ", error_msg)
                 error_msg += error
                 print("This error is: ", error_msg)
                 messages.add_message(
                     self.request, messages.ERROR,
                     form.fields[field].label
                     + ". " + error)
-        return redirect('/vehicles/' + form.instance.vehicle.vin
-                        + "/request/inspection/")
+        return redirect(reverse_lazy('request_inspection_create',
+                        kwargs={'vin': form.instance.vehicle.vin}))
 
 
 class RequestInspectionUpdateView(UpdateView):
     model = RequestInspection
-    success_url = '/vehicles/'
+    success_url = reverse_lazy('vehicle_list')
     form_class = RequestInspectionForm
 
     def form_valid(self, form):
@@ -378,8 +378,12 @@ def create_request_inspection_pdf(request, vin, pk):
                  + "    Last name:  " + request_inspection.seller.last_name)
 
     # needs human readable date
+    human_readable_request_datetime = request_inspection.request_date.strftime(
+        "%Y-%m-%d %H:%M:%S")
     p.drawString(100, start - line * 8,
-                 "Request date:  " + str(request_inspection.request_date))
+                 "Request date:  "
+                 #2014-07-25 20:11:36
+                 + human_readable_request_datetime)
 
     p.drawString(100, start - line * 11, "Signature:  ______________________")
 
@@ -389,3 +393,21 @@ def create_request_inspection_pdf(request, vin, pk):
     p.showPage()
     p.save()
     return response
+
+
+def test_email(request, email):
+    emails = [{'email': email}]
+    send_email(emails)
+    return HttpResponse("Email sent.")
+
+
+def send_email(emails):
+    title = "NoLemon - Inspection Request"
+    content = "An inspection request has been made. Please approve.\n"
+
+    datatuple = []
+    for email in emails:
+        datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
+                         [email['email']]))
+
+    send_mass_mail(datatuple, fail_silently=False)
