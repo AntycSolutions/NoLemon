@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 {% load class_tag %}
+{% load staticfiles %}
 
 <html>
 <head>
@@ -10,7 +11,7 @@
 
 <body>
 
-<a href="/">NoLemon</a>
+<a href="/" draggable="false"><img src="{% static "img/NoLemon Yellow.png" %}" alt="NoLemon" width="100" draggable="false"></a>
 {% if user.is_authenticated %}
     <span>You're logged in as {{ user }}</span>
     <!-- TODO: fix me, generalize to all users -->
