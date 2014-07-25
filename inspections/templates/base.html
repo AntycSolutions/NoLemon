@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+
 {% load class_tag %}
 
 <html>
@@ -13,22 +13,25 @@
 <a href="/">NoLemon</a>
 {% if user.is_authenticated %}
     <span>You're logged in as {{ user }}</span>
-    <span><a href="/sellers/{{ user.pk }}">Your Account</a></span>
+    <!-- TODO: fix me, generalize to all users -->
+    <span><a href="{% url 'seller_detail' user.pk %}">Your Account</a></span>
 {% if user|get_class == "Seller" %}
     Request a new inspection <a href="#">here!</a>
 {% endif %}
-    <a href="/logout/">Logout Here</a>
+    <a href="{% url 'logout' %}">Logout Here</a>
 {% else %}
-    Already have an account? <a href="/login/">Login Here</a>
-    Have a car you want to sell? <a href="/register/seller/">Register Here!</a>
-    Looking to buy a car? <a href="/register/customer">Make an account here!</a>
-    Site Statistics <a href="/statistics/">Here</a>
+    Already have an account? <a href="{% url 'login' %}">Login Here</a>
+    Have a car you want to sell? <a href="{% url 'register_seller' %}">Register Here!</a>
+    Looking to buy a car? <a href="{% url 'register_customer' %}">Make an account here!</a>
+    Site Statistics <a href="{% url 'statistics' %}">Here</a>
 {% endif %}
 <hr>
 {% block content %}{% endblock %}
 
-<hr>
-<footer>NoLemon 2014</footer>
+<div id="footer" style="clear: both">
+    <hr>
+    <footer>NoLemon 2014</footer>
+</div>
 
 </body>
 </html>
