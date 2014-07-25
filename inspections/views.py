@@ -46,6 +46,7 @@ class MechanicDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MechanicDetail, self).get_context_data(**kwargs)
         full_address = self.object.full_address().replace(" ", "+")
+        context["static_map"] = full_address
         context["intera_map"] = full_address
         return context
 
