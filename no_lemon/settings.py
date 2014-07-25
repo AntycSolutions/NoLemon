@@ -99,3 +99,15 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "assets"),
     os.path.join(BASE_DIR, "documentation")
 )
+
+#email settings
+EMAIL_USE_TLS = True
+#prod
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+#dev
+#run "python -m smtpd -n -c DebuggingServer localhost:1025" first
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = 1025
+EMAIL_HOST_USER = 'testnolemon'
+EMAIL_HOST_PASSWORD = 'test1'
