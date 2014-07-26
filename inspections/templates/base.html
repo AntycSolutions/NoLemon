@@ -12,27 +12,29 @@
 
 <body>
 
-<a href="/" draggable="false"><img src="{% static 'img/NoLemon Yellow.png' %}" alt="NoLemon" width="100" draggable="false"></a>
+<div style="float: left">
+    <a href="/" draggable="false"><img src="{% static 'img/NoLemon Yellow.png' %}" alt="NoLemon" width="100" style="margin-top: -7px" draggable="false"></a>
+</div>
+<div style="margin-left: 110px; margin-top: 20px">
 {% if user.is_authenticated %}
     <span>You're logged in as {{ user }}</span>
     <!-- TODO: fix me, generalize to all users -->
     <span><a href="{% url 'seller_detail' user.pk %}">Your Account</a></span>
-{% if user|get_class == "Seller" %}
-    Request a new inspection <a href="#">here!</a>
-{% endif %}
     <a href="{% url 'logout' %}">Logout Here</a>
 {% else %}
     Already have an account? <a href="{% url 'login' %}">Login Here</a>
     Have a car you want to sell? <a href="{% url 'register_seller' %}">Register Here!</a>
     Looking to buy a car? <a href="{% url 'register_customer' %}">Make an account here!</a>
-    Site Statistics <a href="{% url 'statistics' %}">Here</a>
 {% endif %}
+Site Statistics <a href="{% url 'statistics' %}">Here</a>
+</div>
+<br>
 <hr>
 {% block content %}{% endblock %}
 
 <div id="footer" style="clear: both">
     <hr>
-    <footer>NoLemon 2014</footer>
+    <footer>NoLemon {% now 'Y' %}</footer>
 </div>
 
 </body>
