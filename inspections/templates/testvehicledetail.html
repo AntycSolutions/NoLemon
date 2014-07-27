@@ -12,42 +12,86 @@
     </ul>
 {% endif %}
 
-{% if vehicle %}
-    <p>VIN: {{ vehicle.vin }}</p>
-    <p>Owner: <a href="{% url 'seller_detail' vehicle.owner.pk %}">{{ vehicle.owner }}</a></p>
-    <p>Make: {{ vehicle.make }}</p>
-    <p>Model: {{ vehicle.model }}</p>
-    <p>Year: {{ vehicle.year }}</p>
-    {% if request_inspection %}
-        Your request for an inspection on {{ request_inspection.request_date }} is pending.
-        <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a>
-    {% endif %}
-    {% if vehicle.owner.email == user.email %}
-    	<form method="get" action="{% url 'pay_for_inspection' %}">
-	    	{% csrf_token %}
-    		<input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
-    		<input type="submit" value="Request New Inspection">
-    	</form>
-    {% else %}
-        {% if not request_inspection %}
-            <p>Contact the seller about requesting an inspection.</p>
-        {% endif %}
-    {% endif %}
-    <h1>Inspections</h1>
-    {% for inspection in vehicle.inspection_set.all %}
+<!-- Wrap -->
+<div class="wrap container" role="document">
+  <!-- Content -->
+  <div class="content row">
+    <!-- Main -->
+    <div class="main col-sm-8" role="main">
+
+      <div class="page-header">
+        <h1>Title</h1>
+      </div>
+
+      <div class="page-main">
+
+          <div class="row"><div class="col-md-12">
+          {% if vehicle %}
+            <h2>Request Inspection</h2>
+            {% if request_inspection %}
+                <p>Your request for an inspection on {{ request_inspection.request_date }} is pending.
+                <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a></p>
+            {% endif %}
+            {% if vehicle.owner.email == user.email %}
+                <form method="get" action="{% url 'pay_for_inspection' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
+                    <input type="submit" class="btn btn-primary" value="Request New Inspection">
+                </form>
+            {% else %}
+                {% if not request_inspection %}
+                    <p>Contact the seller about requesting an inspection.</p>
+                {% endif %}
+            {% endif %}
+            </div></div>
+          {% else %}
+            <h2>You shouldn't be seeing this.</h2>
+            </div></div>
+          {% endif %}
+
+      </div>
+
+    </div><!-- /.main -->
+
+    <!-- Sidebar -->
+    <aside class="sidebar col-sm-4" role="complementary">
+
+      <section class="widget nav_menu-2 widget_nav_menu">
         <div>
-        <p>Vehicle: <a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle }}</a></p>
-        <p>Date: {{ inspection.date }}</p>
-        <p>Comments: {{ inspection.comments }}</p>
-        <p>Views: {{ inspection.views }}</p>
-        <p>Mechanic: <a href="{% url 'mechanic_detail' inspection.mechanic.pk %}">{{ inspection.mechanic }}</a></p>
-        <hr>
+            <h3>Vehicle Information</h3>
+            <dl class="dl-horizontal">
+            {% if vehicle %}
+                <dt>VIN:</dt><dd>{{ vehicle.vin }}</dd>
+                <dt>Owner:</dt><dd><a href="{% url 'seller_detail' vehicle.owner.pk %}">{{ vehicle.owner }}</a></dd>
+                <dt>Make:</dt><dd>{{ vehicle.make }}</dd>
+                <dt>Model:</dt><dd>{{ vehicle.model }}</dd>
+                <dt>Year:</dt><dd>{{ vehicle.year }}</dd>
+            {% else %}
+                <dt>You shouldn't be seeing this.</dt>
+            {% endif %}
+            </dl>
+            <h3>Inspections</h3>
+            <ul>
+                {% for inspection in vehicle.inspection_set.all %}
+                    <li>
+                        <dl class="dl-horizontal">
+                            <dt>Vehicle:</dt><dd><a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle }}</a></dd>
+                            <dt>Date:</dt><dd>{{ inspection.date }}</dd>
+                            <dt>Comments:</dt><dd>{{ inspection.comments }}</dd>
+                            <dt>Views:</dt><dd>{{ inspection.views }}</dd>
+                            <dt>Mechanic:</dt><dd><a href="{% url 'mechanic_detail' inspection.mechanic.pk %}">{{ inspection.mechanic }}</a></dd>
+                        </dl>
+                    </li>
+                {% empty %}
+                    <li>There are no inspections for this vehicle.</li>
+                {% endfor %}
+                <li><a href="#">Change Me</a></li>
+            </ul>
         </div>
-    {% empty %}
-        <p>There are no inspections for this vehicle.</p>
-    {% endfor %}
-{% else %}
-    <p>You shouldn't be seeing this</p>
-{% endif %}
+      </section>
+
+    </aside><!-- /.sidebar -->
+  </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
