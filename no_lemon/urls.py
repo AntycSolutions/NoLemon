@@ -5,11 +5,12 @@ from inspections.front.authenticationViews import RegisterSellerView, Login, \
     Logout, RegisterCustomerView
 from inspections.front.payments import PaymentView
 from inspections.front.statistics import Statistics
-from inspections.views import VehicleDetail, VehicleList, \
-    InspectionList, InspectionDetail, SellerList, SellerDetail, \
-    RatingFormCreateView, RatingFormUpdateView, \
-    RequestInspectionUpdateView, \
-    MechanicList, MechanicDetail
+from inspections.views import InspectionList, InspectionDetail, \
+    RequestInspectionUpdateView
+from inspections.front.mechanics import MechanicList, MechanicDetail
+from inspections.front.sellers import SellerList, SellerDetail, \
+    RatingFormCreateView, RatingFormUpdateView
+from inspections.front.vehicles import VehicleDetail, VehicleList
 admin.autodiscover()
 
 
