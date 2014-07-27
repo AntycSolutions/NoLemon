@@ -12,10 +12,57 @@
     </ul>
 {% endif %}
 
-{% for seller in sellers %}
-    <p>This sellers's email address is <a href="{% url 'seller_detail' seller.pk %}">{{ seller.email }}</a></p>
-{% empty %}
-   There are no sellers here.
-{% endfor %}
+<!-- Wrap -->
+<div class="wrap container" role="document">
+  <!-- Content -->
+  <div class="content row">
+    <!-- Main -->
+    <div class="main col-sm-8" role="main">
+
+      <div class="page-header">
+        <h1>Title</h1>
+      </div>
+
+      <div class="page-main">
+
+          <div class="row"><div class="col-md-12">
+          {% if sellers.count >= 1 %}
+            <h2>Change Me</h2>
+            <p>Change Me</p>
+            </div></div>
+          {% else %}
+            <h2>There are no sellers here.</h2>
+            </div></div>
+          {% endif %}
+
+      </div>
+
+    </div><!-- /.main -->
+
+    <!-- Sidebar -->
+    <aside class="sidebar col-sm-4" role="complementary">
+
+      <section class="widget nav_menu-2 widget_nav_menu">
+        <div>
+            <h3>Seller List</h3>
+            <ul>
+            {% for seller in sellers %}
+                <li>Email address: <a href="{% url 'seller_detail' seller.pk %}">{{ seller.email }}</a></li>
+                <script type="text/javascript">
+                    addresses.push("{{ intera_map.pop }}");
+                </script>
+            {% empty %}
+               <li>There are no sellers here.</li>
+            {% endfor %}
+            </ul>
+            <ul>
+                <li><a href="#">Change Me</a></li>
+            </ul>
+        </div>
+      </section>
+
+    </aside><!-- /.sidebar -->
+  </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
