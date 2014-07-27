@@ -12,10 +12,57 @@
     </ul>
 {% endif %}
 
-{% for vehicle in vehicles %}
-    <p>This vehicle's VIN is <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></p>
-{% empty %}
-   There are no vehicles here.
-{% endfor %}
+<!-- Wrap -->
+<div class="wrap container" role="document">
+  <!-- Content -->
+  <div class="content row">
+    <!-- Main -->
+    <div class="main col-sm-8" role="main">
+
+      <div class="page-header">
+        <h1>Title</h1>
+      </div>
+
+      <div class="page-main">
+
+          <div class="row"><div class="col-md-12">
+          {% if vehicles.count >= 1 %}
+            <h2>Change Me</h2>
+            <p>Change Me</p>
+            </div></div>
+          {% else %}
+            <h2>There are no vehicles here.</h2>
+            </div></div>
+          {% endif %}
+
+      </div>
+
+    </div><!-- /.main -->
+
+    <!-- Sidebar -->
+    <aside class="sidebar col-sm-4" role="complementary">
+
+      <section class="widget nav_menu-2 widget_nav_menu">
+        <div>
+            <h3>Vehicle List</h3>
+            <ul>
+            {% for vehicle in vehicles %}
+                <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
+                <script type="text/javascript">
+                    addresses.push("{{ intera_map.pop }}");
+                </script>
+            {% empty %}
+               <li>There are no vehicles here.</li>
+            {% endfor %}
+            </ul>
+            <ul>
+                <li><a href="#">Change Me</a></li>
+            </ul>
+        </div>
+      </section>
+
+    </aside><!-- /.sidebar -->
+  </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
