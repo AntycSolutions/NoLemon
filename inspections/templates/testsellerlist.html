@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{% include 'header.html' %}
+
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -48,9 +50,6 @@
             <ul>
             {% for seller in sellers %}
                 <li>Email address: <a href="{% url 'seller_detail' seller.pk %}">{{ seller.email }}</a></li>
-                <script type="text/javascript">
-                    addresses.push("{{ intera_map.pop }}");
-                </script>
             {% empty %}
                <li>There are no sellers here.</li>
             {% endfor %}
