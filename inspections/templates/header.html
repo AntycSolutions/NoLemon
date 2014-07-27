@@ -1,0 +1,26 @@
+<!-- Header -->
+<div class="main-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-lg-8">
+                <h1>Vehicle Search</h1>
+                <p class="tagline">Tagline</p>
+            </div>
+            <div class="col-sm-4 col-lg-4">
+                <form role="search" method="get" id="searchform" class="form-search" action="javascript:clickEvent()">
+                    <div class="append-icon">
+                        <input type="text" name="s" id="autocomplete-dynamic" class="form-control input-lg" autocomplete="off" placeholder="Enter a VIN here.">
+                    </div>
+                </form>
+                <script type="text/javascript">
+                    clickEvent = function () {
+                        searchBar = document.getElementsByName('s')[0];
+                        url = "{% url 'vehicle_list' %}" + searchBar.value.toLowerCase();
+                        window.location.pathname = url;
+                    };
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Header -->
