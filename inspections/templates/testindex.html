@@ -1,18 +1,189 @@
 {% extends "base.html" %}
 
-{% block title %}{% endblock %}
+{% load static %}
 
 {% block content %}
-	<h1>Search NoLemon for a vehicle inspection!</h1>
-    <input type="text" name="vin-search" id="vin-search-bar" value="" placeholder="Enter a VIN">
-    <input type="submit" name="" id="vin-search-btn" onclick=clickEvent() value="Search">
+<!-- Hero Section -->
+<div id="hero"> <!-- class="hero-image" -->
+  <div class="container">
 
-	<script type="text/javascript">
-	clickEvent = function () {
-		searchBar = document.getElementsByName('vin-search')[0];
-		url = "vehicles/" + searchBar.value.toLowerCase();
-		window.location.pathname = url;
-	};
-	</script>
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 id="header">Search NoLemon for an inspection using the vehicle's VIN</h1>
+        <p class="subtitle">Subtitle</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="hero-box col-sm-8 col-sm-offset-2">
+        <form role="search" method="get" id="searchform" class="form-search" action="javascript:clickEvent()">
+          <div class="input-group">
+            <input type="text" name="vin-search" id="vin-search-bar" class="form-control input-lg" autocomplete="off" placeholder="Enter a VIN">
+            <span class="input-group-btn">
+              	<input type="submit" id="searchsubmit" value="Search" class="btn">
+            </span>
+          </div>
+        </form>
+        <script type="text/javascript">
+			clickEvent = function () {
+				searchBar = document.getElementsByName('vin-search')[0];
+				url = "{% url 'vehicle_list' %}" + searchBar.value.toLowerCase();
+				window.location.pathname = url;
+			};
+		</script>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /#hero -->
+<!-- End Hero -->
+
+<!-- Boxes Section -->
+<div class="container">
+  <div id="boxes">
+    <div class="home-title">
+      <h2>Welcome</h2>
+      <p>Subtitle.</p>
+    </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <article class="box box-left">
+            <div class="circle">
+              <a href="{% url 'seller_list' %}"><span></span><i class="fa fa-file-text-o"></i></a>
+            </div>
+            <h3><a href="{% url 'seller_list' %}">Sellers</a></h3>
+            <p>Subtitle</p>
+            <a class="btn" href="{% url 'seller_list' %}">Continue</a>
+          </article>
+        </div>
+        <div class="col-sm-4">
+          <article class="box box-middle">
+            <div class="circle">
+              <a href="{% url 'mechanic_list' %}"><span></span><i class="fa fa-question-circle"></i></a>
+            </div>
+            <h3><a href="{% url 'mechanic_list' %}">Mechanics</a></h3>
+            <p>Subtitle</p>
+            <a class="btn" href="{% url 'mechanic_list' %}">Continue</a>
+          </article>
+        </div>
+        <div class="col-sm-4">
+          <article class="box box-right">
+            <div class="circle">
+              <a href="{% url 'vehicle_list' %}"><span></span><i class="fa fa-envelope-o"></i></a>
+            </div>
+            <h3><a href="{% url 'vehicle_list' %}">Vehicles</a></h3>
+            <p>Subtitle</p>
+            <a class="btn" href="{% url 'vehicle_list' %}">Continue</a>
+          </article>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- End Boxes -->
+
+<!-- Featured Articles Section -->
+<div id="home-featured">
+  <div class="container">
+    <div class="home-title">
+      <h2>Title</h2>
+      <p>Subtitle.</p>
+    </div>
+    <div class="row recent-posts">
+
+      <div class="col-sm-3">
+        <article>
+          <header>
+            <h4 class="entry-title"><i class="fa fa-picture-o"></i> <a href="/">Change Me</a></h4>
+          </header>
+          <div class="entry-media">
+            <a href="/" title="Change Me">
+              <img width="870" height="490" src="{% static "img/responsive.jpg" %}" alt="Responsive" />
+            </a>
+          </div>
+          <div class="entry-content">
+            <p>Subtitle <a class="blog-more btn btn-xxs btn-primary" href="/">Read more</a></p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-3">
+        <article>
+          <header>
+            <h4 class="entry-title"><i class="fa fa-picture-o"></i> <a href="/">Change Me</a></h4>
+          </header>
+          <div class="entry-media">
+            <a href="/" title="Change Me">
+              <img width="870" height="490" src="{% static "img/colors-870x490.jpg" %}" alt="colors" />
+            </a>
+            </div>
+            <div class="entry-content">
+              <p>Subtitle <a class="blog-more btn btn-xxs btn-primary" href="/">Read more</a></p>
+            </div>
+        </article>
+      </div>
+
+      <div class="col-sm-3">
+        <article>
+          <header>
+            <h4 class="entry-title"><i class="fa fa-film"></i> <a href="/">Change Me</a></h4>
+          </header>
+          <div class="entry-media fitvids">
+          <!-- Remove or change video/iframe -->
+            <iframe src="http://player.vimeo.com/video/69712594?title=0&byline=0&portrait=0&color=ffffff" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+          <div class="entry-content">
+            <p>Subtitle <a class="blog-more btn btn-xxs btn-primary" href="/">Read more</a></p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-3">
+        <article>
+          <header>
+            <h4 class="entry-title"><i class="fa fa-film"></i> <a href="/">Change Me</a></h4>
+          </header>
+          <div class="entry-media fitvids">
+          <!-- Remove or change video/iframe -->
+            <iframe src="http://player.vimeo.com/video/75660130?title=0&byline=0&portrait=0&badge=0&color=ffffff" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+          <div class="entry-content">
+            <p>Subtitle <a class="blog-more btn btn-xxs btn-primary" href="/">Read more</a></p>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- End Featured Articles -->
+
+<!-- Video Section -->
+<div id="home-video">
+  <div class="container">
+    <div class="home-title">
+      <h2>Title</h2>
+      <p>Subtitle</p>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="box-video">
+            <a href="/"><i class="fa fa-play-circle"></i></a>
+            <h3><a href="/">Change Me</a></h3>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="box-video-list">
+          <h3>Title</h3>
+          <ul>
+            <li><h4><i class="fa-film fa fa-fw"></i> <a href="/">Change Me</a></h4></li>
+          </ul>
+          <a class="btn-videos" href="#" title="">View all videos <i class="icon-chevron-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Video -->
 
 {% endblock %}
