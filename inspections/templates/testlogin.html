@@ -1,13 +1,43 @@
 {% extends "base.html" %}
 
+{% load add_css %}
+
 {% block title %} - Login {% endblock %}
 
 {% block content %}
-<form id="login_form" method="post" action="{% url 'login' %}">
-    {% csrf_token %}
 
-    {{ form.as_p }}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
-    <input type="submit" value="submit" />
-</form>
+<!-- Wrap -->
+<div class="wrap container" role="document">
+    <!-- Content -->
+    <div class="content row">
+        <!-- Main -->
+        <div class="main col-sm-12" role="main">
+            <div class="page-header">
+                <h1>Login Here:</h1>
+            </div>
+            <div class="page-main">
+                <form id="login_form" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label_tag }}
+                            {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+                        </div>
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" value="Login" />
+                </form>
+            </div>
+        </div><!-- /.main -->
+    </div><!-- /.content -->
+</div><!-- /.wrap -->
+
 {% endblock %}
