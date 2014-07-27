@@ -4,13 +4,10 @@
 {% block title %} - Mechanic Detail{% endblock %}
 
 {% block head_content %}
-<link rel="stylesheet" type="text/css"
-    href="{% static 'left_right.css' %}">
-<script type="text/javascript"
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo">
+<link rel="stylesheet" type="text/css" href="{% static 'left_right.css' %}">
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo">
 </script>
-<script type="text/javascript"
-    src="{% static 'google_maps.js' %}">
+<script type="text/javascript" src="{% static 'google_maps.js' %}">
 </script>
 {% endblock %}
 
@@ -24,26 +21,70 @@
     </ul>
 {% endif %}
 
-{% if mechanic %}
-<div class="container">
-    <p>Locations of mechanic: (right side is interactive)</p>
-<div class="left">
-    <img src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;markers={{ static_map }}" alt="Mechanic map"/>
-    <p>Email address: {{ mechanic.email }}</p>
-    <p>First name: {{ mechanic.first_name }}</p>
-    <p>Last name: {{ mechanic.last_name }}</p>
-    <p>Phone number: {{ mechanic.phone_number }}</p>
-    <p>Address: <a href="https://www.google.ca/maps/place/{{ intera_map }}">{{ mechanic.full_address }}</a></p>
-    <script type="text/javascript">
-        addresses.push("{{ intera_map }}");
-    </script>
-</div>
-<div class="right">
-    <div style="height: 640px; width: 640px" id="map-canvas"></div>
-</div>
-</div>
-{% else %}
-    <p>You shouldn't be seeing this</p>
-{% endif %}
+<!-- Wrap -->
+<div class="wrap container" role="document">
+  <!-- Content -->
+  <div class="content row">
+    <!-- Main -->
+    <div class="main col-sm-8" role="main">
+
+      <div class="page-header">
+        <h1>Maps</h1>
+      </div>
+
+      <div class="page-main">
+
+          <div class="row"><div class="col-md-12">
+          {% if mechanic %}
+            <h2>Static</h2>
+            Static map displaying mechanic's location.
+            </div></div>
+            <p>&nbsp;</p>
+            <img width="640px" height="640px" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;markers={{ static_map }}" alt="Mechanic map"/>
+            <p>&nbsp;</p>
+
+            <h2>Interactive</h2>
+            Interactive map displaying mechanic's location.
+            <p>&nbsp;</p>
+            <div style="height: 640px; width: 640px" id="map-canvas"></div>
+            <p>&nbsp;</p>
+          {% else %}
+            <h2>You shouldn't be seeing this.</h2>
+            </div></div>
+          {% endif %}
+
+      </div>
+
+    </div><!-- /.main -->
+
+    <!-- Sidebar -->
+    <aside class="sidebar col-sm-4" role="complementary">
+
+      <section class="widget nav_menu-2 widget_nav_menu">
+        <div>
+          <h3>Mechanic Information</h3>
+          <dl class="dl-horizontal">
+            {% if mechanic %}
+                    <dt>Email address:</dt><dd>{{ mechanic.email }}</dd>
+                    <dt>First name:</dt><dd>{{ mechanic.first_name }}</dd>
+                    <dt>Last name:</dt><dd>{{ mechanic.last_name }}</dd>
+                    <dt>Phone number:</dt><dd>{{ mechanic.phone_number }}</dd>
+                    <dt>Address:</dt><dd><a href="https://www.google.ca/maps/place/{{ intera_map }}">{{ mechanic.full_address }}</a></dd>
+                <script type="text/javascript">
+                    addresses.push("{{ intera_map }}");
+                </script>
+            {% else %}
+                <dt>You shouldn't be seeing this.</dt>
+            {% endif %}
+          </dl>
+          <ul>
+            <li><a href="#">Change Me</a></li>
+          </ul>
+        </div>
+      </section>
+
+    </aside><!-- /.sidebar -->
+  </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
