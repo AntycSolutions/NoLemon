@@ -1,127 +1,18 @@
-import datetime
-
-from django import forms
 from django.contrib import messages
 from django.core.mail import send_mass_mail
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-from .forms.rating import RatingForm
 from .forms.request_inspection import RequestInspectionForm
-from .models import Vehicle, Inspection, Seller, Customer, Rating, \
-    RequestInspection, Mechanic, BaseUser
+from .models import Inspection, RequestInspection, BaseUser
 
 
 def home_page(request):
     return render(request, 'testindex.html')
-
-
-class MechanicList(ListView):
-    template_name = "testmechaniclist.html"
-    model = Mechanic
-    context_object_name = "mechanics"
-
-    def get_context_data(self, **kwargs):
-        context = super(MechanicList, self).get_context_data(**kwargs)
-        context["static_map"] = ""
-        context["intera_map"] = []
-        for mechanic in self.get_queryset():
-            full_address = mechanic.full_address().replace(" ", "+")
-            context["static_map"] += full_address + "|"
-            context["intera_map"] += [full_address]
-        context["static_map"] = context["static_map"][:-1]
-        return context
-
-
-class MechanicDetail(DetailView):
-    template_name = "testmechanicdetail.html"
-    model = Mechanic
-    slug_field = "email"
-    slug_url_kwarg = "email"
-
-    def get_context_data(self, **kwargs):
-        context = super(MechanicDetail, self).get_context_data(**kwargs)
-        full_address = self.object.full_address().replace(" ", "+")
-        context["static_map"] = full_address
-        context["intera_map"] = full_address
-        return context
-
-    def get(self, request, *args, **kwargs):
-        self.context = None
-        try:
-            self.object = self.get_object()
-            self.context = self.get_context_data(object=self.object)
-        except:
-            messages.add_message(
-                request, messages.ERROR,
-                "We're sorry, we don't seem to have any mechanics "
-                "you're looking for.")
-            return redirect(reverse_lazy('mechanic_list'), self.context)
-        return self.render_to_response(self.context)
-
-
-class VehicleList(ListView):
-    template_name = "testvehiclelist.html"
-    model = Vehicle
-    context_object_name = "vehicles"
-
-
-class VehicleDetail(DetailView):
-    template_name = "testvehicledetail.html"
-    model = Vehicle
-    slug_field = "vin"
-    slug_url_kwarg = "vin"
-
-    def get_context_data(self, **kwargs):
-        context = super(VehicleDetail, self).get_context_data(**kwargs)
-        form = None
-        request_inspection = None
-        try:
-            seller = Seller.objects.get(email=self.request.user.email)
-            requests = RequestInspection.objects.filter(seller=seller,
-                                                        vehicle=self.object
-                                                        )
-            if requests.count() > 0:
-                # This is for later if the form needs to be updated
-                # form = RequestInspectionForm(instance=requests[0])
-                # context['path'] = reverse_lazy("request_inspection_update",
-                #                                kwargs={'vin': self.object.vin,
-                #                                        'pk': requests[0].pk}
-                #                                )
-                request_inspection = requests[0]
-            else:
-                form = RequestInspectionForm(initial={
-                    'seller': seller,
-                    'vehicle': self.object,
-                    'request_date': datetime.datetime.now()}
-                )
-                context['path'] = reverse_lazy("request_inspection_create",
-                                               kwargs={'vin': self.object.vin}
-                                               )
-            form.fields['seller'].widget = forms.HiddenInput()
-            form.fields['vehicle'].widget = forms.HiddenInput()
-        except Exception as e:
-            print("Exception:", e)
-        context['form'] = form
-        context['request_inspection'] = request_inspection
-        return context
-
-    def get(self, request, *args, **kwargs):
-        self.context = None
-        try:
-            self.object = self.get_object()
-            self.context = self.get_context_data(object=self.object)
-        except:
-            messages.add_message(
-                request, messages.ERROR,
-                "We're sorry, we don't seem to have any inspections "
-                "for the vehicle you're looking for.")
-            return redirect(reverse_lazy('vehicle_list'), self.context)
-        return self.render_to_response(self.context)
 
 
 class InspectionList(ListView):
@@ -148,99 +39,6 @@ class InspectionDetail(DetailView):
                 "you're looking for.")
             return redirect(reverse_lazy('inspections_list'), self.context)
         return self.render_to_response(self.context)
-
-
-class SellerList(ListView):
-    template_name = "testsellerlist.html"
-    model = Seller
-    context_object_name = "sellers"
-
-
-class SellerDetail(DetailView):
-    template_name = "testsellerdetail.html"
-    model = Seller
-    slug_field = "email"
-    slug_url_kwarg = "email"
-
-    def get_context_data(self, **kwargs):
-        context = super(SellerDetail, self).get_context_data(**kwargs)
-        form = None
-        try:
-            customer = Customer.objects.get(email=self.request.user.email)
-            ratings = Rating.objects.filter(seller=self.object,
-                                            customer=customer
-                                            )
-            if ratings.count() > 0:
-                form = RatingForm(instance=ratings[0])
-                context['path'] = reverse_lazy("rating_update",
-                                               kwargs={'pk': ratings[0].pk}
-                                               )
-            else:
-                form = RatingForm(initial={'seller': self.object,
-                                           'customer': customer}
-                                  )
-                context['path'] = reverse_lazy("rating_create")
-            form.fields['seller'].widget = forms.HiddenInput()
-            form.fields['customer'].widget = forms.HiddenInput()
-        except Exception as e:
-            print("Exception:", e)
-        context['form'] = form
-        return context
-
-    def get(self, request, *args, **kwargs):
-        self.context = None
-        try:
-            self.object = self.get_object()
-            self.context = self.get_context_data(object=self.object)
-        except:
-            messages.add_message(
-                request, messages.ERROR,
-                "We're sorry, we don't seem to have any sellers "
-                "you're looking for.")
-            return redirect(reverse_lazy('seller_list'), self.context)
-        return self.render_to_response(self.context)
-
-
-class RatingFormCreateView(CreateView):
-    model = Rating
-    fields = ['rating']
-    success_url = reverse_lazy('seller_list')
-    form_class = RatingForm
-
-    def form_valid(self, form):
-        messages.add_message(
-            self.request, messages.SUCCESS,
-            "You've successfully rated " + form.instance.seller.email)
-        self.success_url += form.instance.seller.email
-        return super(RatingFormCreateView, self).form_valid(form)
-
-    def form_invalid(self, form):
-        for field, errors in form.errors.items():
-            for error in errors:
-                messages.add_message(
-                    self.request, messages.ERROR,
-                    form.fields[field].label
-                    + ". " + error)
-        return redirect('/sellers/' + form.instance.seller.email)
-
-
-class RatingFormUpdateView(UpdateView):
-    model = Rating
-    fields = ['rating']
-    success_url = reverse_lazy('seller_list')
-    form_class = RatingForm
-
-    def form_valid(self, form):
-        messages.add_message(
-            self.request, messages.SUCCESS,
-            "You've successfully rated " + form.instance.seller.email)
-        self.success_url += form.instance.seller.email
-        return super(RatingFormUpdateView, self).form_valid(form)
-
-
-# class RatingFormDeleteView(DeleteView):
-#     model = Rating
-# success_url = reverse_lazy(#fix me)
 
 
 # class RequestInspectionCreateView(CreateView):
