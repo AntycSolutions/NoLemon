@@ -3,9 +3,39 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-    <p>Site Statistics:</p>
-    <p>Total number of mechanics: {{ mechanicsTotal }}</p>
-    <p>Total number of sellers: {{ sellersTotal }}</p>
-    <p>Total number of inspections: {{ inspectionsTotal }}</p>
-    <p>Total number of views of all inspections: {{ viewsTotal }}</p>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- Wrap -->
+<div class="wrap container" role="document">
+    <!-- Content -->
+    <div class="content row">
+        <!-- Main -->
+        <div class="main col-sm-12" role="main">
+            <div class="page-header">
+                <h1>Site Statistics:</h1>
+            </div>
+            <div class="page-main">
+                <dl class="dl-horizontal">
+                <style>
+                    /* bs3 has limits on text, embiggen them */
+                    .dl-horizontal dt { width: 325px; }
+                    .dl-horizontal dd { margin-left: 345px;}
+                </style>
+                <dt>Total number of mechanics:</dt><dd>{{ mechanicsTotal }}</dd>
+                <dt>Total number of sellers:</dt><dd>{{ sellersTotal }}</dd>
+                <dt>Total number of inspections:</dt><dd>{{ inspectionsTotal }}</dd>
+                <dt>Total number of views of all inspections:</dt><dd>{{ viewsTotal }}</dd>
+                </dl>
+            </div>
+        </div><!-- /.main -->
+    </div><!-- /.content -->
+</div><!-- /.wrap -->
+
 {% endblock %}
