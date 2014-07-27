@@ -69,7 +69,7 @@ class RatingFormCreateView(CreateView):
         messages.add_message(
             self.request, messages.SUCCESS,
             "You've successfully rated " + form.instance.seller.email)
-        self.success_url += form.instance.seller.email
+        self.success_url += str(form.instance.seller.pk)
         return super(RatingFormCreateView, self).form_valid(form)
 
     def form_invalid(self, form):
@@ -79,7 +79,7 @@ class RatingFormCreateView(CreateView):
                     self.request, messages.ERROR,
                     form.fields[field].label
                     + ". " + error)
-        return redirect('/sellers/' + form.instance.seller.email)
+        return redirect('/sellers/' + str(form.instance.seller.pk))
 
 
 class RatingFormUpdateView(UpdateView):
@@ -92,7 +92,7 @@ class RatingFormUpdateView(UpdateView):
         messages.add_message(
             self.request, messages.SUCCESS,
             "You've successfully rated " + form.instance.seller.email)
-        self.success_url += form.instance.seller.email
+        self.success_url += str(form.instance.seller.pk)
         return super(RatingFormUpdateView, self).form_valid(form)
 
 
