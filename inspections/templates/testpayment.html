@@ -1,30 +1,46 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load add_css %}
 
 {% block title %} - Payment Received{% endblock %}
 
 {% block content %}
 
-<div>
-You've requested an inspection for the following vehicle:
-{{ vehicle }}
-with the VIN {{ vehicle.vin }}
-</div>
-<div>
-Click the button the pay the fee of $200, you will then be redirected to a place where you can view, download, and print your request.
-</div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
-<form action="" method="POST">
-	{% csrf_token %}
-	{{ form }}
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
-    data-amount="20000"
-    data-name="Demo Site"
-    data-description="1 Inspection ($200.00)"
-    data-image="{% static "img/NL yellow-icon.png" %}">
-  </script>
-</form>
+<!-- Wrap -->
+<div class="wrap container" role="document">
+    <!-- Content -->
+    <div class="content row">
+        <!-- Main -->
+        <div class="main col-sm-12" role="main">
+            <div class="page-header">
+                <h1>Request Inspection:</h1>
+                <p>You've requested an inspection for the following vehicle: {{ vehicle }} with the VIN {{ vehicle.vin }}</p>
+                <p>Click the button the pay the fee of $200, you will then be redirected to a place where you can view, download, and print your request.</p>
+            </div>
+            <div class="page-main">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <script
+                      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                      data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+                      data-amount="20000"
+                      data-name="Demo Site"
+                      data-description="1 Inspection ($200.00)"
+                      data-image="{% static "img/NL yellow-icon.png" %}">
+                    </script>
+                </form>
+            </div>
+        </div><!-- /.main -->
+    </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
