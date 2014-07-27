@@ -12,27 +12,80 @@
     </ul>
 {% endif %}
 
-{% if seller %}
-    <p>Email address: {{ seller.email }}</p>
-    <p>First name: {{ seller.first_name }}</p>
-    <p>Last name: {{ seller.last_name }}</p>
-    <p>Rating: {{ seller.rating|floatformat:"1" }}</p>
-    {% if form %}
-        <form method="post" action="{{ path }}">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Rate" />
-        </form>
-    {% else %}
-        Only customers can rate sellers.
-    {% endif %}
-    {% for vehicle in seller.vehicle_set.all %}
-        <p>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></p>
-    {% empty %}
-        <p>There are no vehicles owned by this seller.</p>
-    {% endfor %}
-{% else %}
-    <p>You shouldn't be seeing this</p>
-{% endif %}
+<!-- Wrap -->
+<div class="wrap container" role="document">
+  <!-- Content -->
+  <div class="content row">
+    <!-- Main -->
+    <div class="main col-sm-8" role="main">
+
+      <div class="page-header">
+        <h1>Title</h1>
+      </div>
+
+      <div class="page-main">
+
+          <div class="row"><div class="col-md-12">
+          {% if seller %}
+            <h2>Rate Me</h2>
+            {% if form %}
+                <form method="post" action="{{ path }}">
+                    {% csrf_token %}
+                    {# Has nicer spacing #}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {% for field in form.visible_fields %}
+                        {{ field.errors }}
+                        {{ field.label_tag }} {{ field }}
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" value="Rate">
+                </form>
+            {% else %}
+                <p>Only customers can rate sellers.</p>
+            {% endif %}
+            </div></div>
+          {% else %}
+            <h2>You shouldn't be seeing this.</h2>
+            </div></div>
+          {% endif %}
+
+      </div>
+
+    </div><!-- /.main -->
+
+    <!-- Sidebar -->
+    <aside class="sidebar col-sm-4" role="complementary">
+
+      <section class="widget nav_menu-2 widget_nav_menu">
+        <div>
+          <h3>Seller Information</h3>
+          <dl class="dl-horizontal">
+            {% if seller %}
+                    <dt>Email address:</dt><dd>{{ seller.email }}</dd>
+                    <dt>First name:</dt><dd>{{ seller.first_name }}</dd>
+                    <dt>Last name:</dt><dd>{{ seller.last_name }}</dd>
+                    <dt>Rating:</dt><dd>{{ seller.rating|floatformat:"1" }}</dd>
+                <script type="text/javascript">
+                    addresses.push("{{ intera_map }}");
+                </script>
+            {% else %}
+                <dt>You shouldn't be seeing this.</dt>
+            {% endif %}
+          </dl>
+          <ul>
+            {% for vehicle in seller.vehicle_set.all %}
+                <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
+            {% empty %}
+                <li>There are no vehicles owned by this seller.</li>
+            {% endfor %}
+            <li><a href="#">Change Me</a></li>
+          </ul>
+        </div>
+      </section>
+
+    </aside><!-- /.sidebar -->
+  </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
