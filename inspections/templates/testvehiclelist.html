@@ -4,6 +4,8 @@
 
 {% block content %}
 
+{% include 'header.html' %}
+
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -48,9 +50,6 @@
             <ul>
             {% for vehicle in vehicles %}
                 <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
-                <script type="text/javascript">
-                    addresses.push("{{ intera_map.pop }}");
-                </script>
             {% empty %}
                <li>There are no vehicles here.</li>
             {% endfor %}
