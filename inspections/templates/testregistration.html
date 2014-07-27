@@ -1,15 +1,43 @@
 {% extends "base.html" %}
 
+{% load add_css %}
+
 {% block title %} - Register with NoLemon{% endblock %}
 
 {% block content %}
 
-<strong>Register here!</strong><br />
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
-<form id="user_form" method="post" action="/register/{{ url_end }}/">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Register" />
-</form>
+<!-- Wrap -->
+<div class="wrap container" role="document">
+    <!-- Content -->
+    <div class="content row">
+        <!-- Main -->
+        <div class="main col-sm-12" role="main">
+            <div class="page-header">
+                <h1>Register Here:</h1>
+            </div>
+            <div class="page-main">
+                <form id="user_form" method="post" action="/register/{{ url_end }}/">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label_tag }}
+                            {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+                        </div>
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" value="Register" />
+                </form>
+            </div>
+        </div><!-- /.main -->
+    </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
