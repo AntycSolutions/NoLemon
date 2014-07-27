@@ -13,14 +13,14 @@ jQuery(document).ready(function ($) {
 
 }); /* end of as page load scripts */
 
-  
+
 /***************************************************
       Autocomplete Search
 ***************************************************/
 
 // Load countries then initialize plugin:
 jQuery.ajax({
-    url: 'content/countries.txt',
+    url: 'static/content/countries.txt',
     dataType: 'json'
 }).done(function (source) {
 
@@ -31,7 +31,7 @@ jQuery.ajax({
     jQuery('#autocomplete-dynamic').autocomplete({
         lookup: countriesArray
     });
-    
+
 });
 
 /***************************************************
@@ -39,24 +39,24 @@ jQuery.ajax({
 ***************************************************/
 
 jQuery(document).ready(function(){
-    
+
     jQuery('.faq-accordion .faq-content').hide();
-    
+
     jQuery('.faq-accordion .faq .entry-title').click(function(){
         if(jQuery(this).hasClass('faq-close')){
-            
+
             jQuery('.faq-open').removeClass('faq-open').addClass('faq-close');
             jQuery('.faq-content').slideUp();
-            
+
             jQuery(this).parents('.faq').first().find('.faq-content').slideDown();
             jQuery(this).removeClass('faq-close').addClass('faq-open');
-            
+
         }else{
             jQuery(this).parents('.faq').first().find('.faq-content').slideUp();
             jQuery(this).removeClass('faq-open').addClass('faq-close');
         }
     }).addClass('faq-close');
-    
+
 });
 
 
@@ -77,7 +77,7 @@ jQuery(document).ready(function ($) {
 jQuery().ready(function(){
 
     jQuery('.faq-category-list .faq-section-heading a, .faq-category-list .entry-title a').each( function () {
-    
+
             var destination = '';
 
             jQuery( this ).click(function() {
