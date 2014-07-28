@@ -57,7 +57,7 @@
             <dl class="dl-horizontal">
             {% if vehicle %}
                 <dt>VIN:</dt><dd>{{ vehicle.vin }}</dd>
-                <dt>Owner:</dt><dd><a href="{% url 'seller_detail' vehicle.owner.pk %}">{{ vehicle.owner }}</a></dd>
+                <dt>Owner:</dt><dd><a href="{% url 'seller_detail' vehicle.owner.pk %}">{{ vehicle.owner.get_full_name }}</a></dd>
                 <dt>Make:</dt><dd>{{ vehicle.make }}</dd>
                 <dt>Model:</dt><dd>{{ vehicle.model }}</dd>
                 <dt>Year:</dt><dd>{{ vehicle.year }}</dd>
@@ -74,7 +74,7 @@
                             <dt>Date:</dt><dd>{{ inspection.date }}</dd>
                             <dt>Comments:</dt><dd>{{ inspection.comments }}</dd>
                             <dt>Views:</dt><dd>{{ inspection.views }}</dd>
-                            <dt>Mechanic:</dt><dd><a href="{% url 'mechanic_detail' inspection.mechanic.pk %}">{{ inspection.mechanic }}</a></dd>
+                            <dt>Mechanic:</dt><dd><a href="{% url 'mechanic_detail' inspection.mechanic.pk %}">{{ inspection.mechanic.get_full_name }}</a></dd>
                         </dl>
                     </li>
                 {% empty %}

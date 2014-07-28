@@ -62,9 +62,9 @@
           <h3>Seller Information</h3>
           <dl class="dl-horizontal">
             {% if seller %}
-                    <dt>Email address:</dt><dd>{{ seller.email }}</dd>
                     <dt>First name:</dt><dd>{{ seller.first_name }}</dd>
                     <dt>Last name:</dt><dd>{{ seller.last_name }}</dd>
+                    <dt>Email address:</dt><dd>{{ seller.email }}</dd>
                     <dt>Rating:</dt><dd>{{ seller.rating|floatformat:"1" }}</dd>
             {% else %}
                 <dt>You shouldn't be seeing this.</dt>
