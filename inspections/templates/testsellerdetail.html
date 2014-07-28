@@ -46,6 +46,11 @@
             {% else %}
                 <p>Only customers can rate sellers.</p>
             {% endif %}
+            {% if seller.email == user.email %}
+              <p>&nbsp;</p>
+              <h2>Update Your Account</h2>
+              <p><a href="{% url 'update_seller' %}">Click Here</a></p>
+            {% endif %}
             </div></div>
           {% else %}
             <h2>You shouldn't be seeing this.</h2>
@@ -68,9 +73,6 @@
                     <dt>First name:</dt><dd>{{ seller.first_name }}</dd>
                     <dt>Last name:</dt><dd>{{ seller.last_name }}</dd>
                     <dt>Rating:</dt><dd>{{ seller.rating|floatformat:"1" }}</dd>
-                <script type="text/javascript">
-                    addresses.push("{{ intera_map }}");
-                </script>
             {% else %}
                 <dt>You shouldn't be seeing this.</dt>
             {% endif %}
