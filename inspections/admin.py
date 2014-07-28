@@ -25,7 +25,7 @@ class BaseUserAdmin(UserAdmin):
          ),
     )
     fieldsets = (
-        (None, {'fields': ('email', 'password',)}),
+        (None, {'fields': ('email', 'password', 'id')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
         (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
         (_('Important dates'), {'fields': ('last_login',)}),
@@ -34,6 +34,7 @@ class BaseUserAdmin(UserAdmin):
     filter_horizontal = ()
     ordering = ('email',)
     search_fields = ('email',)
+    readonly_fields = ('id',)
     form = BaseUserChangeForm
     add_form = BaseUserCreationForm
 
