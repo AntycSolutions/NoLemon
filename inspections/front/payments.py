@@ -2,16 +2,16 @@ import datetime
 
 from django import forms
 from django.contrib import messages
+from django.core.mail import send_mass_mail
+from django.core.urlresolvers import reverse_lazy
 from django.http.response import Http404
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse_lazy
-from django.core.mail import send_mass_mail
 from django.views.generic.edit import CreateView
-
 import stripe
 
 from inspections.forms.request_inspection import RequestInspectionForm
-from inspections.models import RequestInspection, Seller, Vehicle, BaseUser
+from inspections.models import RequestInspection, Seller, Vehicle, BaseUser,\
+    Mechanic
 
 
 class PaymentView(CreateView):
@@ -35,7 +35,23 @@ class PaymentView(CreateView):
         form.fields['vehicle'].widget = forms.HiddenInput()
         form.fields['request_date'].widget = forms.HiddenInput()
 
-        return self.render_to_response(self.get_context_data(form=form))
+        return self.render_to_response(self.get_context_data(form=form,
+                                                             vehicle=vehicle))
+
+    def get_context_data(self, **kwargs):
+        context = super(PaymentView, self).get_context_data(**kwargs)
+        context["static_map"] = ""
+        context["mechanics"] = Mechanic.objects.all()
+        label = 65
+        for mechanic in context["mechanics"]:
+            context["static_map"] += "markers="
+            context["static_map"] += "label:" + chr(label) + "|"
+            full_address = mechanic.full_address().replace(" ", "+")
+            context["static_map"] += full_address + "&"
+            mechanic.label = chr(label)
+            label += 1
+        context["static_map"] = context["static_map"][:-1]
+        return context
 
     def post(self, request, *args, **kwargs):
         self.object = None
@@ -68,7 +84,7 @@ class PaymentView(CreateView):
                     form.fields[field].label
                     + ". " + error)
         return redirect(reverse_lazy('request_inspection_create',
-                        kwargs={'vin': form.instance.vehicle.vin}))
+                                     kwargs={'vin': form.instance.vehicle.vin}))
 
     def _handle_stripe(self, request):
         # Set your secret key: remember to change this to
@@ -88,10 +104,10 @@ class PaymentView(CreateView):
                 card=token,
                 description="payinguser@example.com"
             )
-            print ("Charge:", charge)
+            print("Charge:", charge)
         except stripe.CardError as e:
             # The card has been declined
-            print ("Stripe Error:", e)
+            print("Stripe Error:", e)
             return Http404()
 
     def _send_email(self, emails):

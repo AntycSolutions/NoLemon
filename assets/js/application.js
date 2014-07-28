@@ -95,3 +95,18 @@ jQuery().ready(function(){
 
 });
 
+jQuery().ready(function($){
+
+  $("#show_all").hide();
+
+  $(".mechanic_li").click(function(){
+    $(".mechanic_li").not(this).hide("fast" );
+    $("#show_all").show("fast");
+  });
+
+  $("#show_all").click(function(){
+    $(".mechanic_li").show("fast");
+    $(this).hide("fast");
+  });
+
+});
