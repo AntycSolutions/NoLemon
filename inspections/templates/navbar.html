@@ -41,8 +41,9 @@
             </li>
         {% else %}
             <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'register_seller' %}">Seller? Register Here!</a></li>
-            <li><a href="{% url 'register_customer' %}">Buying? Register Here!</a>
+            <li><a href="{% url 'register_seller' %}">Selling? Register Here!</a></li>
+            <li><a href="{% url 'register_customer' %}">Buying? Register Here!</a></li>
+            <li><a href="{% url 'register_mechanic' %}">Mechanic? Register Here!</a></li>
         {% endif %}
       </ul>
     </nav>
@@ -63,8 +64,9 @@
                 <li><a class="responsive-submenu" href="{% url 'logout' %}">Logout</a></li>
             {% else %}
                 <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register_seller' %}">Seller? Register Here!</a></li>
+                <li><a href="{% url 'register_seller' %}">Selling? Register Here!</a></li>
                 <li><a href="{% url 'register_customer' %}">Buying? Register Here!</a></li>
+                <li><a href="{% url 'register_mechanic' %}">Mechanic? Register Here!</a></li>
             {% endif %}
         </ul>
       </nav>
