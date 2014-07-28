@@ -4,17 +4,20 @@ from django import forms
 from django.contrib import messages
 from django.http.response import Http404
 from django.shortcuts import redirect
+from django.core.urlresolvers import reverse_lazy
+from django.core.mail import send_mass_mail
 from django.views.generic.edit import CreateView
+
 import stripe
 
 from inspections.forms.request_inspection import RequestInspectionForm
-from inspections.models import RequestInspection, Seller, Vehicle
+from inspections.models import RequestInspection, Seller, Vehicle, BaseUser
 
 
 class PaymentView(CreateView):
 
     model = RequestInspection
-    success_url = '/vehicles/'
+    success_url = reverse_lazy('vehicle_list')
     form_class = RequestInspectionForm
     template_name = 'testpayment.html'
 
@@ -39,12 +42,11 @@ class PaymentView(CreateView):
 
         self._handle_stripe(request)
 
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-
         return super(PaymentView, self).post(request, args, kwargs)
 
     def form_valid(self, form):
+        admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
+        self._send_email(admin_emails)
         messages.add_message(
             self.request, messages.SUCCESS,
             "You've successfully requested an inspection for "
@@ -65,11 +67,12 @@ class PaymentView(CreateView):
                     self.request, messages.ERROR,
                     form.fields[field].label
                     + ". " + error)
-        return redirect('/vehicles/' + form.instance.vehicle.vin
-                        + "/request/inspection/")
+        return redirect(reverse_lazy('request_inspection_create',
+                        kwargs={'vin': form.instance.vehicle.vin}))
 
     def _handle_stripe(self, request):
-        # Set your secret key: remember to change this to your live secret key in production
+        # Set your secret key: remember to change this to
+        # your live secret key in production
         # See your keys here https://dashboard.stripe.com/account
         stripe.api_key = "sk_test_y8HvZWWtuKZAMrQsRPtRro6F"
 
@@ -85,6 +88,19 @@ class PaymentView(CreateView):
                 card=token,
                 description="payinguser@example.com"
             )
+            print ("Charge:", charge)
         except stripe.CardError as e:
             # The card has been declined
+            print ("Stripe Error:", e)
             return Http404()
+
+    def _send_email(self, emails):
+        title = "NoLemon - Inspection Request"
+        content = "An inspection request has been made. Please approve.\n"
+
+        datatuple = []
+        for email in emails:
+            datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
+                              [email['email']]))
+
+        send_mass_mail(datatuple, fail_silently=False)
