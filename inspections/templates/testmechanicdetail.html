@@ -15,16 +15,9 @@
 
 {% include 'header.html' %}
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
 <!-- Wrap -->
 <div class="wrap container" role="document">
+  {% include 'messages.html' %}
   <!-- Content -->
   <div class="content row">
     <!-- Main -->

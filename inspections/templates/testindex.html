@@ -4,17 +4,10 @@
 
 {% block content %}
 
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
 <!-- Hero Section -->
 <div id="hero"> <!-- class="hero-image" -->
   <div class="container">
+  {% include 'messages.html' %}
 
     <div class="row">
       <div class="col-sm-12">
