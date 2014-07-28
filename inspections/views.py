@@ -8,7 +8,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 from .forms.request_inspection import RequestInspectionForm
-from .models import Inspection, RequestInspection, BaseUser
+from .models import Inspection, RequestInspection
 
 
 def home_page(request):
