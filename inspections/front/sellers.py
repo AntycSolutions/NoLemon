@@ -17,8 +17,6 @@ class SellerList(ListView):
 class SellerDetail(DetailView):
     template_name = "testsellerdetail.html"
     model = Seller
-    slug_field = "email"
-    slug_url_kwarg = "email"
 
     def get_context_data(self, **kwargs):
         context = super(SellerDetail, self).get_context_data(**kwargs)
