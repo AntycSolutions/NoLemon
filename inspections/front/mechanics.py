@@ -26,8 +26,6 @@ class MechanicList(ListView):
 class MechanicDetail(DetailView):
     template_name = "testmechanicdetail.html"
     model = Mechanic
-    slug_field = "email"
-    slug_url_kwarg = "email"
 
     def get_context_data(self, **kwargs):
         context = super(MechanicDetail, self).get_context_data(**kwargs)
