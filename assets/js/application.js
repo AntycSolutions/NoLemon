@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
 
 // Load countries then initialize plugin:
 jQuery.ajax({
-    url: 'static/content/countries.txt',
+    url: '/static/content/countries.txt',
     dataType: 'json'
 }).done(function (source) {
 
