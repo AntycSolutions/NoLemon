@@ -2,7 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from inspections.front.authenticationViews import RegisterSellerView, Login, \
-    Logout, RegisterCustomerView
+    Logout, RegisterCustomerView, RegisterMechanicView, \
+    UpdateSellerView, UpdateMechanicView, UpdateCustomerView
 from inspections.front.payments import PaymentView
 from inspections.front.statistics import Statistics
 from inspections.views import InspectionList, InspectionDetail, \
@@ -74,6 +75,19 @@ inspection_patterns = patterns(
         InspectionDetail.as_view(), name='inspection_detail')
 )
 
+update_patterns = patterns(
+    '',
+    url(r'^seller/$',
+        UpdateSellerView.as_view(),
+        name='update_seller'),
+    url(r'^customer/$',
+        UpdateCustomerView.as_view(),
+        name='update_customer'),
+    url(r'^mechanic/$',
+        UpdateMechanicView.as_view(),
+        name='update_mechanic'),
+)
+
 registration_patterns = patterns(
     '',
     url(r'^seller/$',
@@ -82,6 +96,9 @@ registration_patterns = patterns(
     url(r'^customer/$',
         RegisterCustomerView.as_view(),
         name='register_customer'),
+    url(r'^mechanic/$',
+        RegisterMechanicView.as_view(),
+        name='register_mechanic'),
 )
 
 payment_patterns = patterns(
@@ -90,11 +107,12 @@ payment_patterns = patterns(
 )
 
 urlpatterns = patterns(
-    '',
+    '',  # Tells django to view the rest as str
     url(r'^$', 'inspections.views.home_page', name='home'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^register/', include(registration_patterns)),
+    url(r'^update/', include(update_patterns)),
     url(r'^login/$', Login.as_view(), name='login'),
     url(r'^logout/$', Logout.as_view(), name='logout'),
     url(r'^vehicles/', include(vehicle_patterns)),
