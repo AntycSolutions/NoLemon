@@ -33,6 +33,7 @@ class PaymentView(CreateView):
         )
         form.fields['seller'].widget = forms.HiddenInput()
         form.fields['vehicle'].widget = forms.HiddenInput()
+        form.fields['mechanic'].widget = forms.HiddenInput()
         form.fields['request_date'].widget = forms.HiddenInput()
 
         return self.render_to_response(self.get_context_data(form=form,

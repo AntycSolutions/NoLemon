@@ -29,23 +29,6 @@
             <div class="page-main">
               <img width="640px" height="640px" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;{{ static_map }}" alt="Mechanic map" />
             </div>
-            <div class="page-header">
-                <p>Click the button the pay the fee of $200, you will then be redirected to a place where you can view, download, and print your request.</p>
-            </div>
-            <div class="page-main">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form }}
-                    <script
-                      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                      data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
-                      data-amount="20000"
-                      data-name="Demo Site"
-                      data-description="1 Inspection ($200.00)"
-                      data-image="{% static "img/NL yellow-icon.png" %}">
-                    </script>
-                </form>
-            </div>
         </div><!-- /.main -->
 
         <!-- Sidebar -->
@@ -56,11 +39,12 @@
                 <h3>Mechanic List</h3>
                 Click on a mechanic to select them for this inspection
                 <ul>
-                <li id="show_all">Show All</li>
+                <li id="show_all"><strong>Choose a different Mechanic</strong></li>
                 {% for mechanic in mechanics %}
                     <li>
                     <div  class="mechanic_li">
                       <strong>{{ mechanic.label }}</strong>
+                      <div id="mech_id" style="display: none">{{ mechanic.id }}</div>
                       <div><b>Mechanic Name:</b> {{ mechanic.get_full_name }}</div>
                       <div><b>Address:</b> {{ mechanic.address }}</div>
                       <div><b>Phone Number:</b> {{ mechanic.phone_number }}</div>
@@ -74,9 +58,21 @@
                    <li>There are no mechanics here.</li>
                 {% endfor %}
                 </ul>
-                <ul>
-                    <li><a href="#">Change Me</a></li>
-                </ul>
+                <div class='page-main stripe-button'>
+                <p>Click the button the pay the fee of $200, you will then be redirected to a place where you can view, download, and print your request.</p>
+                  <form method="POST" id="request_form">
+                      {% csrf_token %}
+                      {{ form }}
+                      <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+                        data-amount="20000"
+                        data-name="Demo Site"
+                        data-description="1 Inspection ($200.00)"
+                        data-image="{% static "img/NL yellow-icon.png" %}">
+                      </script>
+                  </form>
+                </div>
             </div>
           </section>
 
@@ -84,4 +80,10 @@
     </div><!-- /.content -->
 </div><!-- /.wrap -->
 
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/request.js' %}">
+</script>
 {% endblock %}
