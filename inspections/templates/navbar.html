@@ -21,15 +21,9 @@
     <nav class="nav-main hidden-xs" role="navigation">
       <ul id="menu-main" class="nav navbar-nav">
         <!-- TODO: fix me, find out which page, make link active class -->
-        <li class="active dropdown">
-          <a class="dropdown-toggle" href="/">Home</a>
-          <ul class="dropdown-menu">
-            <li><a href="{% url 'seller_list' %}">Sellers</a></li>
-            <li><a href="{% url 'mechanic_list' %}">Mechanics</a></li>
-            <li><a href="{% url 'vehicle_list' %}">Vehicles</a></li>
-          </ul>
-        </li>
-        <li><a href="{% url 'statistics' %}">Site Statistics</a></li>
+        <li><a href="{% url 'about' %}">What We Do</a></li>
+        <li><a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
+        <li><a href="{% url 'contact' %}">Contact Us</a></li>
         {% if user.is_authenticated %}
             <!-- TODO: fix me, generalize to all users -->
             <li class="dropdown">
