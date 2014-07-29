@@ -39,10 +39,10 @@
                 <h3>Mechanic List</h3>
                 Click on a mechanic to select them for this inspection
                 <ul>
-                <li id="show_all"><strong>Choose a different Mechanic</strong></li>
+                <li class="mech_select" id="show_all"><strong>Choose a different Mechanic</strong></li>
                 {% for mechanic in mechanics %}
                     <li>
-                    <div  class="mechanic_li">
+                    <div  class="mechanic_li mech_select">
                       <strong>{{ mechanic.label }}</strong>
                       <div id="mech_id" style="display: none">{{ mechanic.id }}</div>
                       <div><b>Mechanic Name:</b> {{ mechanic.get_full_name }}</div>
