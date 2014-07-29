@@ -55,10 +55,20 @@
             <h3>Mechanic List</h3>
             <ul>
             {% for mechanic in mechanics %}
-                <li>Email address: <a href="{% url 'mechanic_detail' mechanic.pk %}">{{ mechanic.email }}</a></li>
-                <script type="text/javascript">
-                    addresses.push("{{ intera_map.pop }}");
-                </script>
+                <li>
+                    <div  class="mechanic_li mech_select">
+                      <strong>{{ mechanic.label }}</strong>
+                      <div id="mech_id" style="display: none">{{ mechanic.id }}</div>
+                      <div><b>Mechanic Name:</b> {{ mechanic.get_full_name }}</div>
+                      <div><b>Address:</b> {{ mechanic.address }}</div>
+                      <div><b>Phone Number:</b> {{ mechanic.phone_number }}</div>
+                      <div><b>Email address:</b> <a href="{% url 'mechanic_detail' mechanic.pk %}">{{ mechanic.email }}</a>
+                      </div>
+                    <script type="text/javascript">
+                        addresses.push("{{ intera_map.pop }}");
+                    </script>
+                    </div>
+                </li>
             {% empty %}
                <li>There are no mechanics here.</li>
             {% endfor %}
