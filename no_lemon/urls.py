@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 from inspections.front.authenticationViews import RegisterSellerView, Login, \
     Logout, RegisterCustomerView, RegisterMechanicView, \
@@ -124,5 +126,7 @@ urlpatterns = patterns(
     #     url(r'^payments/', include(payment_patterns)),
     url(r'^requests/', include(request_inspection_patterns)),
     url(r'^email/(?P<email>.+)/$', 'inspections.views.test_email',
-        name='test_email')
-)
+        name='test_email'),
+    url(r'^video/$', 'inspections.views.test_video',
+        name='test_video')
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
