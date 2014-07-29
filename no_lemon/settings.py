@@ -111,3 +111,10 @@ EMAIL_PORT = 587
 #EMAIL_PORT = 1025
 EMAIL_HOST_USER = 'testnolemon'
 EMAIL_HOST_PASSWORD = 'test1'
+
+#media
+#prod
+#MEDIA_ROOT = ''
+#dev
+MEDIA_ROOT = BASE_DIR + '/media/'
+MEDIA_URL = '/media/'
