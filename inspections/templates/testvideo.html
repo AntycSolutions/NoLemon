@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load add_css %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+<!-- Wrap -->
+<div class="wrap container" role="document">
+    {% include 'messages.html' %}
+    <!-- Content -->
+    <div class="content row">
+        <!-- Main -->
+        <div class="main col-sm-12" role="main">
+            <div class="page-header">
+                <h1>Test Video:</h1>
+            </div>
+            <div class="page-main">
+                <!-- List of uploaded documents -->
+                {% if inspections %}
+                    <ul>
+                    {% for inspection in inspections %}
+                        <li>{{ inspection.mechanic }} {{ inspection.vehicle }}
+                        {% if inspection.video %}
+                            <a href="{{ inspection.video.url }}">{{ inspection.video.name }}</a>
+                        {% else %}
+                            There is no video for this inspection.
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No videos.</p>
+                {% endif %}
+                <!-- Upload form. Note enctype attribute! -->
+                <form action="{% url 'test_video' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% if field|gettype|is_not_text %}
+                            <div class="form-group">
+                                {{ field.errors }}
+                                {{ field.label_tag }}
+                                {{ field }} {{ field.help_text }}
+                            </div>
+                        {% else %}
+                            <div class="form-group">
+                                {{ field.errors }}
+                                {{ field.label_tag }}
+                                {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" value="Upload" />
+                </form>
+            </div>
+        </div><!-- /.main -->
+    </div><!-- /.content -->
+</div><!-- /.wrap -->
+
+{% endblock %}
