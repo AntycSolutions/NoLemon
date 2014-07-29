@@ -1,14 +1,17 @@
 from django.contrib import messages
 from django.core.mail import send_mass_mail
-from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView, DetailView, UpdateView
+from django.template import RequestContext
+
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 from .forms.request_inspection import RequestInspectionForm
-from .models import Inspection, RequestInspection
+from .forms.video import VideoForm
+from .models import Inspection, RequestInspection, Mechanic, Vehicle
 
 
 def home_page(request):
@@ -16,13 +19,13 @@ def home_page(request):
 
 
 class InspectionList(ListView):
-    template_name = "testinspectionlist.html"
+    template_name = "old/testinspectionlist.html"
     model = Inspection
     context_object_name = "inspections"
 
 
 class InspectionDetail(DetailView):
-    template_name = "testinspectiondetail.html"
+    template_name = "old/testinspectiondetail.html"
     model = Inspection
     slug_field = "pk"
     slug_url_kwarg = "pk"
@@ -129,3 +132,34 @@ def send_email(emails):
                           [email['email']]))
 
     send_mass_mail(datatuple, fail_silently=False)
+
+
+def test_video(request):
+    # Handle file upload
+    if request.method == 'POST':
+        form = VideoForm(request.POST, request.FILES)
+        if form.is_valid():
+            newVideo = Inspection(
+                comments=request.POST['comments'],
+                date=request.POST['date'],
+                views=request.POST['views'],
+                mechanic=Mechanic.objects.get(pk=request.POST['mechanic']),
+                vehicle=Vehicle.objects.get(pk=request.POST['vehicle']),
+                video=request.FILES['video'])
+            newVideo.save()
+
+            # Redirect to the video list after POST
+            return HttpResponseRedirect(reverse('test_video'))
+    else:
+        # An empty, unbound form
+        form = VideoForm()
+
+    # Load videos for the list page
+    inspections = Inspection.objects.all()
+
+    # Render list page with the videos and the form
+    return render_to_response(
+        'testvideo.html',
+        {'inspections': inspections, 'form': form},
+        context_instance=RequestContext(request)
+    )
