@@ -218,7 +218,8 @@ class Vehicle(models.Model):
         "vehicle identification number", max_length=17, unique=True)
 
     def __str__(self):
-        return str(self.year) \
+        return self.vin \
+            + " " + str(self.year) \
             + " " + self.make \
             + " " + self.model
 
@@ -232,9 +233,8 @@ class Inspection(models.Model):
     views = models.IntegerField()
     mechanic = models.ForeignKey(Mechanic)
     vehicle = models.ForeignKey(Vehicle)
-    # TODO: a video should be here... not sure how to handle
-    # that just yet
-    # video = ?
+    video = models.FileField(upload_to='inspections/%Y/%m/%d',
+                             null=True, blank=True)
 
     def __str__(self):
         return self.comments \
