@@ -10,6 +10,9 @@
     <p>Comments: {{ inspection.comments }}</p>
     <p>Views: {{ inspection.views }}</p>
     <p>Mechanic: <a href="/mechanics/{{ inspection.mechanic.email }}">{{ inspection.mechanic }}</a></p>
+    {% if inspection.video %}
+        <p>Video: <a href="{{ inspection.video.url }}">{{ inspection.video.name }}</a></p>
+    {% endif %}
 {% else %}
     <p>You shouldn't be seeing this</p>
 {% endif %}
