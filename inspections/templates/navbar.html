@@ -21,6 +21,7 @@
     <nav class="nav-main hidden-xs" role="navigation">
       <ul id="menu-main" class="nav navbar-nav">
         <!-- TODO: fix me, find out which page, make link active class -->
+        <li><a href="{% url 'home' %}">Home</a></li>
         <li><a href="{% url 'about' %}">What We Do</a></li>
         <li><a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
         <li><a href="{% url 'contact' %}">Contact Us</a></li>
@@ -45,6 +46,7 @@
     <div class="visible-xs">
       <nav class="nav-responsive collapse" role="navigation">
         <ul class="nav">
+            <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'about' %}">What We Do</a></li>
             <li><a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
             <li><a href="{% url 'contact' %}">Contact Us</a></li>
