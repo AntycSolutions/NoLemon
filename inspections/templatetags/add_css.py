@@ -18,3 +18,13 @@ def addcss(field, css):
             attrs[t] = v
 
     return field.as_widget(attrs=attrs)
+
+
+@register.filter
+def gettype(field):
+    return field.field.widget.__class__.__name__
+
+
+@register.filter
+def is_not_text(type):
+    return type in ["NumberInput", "ClearableFileInput"]
