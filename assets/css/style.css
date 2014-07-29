@@ -25,18 +25,23 @@
    1  - General Base Styles
    ========================================================================== */
 
+@font-face {
+   font-family: NoLemonFont;
+   src: url('/static/fonts/BebasNeue.otf');
+}
+
 body {
    line-height: 1.6em;
    font-weight: 300;
    color: #222;
-   font-family: Open Sans, sans-serif; 
+   font-family: NoLemonFont; 
    background-color: #F8F8F8;
    font-size: 16px; 
 }
 h1, h2, h3, h4, h5, h6 {
    color: #121212;
    font-weight: 700;
-   font-family: Open Sans, sans-serif; 
+   font-family: NoLemonFont; 
 }
 h1, h2, h3 {
    margin-top: 0;
