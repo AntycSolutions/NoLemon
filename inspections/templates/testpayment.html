@@ -4,6 +4,13 @@
 
 {% block title %} - Payment Received{% endblock %}
 
+{% block head_content %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo">
+</script>
+<script type="text/javascript" src="{% static 'google_maps.js' %}">
+</script>
+{% endblock %}
+
 {% block content %}
 
 {% include 'header.html' %}
@@ -14,28 +21,69 @@
     <!-- Content -->
     <div class="content row">
         <!-- Main -->
-        <div class="main col-sm-12" role="main">
+        <div class="main col-sm-8" role="main">
             <div class="page-header">
                 <h1>Request Inspection:</h1>
                 <p>You've requested an inspection for the following vehicle: {{ vehicle }} with the VIN {{ vehicle.vin }}</p>
-                <p>Click the button the pay the fee of $200, you will then be redirected to a place where you can view, download, and print your request.</p>
             </div>
             <div class="page-main">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form }}
-                    <script
-                      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                      data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
-                      data-amount="20000"
-                      data-name="Demo Site"
-                      data-description="1 Inspection ($200.00)"
-                      data-image="{% static "img/NL yellow-icon.png" %}">
-                    </script>
-                </form>
+              <img width="640px" height="640px" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;{{ static_map }}" alt="Mechanic map" />
             </div>
         </div><!-- /.main -->
+
+        <!-- Sidebar -->
+        <aside class="sidebar col-sm-4" role="complementary">
+
+          <section class="widget nav_menu-2 widget_nav_menu">
+            <div>
+                <h3>Mechanic List</h3>
+                Click on a mechanic to select them for this inspection
+                <ul>
+                <li id="show_all"><strong>Choose a different Mechanic</strong></li>
+                {% for mechanic in mechanics %}
+                    <li>
+                    <div  class="mechanic_li">
+                      <strong>{{ mechanic.label }}</strong>
+                      <div id="mech_id" style="display: none">{{ mechanic.id }}</div>
+                      <div><b>Mechanic Name:</b> {{ mechanic.get_full_name }}</div>
+                      <div><b>Address:</b> {{ mechanic.address }}</div>
+                      <div><b>Phone Number:</b> {{ mechanic.phone_number }}</div>
+                      <div><b>Email address:</b> <a href="{% url 'mechanic_detail' mechanic.pk %}">{{ mechanic.email }}</a>
+                      </div>
+                    <script type="text/javascript">
+                        addresses.push("{{ intera_map.pop }}");
+                    </script>
+                    </div></li>
+                {% empty %}
+                   <li>There are no mechanics here.</li>
+                {% endfor %}
+                </ul>
+                <div class='page-main stripe-button'>
+                <p>Click the button the pay the fee of $200, you will then be redirected to a place where you can view, download, and print your request.</p>
+                  <form method="POST" id="request_form">
+                      {% csrf_token %}
+                      {{ form }}
+                      <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+                        data-amount="20000"
+                        data-name="Demo Site"
+                        data-description="1 Inspection ($200.00)"
+                        data-image="{% static "img/NL yellow-icon.png" %}">
+                      </script>
+                  </form>
+                </div>
+            </div>
+          </section>
+
+        </aside><!-- /.sidebar -->
     </div><!-- /.content -->
 </div><!-- /.wrap -->
 
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/request.js' %}">
+</script>
 {% endblock %}

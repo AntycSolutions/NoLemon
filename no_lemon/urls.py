@@ -6,14 +6,14 @@ from django.conf.urls.static import static
 from inspections.front.authenticationViews import RegisterSellerView, Login, \
     Logout, RegisterCustomerView, RegisterMechanicView, \
     UpdateSellerView, UpdateMechanicView, UpdateCustomerView
-from inspections.front.payments import PaymentView
-from inspections.front.statistics import Statistics
-from inspections.views import InspectionList, InspectionDetail, \
-    RequestInspectionUpdateView
 from inspections.front.mechanics import MechanicList, MechanicDetail
+from inspections.front.payments import PaymentView
 from inspections.front.sellers import SellerList, SellerDetail, \
     RatingFormCreateView, RatingFormUpdateView
+from inspections.front.statistics import Statistics
 from inspections.front.vehicles import VehicleDetail, VehicleList
+from inspections.views import InspectionList, InspectionDetail, \
+    RequestInspectionUpdateView
 admin.autodiscover()
 
 
@@ -111,6 +111,8 @@ payment_patterns = patterns(
 urlpatterns = patterns(
     '',  # Tells django to view the rest as str
     url(r'^$', 'inspections.views.home_page', name='home'),
+    url(r'^about/$', 'inspections.views.about_page', name='about'),
+    url(r'^contact/$', 'inspections.views.contact_page', name='contact'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^register/', include(registration_patterns)),

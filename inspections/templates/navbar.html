@@ -21,17 +21,11 @@
     <nav class="nav-main hidden-xs" role="navigation">
       <ul id="menu-main" class="nav navbar-nav">
         <!-- TODO: fix me, find out which page, make link active class -->
-        <li class="active dropdown">
-          <a class="dropdown-toggle" href="/">Home</a>
-          <ul class="dropdown-menu">
-            <li><a href="{% url 'seller_list' %}">Sellers</a></li>
-            <li><a href="{% url 'mechanic_list' %}">Mechanics</a></li>
-            <li><a href="{% url 'vehicle_list' %}">Vehicles</a></li>
-          </ul>
-        </li>
-        <li><a href="{% url 'statistics' %}">Site Statistics</a></li>
+        <li><a href="{% url 'about' %}">What We Do</a></li>
+        <li><a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
+        <li><a href="{% url 'contact' %}">Contact Us</a></li>
         {% if user.is_authenticated %}
-            <!-- TODO: fix me, generalize to all users -->]
+            <!-- TODO: fix me, generalize to all users -->
             <li class="dropdown">
                 <a class="dropdown-toggle" href="{% url 'seller_detail' user.pk %}">Welcome, {{ user.first_name }}</a>
                 <ul class="dropdown-menu">
@@ -43,7 +37,6 @@
             <li><a href="{% url 'login' %}">Login</a></li>
             <li><a href="{% url 'register_seller' %}">Selling? Register Here!</a></li>
             <li><a href="{% url 'register_customer' %}">Buying? Register Here!</a></li>
-            <li><a href="{% url 'register_mechanic' %}">Mechanic? Register Here!</a></li>
         {% endif %}
       </ul>
     </nav>
@@ -52,21 +45,18 @@
     <div class="visible-xs">
       <nav class="nav-responsive collapse" role="navigation">
         <ul class="nav">
-            <li><a href="/">Home</a></li>
-            <li><a class="responsive-submenu" href="{% url 'seller_list' %}">Sellers</a></li>
-            <li><a class="responsive-submenu" href="{% url 'mechanic_list' %}">Mechanics</a></li>
-            <li><a class="responsive-submenu" href="{% url 'vehicle_list' %}">Vehicles</a></li>
-            <li><a href="{% url 'statistics' %}">Site Statistics</a></li>
+            <li><a href="{% url 'about' %}">What We Do</a></li>
+            <li><a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
             {% if user.is_authenticated %}
                 <!-- TODO: fix me, generalize to all users -->]
                 <li><a href="{% url 'seller_detail' user.pk %}">Welcome, {{ user.first_name }}</a></li>
                 <li><a class="responsive-submenu" href="{% url 'seller_detail' user.pk %}">Your Account</a></li>
                 <li><a class="responsive-submenu" href="{% url 'logout' %}">Logout</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'register_seller' %}">Selling? Register Here!</a></li>
                 <li><a href="{% url 'register_customer' %}">Buying? Register Here!</a></li>
-                <li><a href="{% url 'register_mechanic' %}">Mechanic? Register Here!</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
             {% endif %}
         </ul>
       </nav>

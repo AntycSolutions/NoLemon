@@ -18,6 +18,14 @@ def home_page(request):
     return render(request, 'testindex.html')
 
 
+def about_page(request):
+    return render(request, 'testabout.html')
+
+
+def contact_page(request):
+    return render(request, 'testcontact.html')
+
+
 class InspectionList(ListView):
     template_name = "old/testinspectionlist.html"
     model = Inspection

@@ -246,6 +246,7 @@ class Inspection(models.Model):
 class RequestInspection(models.Model):
     vehicle = models.ForeignKey(Vehicle)
     seller = models.ForeignKey(Seller)
+    mechanic = models.ForeignKey(Mechanic)
     request_date = models.DateTimeField()
 
     def __str__(self):
