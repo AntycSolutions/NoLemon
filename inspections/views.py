@@ -3,9 +3,8 @@ from django.core.mail import send_mass_mail
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
-from django.views.generic import ListView, DetailView, UpdateView
 from django.template import RequestContext
-
+from django.views.generic import ListView, DetailView, UpdateView
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 

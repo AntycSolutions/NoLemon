@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
-from django.contrib import admin
 from django.conf import settings
+from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
+from django.contrib import admin
 
 from inspections.front.authenticationViews import RegisterSellerView, Login, \
     Logout, RegisterCustomerView, RegisterMechanicView, \
@@ -92,6 +92,9 @@ update_patterns = patterns(
 
 registration_patterns = patterns(
     '',
+    url(r'^$',
+        RegisterSellerView.as_view(),
+        name='register'),
     url(r'^seller/$',
         RegisterSellerView.as_view(),
         name='register_seller'),
