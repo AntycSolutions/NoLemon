@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'inspections',
     'stripe',
-    'mod_wsgi.server',
+    #'mod_wsgi.server',
 )
 
 MIDDLEWARE_CLASSES = (
