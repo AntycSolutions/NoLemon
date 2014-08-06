@@ -13,13 +13,10 @@ class MechanicList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MechanicList, self).get_context_data(**kwargs)
-        context["static_map"] = ""
         context["intera_map"] = []
         for mechanic in self.get_queryset():
             full_address = mechanic.full_address().replace(" ", "+")
-            context["static_map"] += full_address + "|"
             context["intera_map"] += [full_address]
-        context["static_map"] = context["static_map"][:-1]
         return context
 
 
@@ -30,7 +27,6 @@ class MechanicDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MechanicDetail, self).get_context_data(**kwargs)
         full_address = self.object.full_address().replace(" ", "+")
-        context["static_map"] = full_address
         context["intera_map"] = full_address
         return context
 

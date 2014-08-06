@@ -3,6 +3,8 @@ var geocoder;
 var map;
 var markers;
 var addresses = [];
+var markerTitles = [];
+var labelCode = 65;
 
 function initialize() {
     markers = [];
@@ -17,7 +19,7 @@ function initialize() {
                               mapOptions);
 
     for (var i = 0; i < addresses.length; ++i) {
-        codeAddress(addresses[i]);
+        codeAddress(addresses[i], markerTitles[i]);
     }
 
     // let geocode locations load before centering the map
@@ -39,10 +41,10 @@ function centerMap() {
     }
 }
 
-function codeAddress(address) {
+function codeAddress(address, title) {
     geocoder.geocode({'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-            addMarker(results[0].geometry.location);
+            addMarker(results[0].geometry.location, title);
         } else {
             alert('Geocode was not successful '
                   + 'for the following reason: ' + status);
@@ -50,12 +52,16 @@ function codeAddress(address) {
     });
 }
 
-function addMarker(location) {
+function addMarker(location, title) {
+    var label = String.fromCharCode(labelCode);
     var marker = new google.maps.Marker({
         map: map,
-        position: location
+        position: location,
+        title: title
     });
+    ++labelCode;
     markers.push(marker);
+    marker.setMap(map);
 }
 
 function sleep(millis, callback) {

@@ -27,7 +27,7 @@
                 <p>You've requested an inspection for the following vehicle: {{ vehicle }} with the VIN {{ vehicle.vin }}</p>
             </div>
             <div class="page-main">
-              <img width="640px" height="640px" src="http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo&amp;size=640x640&amp;{{ static_map }}" alt="Mechanic map" />
+              <div style="height: 640px; width: 640px" id="map-canvas"></div>
             </div>
         </div><!-- /.main -->
 
@@ -52,6 +52,7 @@
                       </div>
                     <script type="text/javascript">
                         addresses.push("{{ intera_map.pop }}");
+                        markerTitles.push("{{ mechanic.get_full_name }}");
                     </script>
                     </div></li>
                 {% empty %}

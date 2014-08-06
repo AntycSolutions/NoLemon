@@ -41,17 +41,18 @@ class PaymentView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(PaymentView, self).get_context_data(**kwargs)
-        context["static_map"] = ""
+        context["intera_map"] = []
         context["mechanics"] = Mechanic.objects.all()
         label = 65
         for mechanic in context["mechanics"]:
-            context["static_map"] += "markers="
-            context["static_map"] += "label:" + chr(label) + "|"
             full_address = mechanic.full_address().replace(" ", "+")
-            context["static_map"] += full_address + "&"
+            context["intera_map"] += [full_address]
+#             context["static_map"] += "markers="
+#             context["static_map"] += "label:" + chr(label) + "|"
+#             context["static_map"] += full_address + "&"
             mechanic.label = chr(label)
             label += 1
-        context["static_map"] = context["static_map"][:-1]
+#         context["static_map"] = context["static_map"][:-1]
         return context
 
     def post(self, request, *args, **kwargs):
