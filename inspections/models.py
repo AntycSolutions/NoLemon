@@ -60,26 +60,6 @@ class SellerManager(DjangoBaseUserManager):
         return user
 
 
-class CustomerManager(DjangoBaseUserManager):
-
-    def create_user(self, email, first_name, last_name,
-                    password=None):
-        """
-        Creates and saves a User with the given email and password.
-        """
-        if not email:
-            raise ValueError('Users must have an email address')
-
-        user = Customer(
-            email=CustomerManager.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-
 class MechanicManager(DjangoBaseUserManager):
 
     def create_user(self, email, first_name, last_name,
@@ -151,10 +131,6 @@ class BaseUser(AbstractBaseUser):
 
 class Seller(BaseUser):
     objects = SellerManager()
-
-
-class Customer(BaseUser):
-    objects = CustomerManager()
 
 
 class Mechanic(BaseUser):

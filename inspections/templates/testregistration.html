@@ -14,13 +14,14 @@
     {% include 'messages.html' %}
     <!-- Content -->
     <div class="content row">
+
         <!-- Main -->
-        <div class="main col-sm-8" role="main">
+        <div class="main col-sm-12" role="main">
             <div class="page-header">
                 <h1>Register Here:</h1>
             </div>
             <div class="page-main">
-                <form id="user_form" method="post">
+                <form id="user_form" method="post" action="{% url 'register' %}">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="form-group">
@@ -33,25 +34,12 @@
                 </form>
             </div>
         </div><!-- /.main -->
-        <!-- Sidebar -->
-        <aside class="sidebar col-sm-4" role="complementary">
 
-          <section class="widget nav_menu-2 widget_nav_menu">
-            <div>
-                <ul>
-                <li id="show_all"><strong>Back</strong></li>
-
-                <li class="user_select" id="seller">Selling?</li>
-                <li class="user_select" id="customer">Buying?</li>
-                </ul>
-            </div>
-          </section>
-        </aside><!-- /.sidebar -->
     </div><!-- /.content -->
 </div><!-- /.wrap -->
 
 {% endblock %}
 
 {% block scripts %}
-<script type="text/javascript" src="{% static "js/registration.js" %}"></script>
+<!--<script type="text/javascript" src="{% static "js/registration.js" %}"></script>-->
 {% endblock %}

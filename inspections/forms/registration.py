@@ -2,16 +2,14 @@
 # /multiple-user-types-in-django-1-6/
 
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.utils.translation import ugettext_lazy as _
 
-from ..models import BaseUser, Seller, Customer, Mechanic
-
-# # Add logging to any form or thing that validates
+from ..models import BaseUser, Seller, Mechanic
+# Add logging to any form or thing that validates
 # import logging
 # log = logging.getLogger(__name__)
 # from django.utils.encoding import force_text
-
 #     def is_valid(self):
 #         print("hi")
 #         log.error(force_text(self.errors))
@@ -19,6 +17,7 @@ from ..models import BaseUser, Seller, Customer, Mechanic
 
 
 class BaseUserCreationForm(forms.ModelForm):
+
     """ Form to be used in creation of a new BaseUser or User instance. """
 
     errorMessages = {
@@ -85,6 +84,7 @@ class BaseUserCreationForm(forms.ModelForm):
 
 
 class SellerCreationForm(BaseUserCreationForm):
+
     """ Form to be used in creation of a new Seller. """
 
     class Meta:
@@ -92,15 +92,8 @@ class SellerCreationForm(BaseUserCreationForm):
         model = Seller
 
 
-class CustomerCreationForm(BaseUserCreationForm):
-    """ Form to be used in creation of a new Customer or User instance. """
-
-    class Meta:
-        fields = ['email', 'password1', 'password2', 'first_name', 'last_name']
-        model = Customer
-
-
 class MechanicCreationForm(BaseUserCreationForm):
+
     """ Form to be used in creation of a new Mechanic or User instance. """
 
     class Meta:
@@ -127,18 +120,14 @@ class BaseUserChangeForm(forms.ModelForm):
 
 
 class SellerChangeForm(BaseUserChangeForm):
+
     class Meta:
         model = Seller
         fields = '__all__'
 
 
-class CustomerChangeForm(BaseUserChangeForm):
-    class Meta:
-        model = Customer
-        fields = '__all__'
-
-
 class MechanicChangeForm(BaseUserChangeForm):
+
     class Meta:
         model = Mechanic
         fields = '__all__'

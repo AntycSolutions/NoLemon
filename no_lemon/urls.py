@@ -4,8 +4,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from inspections.front.authenticationViews import RegisterSellerView, Login, \
-    Logout, RegisterCustomerView, RegisterMechanicView, \
-    UpdateSellerView, UpdateMechanicView, UpdateCustomerView
+    Logout, RegisterMechanicView, \
+    UpdateSellerView, UpdateMechanicView
 from inspections.front.mechanics import MechanicList, MechanicDetail
 from inspections.front.payments import PaymentView
 from inspections.front.sellers import SellerList, SellerDetail
@@ -71,9 +71,6 @@ update_patterns = patterns(
     url(r'^seller/$',
         UpdateSellerView.as_view(),
         name='update_seller'),
-    url(r'^customer/$',
-        UpdateCustomerView.as_view(),
-        name='update_customer'),
     url(r'^mechanic/$',
         UpdateMechanicView.as_view(),
         name='update_mechanic'),
@@ -87,9 +84,6 @@ registration_patterns = patterns(
     url(r'^seller/$',
         RegisterSellerView.as_view(),
         name='register_seller'),
-    url(r'^customer/$',
-        RegisterCustomerView.as_view(),
-        name='register_customer'),
     url(r'^mechanic/$',
         RegisterMechanicView.as_view(),
         name='register_mechanic'),

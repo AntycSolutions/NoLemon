@@ -7,11 +7,11 @@ from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 
-from .forms.registration import BaseUserCreationForm, SellerCreationForm, \
-    CustomerCreationForm, MechanicCreationForm, \
+from .forms.registration import BaseUserCreationForm, \
+    SellerCreationForm, MechanicCreationForm, \
     BaseUserChangeForm, SellerChangeForm, \
-    CustomerChangeForm, MechanicChangeForm
-from .models import BaseUser, Seller, Customer, Mechanic, \
+    MechanicChangeForm
+from .models import BaseUser, Seller, Mechanic, \
     Vehicle, Inspection, RequestInspection
 
 
@@ -65,31 +65,6 @@ class SellerAdmin(UserAdmin):
     add_form = SellerCreationForm
 
 admin.site.register(Seller, SellerAdmin)
-
-
-class CustomerAdmin(UserAdmin):
-    list_display = ('email',)
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2',
-                       'first_name', 'last_name')}
-         ),
-    )
-    fieldsets = (
-        (None, {'fields': ('email', 'password',)}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
-        (_('Important dates'), {'fields': ('last_login',)}),
-    )
-    list_filter = ('is_admin',)
-    filter_horizontal = ()
-    ordering = ('email',)
-    search_fields = ('email',)
-    form = CustomerChangeForm
-    add_form = CustomerCreationForm
-
-admin.site.register(Customer, CustomerAdmin)
 
 
 class MechanicAdmin(UserAdmin):
