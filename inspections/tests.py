@@ -1,9 +1,10 @@
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.template.loader import render_to_string
-from django.test import TestCase
+from django.test import Client, TestCase
 
-from inspections.views.views import home_page
+from inspections.models import Seller
+from inspections.views import home_page
 
 
 class HomePageTest(TestCase):
@@ -18,3 +19,40 @@ class HomePageTest(TestCase):
         expected_html = render_to_string('testindex.html')
         self.assertEqual(response.content.decode(), expected_html)
 
+
+class AuthenticationTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+    def tearDown(self):
+        pass
+
+    def test_user_can_register(self):
+        response = self.client.get('/register/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Register Here')
+
+        response = self.client.post('/register/',
+                                    {'email': 'test@seller.ca',
+                                     'password1': 'test',
+                                     'password2': 'test',
+                                     'first_name': 'Test',
+                                     'last_name': 'Man'},
+                                    follow=True)
+
+        self.assertRedirects(response, '/')
+
+    def test_seller_can_login(self):
+        response = self.client.get('/login/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Login Here')
+
+        response = self.client.post('/login/',
+                                    {'username': 'test@seller.ca',
+                                     'password': 'test'},
+                                    follow=True)
+
+        self.assertEqual(response.status_code, 200)
