@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login as auth_login, \
     logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.views.generic import FormView, View, UpdateView
 
 from ..forms.registration import SellerCreationForm, \
@@ -11,23 +11,19 @@ from ..forms.registration import SellerCreationForm, \
 from ..models import Seller, Mechanic
 
 
-class RegisterSellerView(FormView):
-    template_name = 'testregistration.html'
+class LoginRegisterView(FormView):
+    template_name = 'testloginregister.html'
     form_class = SellerCreationForm
     second_form_class = AuthenticationForm
     success_url = '/'
 
     def get_context_data(self, **kwargs):
-        context = super(RegisterSellerView, self).get_context_data(**kwargs)
+        context = super(LoginRegisterView, self).get_context_data(**kwargs)
         if 'reg_form' not in context:
             context['reg_form'] = self.form_class()
         if 'login_form' not in context:
             context['login_form'] = self.second_form_class()
         return context
-
-    def get_object(self):
-        print("Session Stuff", **(self.request.session))
-        return get_object_or_404(Seller, pk=self.request.session['someval'])
 
     def form_valid(self, form):
         if (form.__class__ == SellerCreationForm):
@@ -55,7 +51,7 @@ class RegisterSellerView(FormView):
             if self.request.session.test_cookie_worked():
                 self.request.session.delete_test_cookie()
 
-        return super(RegisterSellerView, self).form_valid(form)
+        return super(LoginRegisterView, self).form_valid(form)
 
     def form_invalid(self, **kwargs):
         return self.render_to_response(self.get_context_data(**kwargs))
@@ -179,23 +175,6 @@ class UpdateMechanicView(UpdateView):
         return self.render_to_response(
             self.get_context_data(form=form, url_end='mechanic')
         )
-
-
-class Login(FormView):
-    template_name = 'testlogin.html'
-    success_url = '/'
-    form_class = AuthenticationForm
-
-    def form_valid(self, form):
-        #         redirect_to = settings.LOGIN_REDIRECT_URL
-        auth_login(self.request, form.get_user())
-        if self.request.session.test_cookie_worked():
-            self.request.session.delete_test_cookie()
-        return super(Login, self).form_valid(form)
-
-    def dispatch(self, request, *args, **kwargs):
-        request.session.set_test_cookie()
-        return super(Login, self).dispatch(request, *args, **kwargs)
 
 
 class Logout(View):

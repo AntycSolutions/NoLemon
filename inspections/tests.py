@@ -55,4 +55,4 @@ class AuthenticationTest(TestCase):
                                      'password': 'test'},
                                     follow=True)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '/')

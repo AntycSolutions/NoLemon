@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from inspections.front.authenticationViews import RegisterSellerView, Login, \
+from inspections.front.authenticationViews import LoginRegisterView, \
     Logout, RegisterMechanicView, \
     UpdateSellerView, UpdateMechanicView
 from inspections.front.mechanics import MechanicList, MechanicDetail
@@ -79,10 +79,10 @@ update_patterns = patterns(
 registration_patterns = patterns(
     '',
     url(r'^$',
-        RegisterSellerView.as_view(),
+        LoginRegisterView.as_view(),
         name='register'),
     url(r'^seller/$',
-        RegisterSellerView.as_view(),
+        LoginRegisterView.as_view(),
         name='register_seller'),
     url(r'^mechanic/$',
         RegisterMechanicView.as_view(),
@@ -103,7 +103,6 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^register/', include(registration_patterns)),
     url(r'^update/', include(update_patterns)),
-    url(r'^login/$', Login.as_view(), name='login'),
     url(r'^logout/$', Logout.as_view(), name='logout'),
     url(r'^vehicles/', include(vehicle_patterns)),
     url(r'^inspections/', include(inspection_patterns)),

@@ -3,7 +3,7 @@
 {% load staticfiles %}
 {% load add_css %}
 
-{% block title %} - Register with NoLemon{% endblock %}
+{% block title %} - Login or Register with NoLemon{% endblock %}
 
 {% block content %}
 
@@ -14,11 +14,12 @@
     {% include 'messages.html' %}
     <!-- Content -->
     <div class="content row">
-        
-        <!-- Main -->
+
+        <!-- Main Register -->
         <div class="main col-sm-6" role="main">
             <div class="page-header">
-                <h1>Register Here:</h1>
+                <p><h2>New to NoLemon?</h2></p>
+                <p><h2>Register Here:</h2></p>
             </div>
             <div class="page-main">
                 <form id="user_form" method="post" action="{% url 'register' %}">
@@ -35,10 +36,11 @@
             </div>
         </div><!-- /.main -->
 
-        <!-- Main -->
+        <!-- Main Login -->
         <div class="main col-sm-6" role="main">
             <div class="page-header">
-                <h1>Login Here:</h1>
+                <p><h2>Already have a NoLemon account?</h2></p>
+                <p><h2>Login Here:</h2></p>
             </div>
             <div class="page-main">
                 <form id="login_form" method="post" action="{% url 'register' %}">
