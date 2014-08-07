@@ -8,8 +8,7 @@ from inspections.front.authenticationViews import RegisterSellerView, Login, \
     UpdateSellerView, UpdateMechanicView, UpdateCustomerView
 from inspections.front.mechanics import MechanicList, MechanicDetail
 from inspections.front.payments import PaymentView
-from inspections.front.sellers import SellerList, SellerDetail, \
-    RatingFormCreateView, RatingFormUpdateView
+from inspections.front.sellers import SellerList, SellerDetail
 from inspections.front.statistics import Statistics
 from inspections.front.vehicles import VehicleDetail, VehicleList
 from inspections.views import InspectionList, InspectionDetail, \
@@ -57,16 +56,6 @@ mechanic_patterns = patterns(
         MechanicList.as_view(), name='mechanic_list'),
     url(r'^(?P<pk>.+)/$',
         MechanicDetail.as_view(), name='mechanic_detail'),
-)
-
-rating_patterns = patterns(
-    '',
-    url(r'^$',
-        RatingFormCreateView.as_view(), name='rating_create'),
-    url(r'^(?P<pk>\d+)/$',
-        RatingFormUpdateView.as_view(), name='rating_update'),
-    # url(r'(?P<pk>\d+)/delete/$',
-    #     RatingFormDeleteView.as_view(), name='rating_delete')
 )
 
 inspection_patterns = patterns(
@@ -126,7 +115,6 @@ urlpatterns = patterns(
     url(r'^inspections/', include(inspection_patterns)),
     url(r'^sellers/', include(seller_patterns)),
     url(r'^mechanics/', include(mechanic_patterns)),
-    url(r'^ratings/', include(rating_patterns)),
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
     #     url(r'^payments/', include(payment_patterns)),
     url(r'^requests/', include(request_inspection_patterns)),

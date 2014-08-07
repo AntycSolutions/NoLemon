@@ -152,16 +152,6 @@ class BaseUser(AbstractBaseUser):
 class Seller(BaseUser):
     objects = SellerManager()
 
-    def rating(self):
-        ratings = Rating.objects.filter(seller=self)
-        number = 0
-        for rating in ratings:
-            number += rating.rating
-        if ratings.count() is not 0:
-            return number / ratings.count()
-        return None
-    rating.allow_tags = True
-
 
 class Customer(BaseUser):
     objects = CustomerManager()
@@ -182,31 +172,6 @@ class Mechanic(BaseUser):
             + " " + self.city \
             + " " + self.province
     full_address.allow_tags = True
-
-
-class Rating(models.Model):
-    ONE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
-    FIVE = 5
-    SELLER_RATING = ((ONE, 'ONE'),
-                     (TWO, 'TWO'),
-                     (THREE, 'THREE'),
-                     (FOUR, 'FOUR'),
-                     (FIVE, 'FIVE')
-                     )
-    rating = models.IntegerField(choices=SELLER_RATING)
-    seller = models.ForeignKey(Seller)
-    customer = models.ForeignKey(Customer)
-
-    def __str__(self):
-        return str(self.rating) \
-            + " " + str(self.seller) \
-            + " " + str(self.customer)
-
-    class Meta:
-        unique_together = (('seller', 'customer'),)
 
 
 class Vehicle(models.Model):

@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'inspections',
     'stripe',
-    #'mod_wsgi.server',
+    # 'mod_wsgi.server',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,21 +102,21 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "documentation")
 )
 
-#email settings
+# email settings
 EMAIL_USE_TLS = True
-#prod
+# prod
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
-#dev
-#run "python -m smtpd -n -c DebuggingServer localhost:1025" first
-#EMAIL_HOST = 'localhost'
-#EMAIL_PORT = 1025
+# dev
+# run "python -m smtpd -n -c DebuggingServer localhost:1025" first
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = 1025
 EMAIL_HOST_USER = 'testnolemon'
 EMAIL_HOST_PASSWORD = 'test1'
 
-#media
-#prod
-#MEDIA_ROOT = ''
-#dev
+# media
+# prod
+# MEDIA_ROOT = ''
+# dev
 MEDIA_ROOT = BASE_DIR + '/media/'
 MEDIA_URL = '/media/'

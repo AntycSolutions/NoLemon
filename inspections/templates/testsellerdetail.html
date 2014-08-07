@@ -22,23 +22,6 @@
 
           <div class="row"><div class="col-md-12">
           {% if seller %}
-            <h2>Rate Me</h2>
-            {% if form %}
-                <form method="post" action="{{ path }}">
-                    {% csrf_token %}
-                    {# Has nicer spacing #}
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                    {% for field in form.visible_fields %}
-                        {{ field.errors }}
-                        {{ field.label_tag }} {{ field }}
-                    {% endfor %}
-                    <input type="submit" class="btn btn-primary" value="Rate">
-                </form>
-            {% else %}
-                <p>Only customers can rate sellers.</p>
-            {% endif %}
             {% if seller.email == user.email %}
               <p>&nbsp;</p>
               <h2>Update Your Account</h2>
