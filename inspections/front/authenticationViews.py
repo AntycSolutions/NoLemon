@@ -47,6 +47,10 @@ class RegisterSellerView(FormView):
         return self.render_to_response(self.get_context_data(form=form,
                                                              url_end='seller'))
 
+    def post(self, request, *args, **kwargs):
+        print("Post info (Register)", request.POST)
+        return super(Login, self).post(request, *args, **kwargs)
+
 
 class UpdateSellerView(UpdateView):
     template_name = 'testupdate.html'
@@ -155,6 +159,10 @@ class Login(FormView):
     def dispatch(self, request, *args, **kwargs):
         request.session.set_test_cookie()
         return super(Login, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        print("Post info (Login)", request.POST)
+        return super(Login, self).post(request, *args, **kwargs)
 
 
 class Logout(View):

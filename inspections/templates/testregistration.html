@@ -16,21 +16,41 @@
     <div class="content row">
 
         <!-- Main -->
-        <div class="main col-sm-12" role="main">
+        <div class="main col-sm-6" role="main">
             <div class="page-header">
-                <h1>Register Here:</h1>
+                <h1>Login Here:</h1>
             </div>
             <div class="page-main">
-                <form id="user_form" method="post" action="{% url 'register' %}">
+                <form id="login_form" method="post" action="{% url 'login' %}">
                     {% csrf_token %}
-                    {% for field in form %}
+                    {% for field in login_form %}
                         <div class="form-group">
                             {{ field.errors }}
                             {{ field.label_tag }}
                             {{ field|addcss:"class: form-control" }} {{ field.help_text }}
                         </div>
                     {% endfor %}
-                    <input type="submit" class="btn btn-primary" id="form-btn" value="Register" />
+                    <input type="submit" class="btn btn-primary" name="login_form" value="Login" />
+                </form>
+            </div>
+        </div><!-- /.main -->
+
+        <!-- Main -->
+        <div class="main col-sm-6" role="main">
+            <div class="page-header">
+                <h1>Register Here:</h1>
+            </div>
+            <div class="page-main">
+                <form id="user_form" method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    {% for field in reg_form %}
+                        <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label_tag }}
+                            {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+                        </div>
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" name="reg_form" value="Register" />
                 </form>
             </div>
         </div><!-- /.main -->
