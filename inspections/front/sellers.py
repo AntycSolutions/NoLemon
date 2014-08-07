@@ -28,8 +28,3 @@ class SellerDetail(DetailView):
                 "you're looking for.")
             return redirect(reverse_lazy('seller_list'), self.context)
         return self.render_to_response(self.context)
-
-
-# class RatingFormDeleteView(DeleteView):
-#     model = Rating
-# success_url = reverse_lazy(#fix me)

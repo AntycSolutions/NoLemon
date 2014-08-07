@@ -23,18 +23,6 @@ def populate():
     jillCustomer = add_customer(
         "jill@customer.ca", "Jill", "Johnson", password)
 
-    add_rating(Rating.FIVE, bobSeller, johnCustomer)
-    add_rating(Rating.FOUR, samSeller, johnCustomer)
-    add_rating(Rating.THREE, timSeller, johnCustomer)
-    add_rating(Rating.TWO, tomSeller, johnCustomer)
-    add_rating(Rating.ONE, patSeller, johnCustomer)
-
-    add_rating(Rating.FIVE, patSeller, janeCustomer)
-    add_rating(Rating.FOUR, bobSeller, janeCustomer)
-    add_rating(Rating.THREE, samSeller, janeCustomer)
-    add_rating(Rating.TWO, timSeller, janeCustomer)
-    add_rating(Rating.ONE, tomSeller, janeCustomer)
-
     sarahMechanic = add_mechanic(
         "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801",
         "123 st nw", "edmonton", "ab")
@@ -69,7 +57,6 @@ def populate():
         3, sarahMechanic, grandcherokeeVehicle, "Bad", now, 0)
 
     print_all_sellers()
-    print_all_ratings()
     print_all_customers()
     print_all_mechanics()
     print_all_inspections()
@@ -91,17 +78,6 @@ def add_seller(email, firstName, lastName, password):
     if not seller:
         print ("Did not create seller:", seller)
     return seller
-
-
-def add_rating(number, seller, customer):
-    rating, created = Rating.objects.get_or_create(
-        rating=number, seller=seller, customer=customer
-        )
-    if created:
-        rating.save()
-    else:
-        print ("Did not create rating:", number)
-    return rating
 
 
 def add_customer(email, firstName, lastName, password):
@@ -204,6 +180,6 @@ if __name__ == '__main__':
     print("Starting NoLemon database population script...")
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'no_lemon.settings')
     from inspections.models import Seller, Customer, Mechanic, \
-        Inspection, Vehicle, Rating
+        Inspection, Vehicle
     populate()
     print("Finished populate script.")
