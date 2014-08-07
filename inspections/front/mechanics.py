@@ -7,7 +7,7 @@ from ..models import Mechanic
 
 
 class MechanicList(ListView):
-    template_name = "testmechaniclist.html"
+    template_name = "mechaniclist.html"
     model = Mechanic
     context_object_name = "mechanics"
 
@@ -21,7 +21,7 @@ class MechanicList(ListView):
 
 
 class MechanicDetail(DetailView):
-    template_name = "testmechanicdetail.html"
+    template_name = "mechanicdetail.html"
     model = Mechanic
 
     def get_context_data(self, **kwargs):

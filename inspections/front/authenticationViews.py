@@ -12,7 +12,7 @@ from ..models import Seller, Mechanic
 
 
 class LoginRegisterView(FormView):
-    template_name = 'testloginregister.html'
+    template_name = 'loginregister.html'
     form_class = SellerCreationForm
     second_form_class = AuthenticationForm
     success_url = '/'
@@ -86,7 +86,7 @@ class LoginRegisterView(FormView):
 
 
 class UpdateSellerView(UpdateView):
-    template_name = 'testupdate.html'
+    template_name = 'update.html'
     model = Seller
     fields = ['first_name', 'last_name', ]
 
@@ -110,7 +110,7 @@ class UpdateSellerView(UpdateView):
 
 
 class RegisterMechanicView(FormView):
-    template_name = 'testregistration.html'
+    template_name = 'registration.html'
     form_class = MechanicCreationForm
     success_url = '/'
 
@@ -153,7 +153,7 @@ class RegisterMechanicView(FormView):
 
 
 class UpdateMechanicView(UpdateView):
-    template_name = 'testupdate.html'
+    template_name = 'update.html'
     model = Mechanic
     fields = ['first_name', 'last_name',
               'address', 'city', 'province', ]

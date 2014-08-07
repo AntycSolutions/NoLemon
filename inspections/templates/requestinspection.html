@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %} - Payment Received{% endblock %}
+
+{% block head_content %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo">
+</script>
+<script type="text/javascript" src="{% static 'google_maps.js' %}">
+</script>
+{% endblock %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+{% include 'payment.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/request.js' %}">
+</script>
+{% endblock %}

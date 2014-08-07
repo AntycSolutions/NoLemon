@@ -4,20 +4,21 @@ from django import forms
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 from ..forms.request_inspection import RequestInspectionForm
+from ..forms.vehicle import VehicleCreationForm
 from ..models import Vehicle, Seller, RequestInspection
 
 
 class VehicleList(ListView):
-    template_name = "testvehiclelist.html"
+    template_name = "vehiclelist.html"
     model = Vehicle
     context_object_name = "vehicles"
 
 
 class VehicleDetail(DetailView):
-    template_name = "testvehicledetail.html"
+    template_name = "vehicledetail.html"
     model = Vehicle
     slug_field = "vin"
     slug_url_kwarg = "vin"
@@ -68,3 +69,10 @@ class VehicleDetail(DetailView):
                 "for the vehicle you're looking for.")
             return redirect(reverse_lazy('vehicle_list'), self.context)
         return self.render_to_response(self.context)
+
+
+class VehicleCreationView(CreateView):
+
+    model = Vehicle
+    form_class = VehicleCreationForm
+    template_name = 'vehiclecreate.html'

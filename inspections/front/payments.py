@@ -19,7 +19,7 @@ class PaymentView(CreateView):
     model = RequestInspection
     success_url = reverse_lazy('vehicle_list')
     form_class = RequestInspectionForm
-    template_name = 'testpayment.html'
+    template_name = 'requestinspection.html'
 
     def get(self, request, *args, **kwargs):
         self.object = None

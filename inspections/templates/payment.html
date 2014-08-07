@@ -1,19 +1,6 @@
-{% extends "base.html" %}
 {% load staticfiles %}
 {% load add_css %}
 
-{% block title %} - Payment Received{% endblock %}
-
-{% block head_content %}
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo">
-</script>
-<script type="text/javascript" src="{% static 'google_maps.js' %}">
-</script>
-{% endblock %}
-
-{% block content %}
-
-{% include 'header.html' %}
 
 <!-- Wrap -->
 <div class="wrap container" role="document">
@@ -80,11 +67,3 @@
         </aside><!-- /.sidebar -->
     </div><!-- /.content -->
 </div><!-- /.wrap -->
-
-
-{% endblock %}
-
-{% block scripts %}
-<script type="text/javascript" src="{% static 'js/request.js' %}">
-</script>
-{% endblock %}

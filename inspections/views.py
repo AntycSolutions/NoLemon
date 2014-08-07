@@ -14,15 +14,15 @@ from .models import Inspection, RequestInspection, Mechanic, Vehicle
 
 
 def home_page(request):
-    return render(request, 'testindex.html')
+    return render(request, 'index.html')
 
 
 def about_page(request):
-    return render(request, 'testabout.html')
+    return render(request, 'about.html')
 
 
 def contact_page(request):
-    return render(request, 'testcontact.html')
+    return render(request, 'contact.html')
 
 
 class InspectionList(ListView):
@@ -166,7 +166,7 @@ def test_video(request):
 
     # Render list page with the videos and the form
     return render_to_response(
-        'testvideo.html',
+        'video.html',
         {'inspections': inspections, 'form': form},
         context_instance=RequestContext(request)
     )

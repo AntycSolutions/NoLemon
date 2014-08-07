@@ -103,6 +103,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^register/', include(registration_patterns)),
     url(r'^update/', include(update_patterns)),
+    url(r'^login/$', LoginRegisterView.as_view(), name='login'),
     url(r'^logout/$', Logout.as_view(), name='logout'),
     url(r'^vehicles/', include(vehicle_patterns)),
     url(r'^inspections/', include(inspection_patterns)),
