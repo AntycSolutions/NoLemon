@@ -1,27 +1,20 @@
 # Populate the database with showcase and testing data
-import os
 import datetime
+import os
 
 
 def populate():
     password = "nolemon"
+
+    admin = add_seller('admin@nolemon.ca', 'Admin', 'Man', password)
+    admin.is_admin = True
+    admin.save()
 
     bobSeller = add_seller("bob@seller.ca", "Bob", "Bobson", password)
     samSeller = add_seller("sam@seller.ca", "Sam", "Samson", password)
     timSeller = add_seller("tim@seller.ca", "Tim", "Timson", password)
     tomSeller = add_seller("tom@seller.ca", "Tom", "Tomson", password)
     patSeller = add_seller("pat@seller.ca", "Pat", "Patson", password)
-
-    johnCustomer = add_customer(
-        "john@customer.ca", "John", "Johnson", password)
-    janeCustomer = add_customer(
-        "jane@customer.ca", "Jane", "Johnson", password)
-    judyCustomer = add_customer(
-        "judy@customer.ca", "Judy", "Johnson", password)
-    jackCustomer = add_customer(
-        "jack@customer.ca", "Jack", "Johnson", password)
-    jillCustomer = add_customer(
-        "jill@customer.ca", "Jill", "Johnson", password)
 
     sarahMechanic = add_mechanic(
         "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801",
@@ -57,7 +50,6 @@ def populate():
         3, sarahMechanic, grandcherokeeVehicle, "Bad", now, 0)
 
     print_all_sellers()
-    print_all_customers()
     print_all_mechanics()
     print_all_inspections()
     print_all_vehicles()
@@ -67,34 +59,17 @@ def add_seller(email, firstName, lastName, password):
     seller = None
     try:
         seller = Seller.objects.get(email=email)
-        print ("Already exists, seller:", seller)
+        print("Already exists, seller:", seller)
         return seller
     except:
         pass
     seller = Seller.objects.create_user(
         email=email, first_name=firstName, last_name=lastName,
         password=password
-        )
+    )
     if not seller:
-        print ("Did not create seller:", seller)
+        print("Did not create seller:", seller)
     return seller
-
-
-def add_customer(email, firstName, lastName, password):
-    customer = None
-    try:
-        customer = Customer.objects.get(email=email)
-        print ("Already exists, customer:", customer)
-        return customer
-    except:
-        pass
-    customer = Customer.objects.create_user(
-        email=email, first_name=firstName, last_name=lastName,
-        password=password
-        )
-    if not customer:
-        print ("Did not create customer:", customer)
-    return customer
 
 
 def add_mechanic(email, firstName, lastName, password,
@@ -102,7 +77,7 @@ def add_mechanic(email, firstName, lastName, password,
     mechanic = None
     try:
         mechanic = Mechanic.objects.get(email=email)
-        print ("Already exists, mechanic:", mechanic)
+        print("Already exists, mechanic:", mechanic)
         return mechanic
     except:
         pass
@@ -110,9 +85,9 @@ def add_mechanic(email, firstName, lastName, password,
         email=email, first_name=firstName, last_name=lastName,
         password=password, phone_number=phoneNumber, address=address,
         city=city, province=province
-        )
+    )
     if not mechanic:
-        print ("Did not create mechanic:", mechanic)
+        print("Did not create mechanic:", mechanic)
     return mechanic
 
 
@@ -120,11 +95,11 @@ def add_inspection(pk, mechanic, vehicle, comments, date, views):
     inspection, created = Inspection.objects.get_or_create(
         pk=pk, mechanic=mechanic, comments=comments, date=date,
         vehicle=vehicle, views=views
-        )
+    )
     if created:
         inspection.save()
     else:
-        print ("Did not create inspection:", comments)
+        print("Did not create inspection:", comments)
     return inspection
 
 
@@ -132,54 +107,42 @@ def add_vehicle(vin, owner, make, model, year):
     vehicle, created = Vehicle.objects.get_or_create(
         vin=vin, owner=owner,
         make=make, model=model, year=year
-        )
+    )
     if created:
         vehicle.save()
     else:
-        print ("Did not create vehicle:", vin)
+        print("Did not create vehicle:", vin)
     return vehicle
 
 
 def print_all_sellers():
-    print ("Sellers:")
+    print("Sellers:")
     for seller in Seller.objects.all():
-        print (seller)
-
-
-def print_all_ratings():
-    print ("Ratings:")
-    for rating in Rating.objects.all():
-        print (rating)
-
-
-def print_all_customers():
-    print("Customers:")
-    for customer in Customer.objects.all():
-        print (customer)
+        print(seller)
 
 
 def print_all_mechanics():
     print("Mechanics:")
     for mechanic in Mechanic.objects.all():
-        print (mechanic)
+        print(mechanic)
 
 
 def print_all_inspections():
     print("Inspections:")
     for inspection in Inspection.objects.all():
-        print (inspection)
+        print(inspection)
 
 
 def print_all_vehicles():
     print("Vehicles:")
     for vehicle in Vehicle.objects.all():
-        print (vehicle)
+        print(vehicle)
 
 
 if __name__ == '__main__':
     print("Starting NoLemon database population script...")
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'no_lemon.settings')
-    from inspections.models import Seller, Customer, Mechanic, \
+    from inspections.models import Seller, Mechanic, \
         Inspection, Vehicle
     populate()
     print("Finished populate script.")
