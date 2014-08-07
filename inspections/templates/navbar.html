@@ -35,8 +35,7 @@
                 </ul>
             </li>
         {% else %}
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'register' %}">Register Here!</a></li>
+            <li><a href="{% url 'register' %}">Login/Register</a></li>
         {% endif %}
       </ul>
     </nav>
@@ -55,8 +54,7 @@
                 <li><a class="responsive-submenu" href="{% url 'seller_detail' user.pk %}">Your Account</a></li>
                 <li><a class="responsive-submenu" href="{% url 'logout' %}">Logout</a></li>
             {% else %}
-                <li><a href="{% url 'register' %}">Register Here!</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Login/Register</a></li>
             {% endif %}
         </ul>
       </nav>

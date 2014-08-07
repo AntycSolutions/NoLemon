@@ -45,12 +45,12 @@ class AuthenticationTest(TestCase):
         self.assertRedirects(response, '/')
 
     def test_seller_can_login(self):
-        response = self.client.get('/login/')
+        response = self.client.get('/register/')
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Login Here')
 
-        response = self.client.post('/login/',
+        response = self.client.post('/register/',
                                     {'username': 'test@seller.ca',
                                      'password': 'test'},
                                     follow=True)
