@@ -28,7 +28,7 @@
         {% if user.is_authenticated %}
             <!-- TODO: fix me, generalize to all users -->
             <li class="dropdown">
-                <a class="dropdown-toggle" href="{% url 'seller_detail' user.pk %}">Welcome, {{ user.first_name }}</a>
+                <a class="dropdown-toggle" href='#'>Welcome, {{ user.first_name }}</a>
                 <ul class="dropdown-menu">
                     <li><a href="{% url 'seller_detail' user.pk %}">Your Account</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>

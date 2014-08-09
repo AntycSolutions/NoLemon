@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 
 from inspections.front.authenticationViews import LoginRegisterView, \
     Logout, RegisterMechanicView, \
@@ -22,13 +23,13 @@ request_inspection_patterns = patterns(
     #         RequestInspectionCreateView.as_view(),
     #         name='request_inspection_create'),
     url(r'^payment/$',
-        PaymentView.as_view(),
+        login_required(PaymentView.as_view()),
         name='pay_for_inspection'),
     url(r'^(?P<pk>\d+)/$',
-        RequestInspectionUpdateView.as_view(),
+        login_required(RequestInspectionUpdateView.as_view()),
         name='request_inspection_update'),
     url(r'^(?P<pk>\d+)/print/$',
-        'inspections.views.create_request_inspection_pdf',
+        login_required('inspections.views.create_request_inspection_pdf'),
         name='print_request_inspection')
 )
 
@@ -63,7 +64,7 @@ inspection_patterns = patterns(
     url(r'^$',
         InspectionList.as_view(), name='inspection_list'),
     url(r'^(?P<pk>\d+)/$',
-        InspectionDetail.as_view(), name='inspection_detail')
+        login_required(InspectionDetail.as_view()), name='inspection_detail')
 )
 
 update_patterns = patterns(
@@ -81,9 +82,6 @@ registration_patterns = patterns(
     url(r'^$',
         LoginRegisterView.as_view(),
         name='register'),
-    url(r'^seller/$',
-        LoginRegisterView.as_view(),
-        name='register_seller'),
     url(r'^mechanic/$',
         RegisterMechanicView.as_view(),
         name='register_mechanic'),
@@ -104,7 +102,7 @@ urlpatterns = patterns(
     url(r'^register/', include(registration_patterns)),
     url(r'^update/', include(update_patterns)),
     url(r'^login/$', LoginRegisterView.as_view(), name='login'),
-    url(r'^logout/$', Logout.as_view(), name='logout'),
+    url(r'^logout/$', login_required(Logout.as_view()), name='logout'),
     url(r'^vehicles/', include(vehicle_patterns)),
     url(r'^inspections/', include(inspection_patterns)),
     url(r'^sellers/', include(seller_patterns)),

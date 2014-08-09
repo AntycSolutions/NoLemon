@@ -51,13 +51,14 @@ class LoginRegisterView(FormView):
             if self.request.session.test_cookie_worked():
                 self.request.session.delete_test_cookie()
 
-        return super(LoginRegisterView, self).form_valid(form)
+        print("I'm going here after: ", settings.LOGIN_REDIRECT_URL)
+        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
     def form_invalid(self, **kwargs):
         return self.render_to_response(self.get_context_data(**kwargs))
 
     def post(self, request, *args, **kwargs):
-
+        print("I should redirect to: ", settings.LOGIN_REDIRECT_URL)
         # get the user instance
         #         self.object = self.get_object()
 
@@ -83,6 +84,13 @@ class LoginRegisterView(FormView):
             return self.form_valid(form)
         else:
             return self.form_invalid(**{form_name: form})
+
+    def get(self, request, *args, **kwargs):
+        if 'next' in request.GET:
+            settings.LOGIN_REDIRECT_URL = request.GET['next']
+        else:
+            settings.LOGIN_REDIRECT_URL = '/'
+        return self.render_to_response(self.get_context_data(**kwargs))
 
 
 class UpdateSellerView(UpdateView):

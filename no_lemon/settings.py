@@ -63,6 +63,8 @@ AUTH_USER_MODEL = "inspections.BaseUser"
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
+LOGIN_URL = '/register/'
+LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
