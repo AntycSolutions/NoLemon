@@ -24,8 +24,7 @@ class PaymentView(CreateView):
 
     def get(self, request, *args, **kwargs):
         self.object = None
-        print(kwargs)
-        vin = kwargs['vin'] or request.GET['vehicle']
+        vin = kwargs['vin'] if 'vin' in kwargs else request.GET['vehicle']
         vehicle = Vehicle.objects.get(vin=vin)
         seller = Seller.objects.get(email=request.user.email)
 
