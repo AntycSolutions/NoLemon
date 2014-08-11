@@ -7,11 +7,11 @@ from django.core.urlresolvers import reverse_lazy
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
-import stripe
 
 from inspections.forms.request_inspection import RequestInspectionForm
 from inspections.models import RequestInspection, Seller, Vehicle, BaseUser,\
     Mechanic
+from inspections.utilities import process_stripe
 from no_lemon import settings
 
 
@@ -60,9 +60,9 @@ class PaymentView(CreateView):
     def post(self, request, *args, **kwargs):
         self.object = None
         # TODO: Integrate payment level options
-        cost = settings.INSPECTION_REQUEST_AMOUNT_LVL_1
+        cost = settings.INSPECTION_REQUEST
 
-        self._handle_stripe(request.POST['stripeToken'], cost)
+        process_stripe(request.POST['stripeToken'], cost)
 
         return super(PaymentView, self).post(request, args, kwargs)
 
@@ -91,29 +91,6 @@ class PaymentView(CreateView):
                     + ". " + error)
         return redirect(reverse_lazy('request_inspection_create',
                                      kwargs={'vin': form.instance.vehicle.vin}))
-
-    def _handle_stripe(self, token, cost):
-        # Set your secret key: remember to change this to
-        # your live secret key in production
-        # See your keys here https://dashboard.stripe.com/account
-        stripe.api_key = "sk_test_y8HvZWWtuKZAMrQsRPtRro6F"
-
-        # Get the credit card details submitted by the form
-        token = token
-
-        # Create the charge on Stripe's servers - this will charge the user's
-        # card
-        try:
-            charge = stripe.Charge.create(
-                amount=cost,  # amount in cents, again
-                currency="cad",
-                card=token,
-                description="payinguser@example.com"
-            )
-        except stripe.CardError as e:
-            # The card has been declined
-            print("Stripe Error:", e)
-            return Http404()
 
     def _send_email(self, emails):
         title = "NoLemon - Inspection Request"
