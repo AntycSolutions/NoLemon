@@ -1,3 +1,44 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %} - Add New Vehicle{% endblock %}
+{% load staticfiles %}
+{% load add_css %}
+
+{% block title %} - New Vehicle{% endblock %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+<!-- Wrap -->
+<div class="wrap container" role="document">
+    {% include 'messages.html' %}
+    <!-- Content -->
+    <div class="content row">
+
+        <!-- Main Register -->
+        <div class="main col-sm-12" role="main">
+            <div class="page-header">
+                <p><h1>Enter the vehicle's information:</h1></p>
+            </div>
+            <div class="page-main">
+                <form id="create_vehicle_form" method="post" action="{% url 'vehicle_create' %}">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label_tag }}
+                            {% if field.label_tag == 'owner' %}
+                            <p>{{ user }}</p>
+                            {% endif %}
+                            {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+                        </div>
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" name="form" value="Add New Vehicle" />
+                </form>
+            </div>
+        </div><!-- /.main -->
+
+    </div><!-- /.content -->
+</div><!-- /.wrap -->
+
+{% endblock %}

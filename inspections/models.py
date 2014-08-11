@@ -1,9 +1,15 @@
 # http://michalcodes4life.wordpress.com/2014/02/08
 # /multiple-user-types-in-django-1-6/
+import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, \
     BaseUserManager as DjangoBaseUserManager
 from django.db import models
+
+
+YEAR_CHOICES = []
+for r in range(1980, (datetime.datetime.now().year+1)):
+    YEAR_CHOICES.append((r,r))
 
 
 class BaseUserManager(DjangoBaseUserManager):
@@ -154,7 +160,7 @@ class Vehicle(models.Model):
     owner = models.ForeignKey(Seller)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
-    year = models.IntegerField()
+    year = models.IntegerField(max_length=4, choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     vin = models.CharField(
         "vehicle identification number", max_length=17, unique=True)
 

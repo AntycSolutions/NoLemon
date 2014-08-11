@@ -11,7 +11,7 @@ from inspections.front.mechanics import MechanicList, MechanicDetail
 from inspections.front.payments import PaymentView
 from inspections.front.sellers import SellerList, SellerDetail
 from inspections.front.statistics import Statistics
-from inspections.front.vehicles import VehicleDetail, VehicleList
+from inspections.front.vehicles import VehicleDetail, VehicleList, VehicleCreationView
 from inspections.views import InspectionList, InspectionDetail, \
     RequestInspectionUpdateView
 admin.autodiscover()
@@ -35,12 +35,15 @@ request_inspection_patterns = patterns(
 
 vehicle_patterns = patterns(
     '',
+    url(r'^new/$',
+        login_required(VehicleCreationView.as_view()),
+        name="vehicle_create"),
     url(r'^$',
         VehicleList.as_view(), name='vehicle_list'),
     url(r'^(?P<vin>[0-9a-hj-npr-z]{1,17})/$',
         VehicleDetail.as_view(), name='vehicle_detail'),
     url(r'^(?P<vin>[0-9a-hj-npr-z]{1,17})/request/inspection/',
-        include(request_inspection_patterns))
+        include(request_inspection_patterns)),
 )
 
 seller_patterns = patterns(

@@ -3,8 +3,10 @@ import datetime
 from django import forms
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView
 
 from ..forms.request_inspection import RequestInspectionForm
 from ..forms.vehicle import VehicleCreationForm
@@ -76,3 +78,27 @@ class VehicleCreationView(CreateView):
     model = Vehicle
     form_class = VehicleCreationForm
     template_name = 'vehiclecreate.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        form.fields['owner'].widget = forms.HiddenInput()
+
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_initial(self):
+        owner = Seller.objects.get(email=self.request.user.email)
+        initial = {'owner': owner}
+        return initial
+
+    def form_valid(self, form):
+        """
+        If the form is valid, redirect to the supplied URL.
+        """
+        vehicle = self.request.POST['vin']
+        self.success_url = reverse_lazy('pay_for_inspection',
+                                        kwargs={'vin': vehicle})
+        return super(VehicleCreationView, self).form_valid(form)
