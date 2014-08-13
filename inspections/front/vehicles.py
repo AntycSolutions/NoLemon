@@ -8,6 +8,8 @@ from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
+from no_lemon import settings
+
 from ..forms.request_inspection import RequestInspectionForm
 from ..forms.vehicle import VehicleCreationForm
 from ..models import Vehicle, Seller, RequestInspection
@@ -57,6 +59,11 @@ class VehicleDetail(DetailView):
             print("Exception:", e)
         context['form'] = form
         context['request_inspection'] = request_inspection
+
+        context['option1'] = settings.VIEW_INSPECTION_CHARGE_LVL_1
+        context['option2'] = settings.VIEW_INSPECTION_CHARGE_LVL_2
+        context['option3'] = settings.VIEW_INSPECTION_CHARGE_LVL_3
+
         return context
 
     def get(self, request, *args, **kwargs):
