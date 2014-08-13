@@ -2,7 +2,7 @@ from django.http.response import Http404
 import stripe
 
 
-def process_stripe(self, token, cost):
+def process_stripe(token, cost):
     # Set your secret key: remember to change this to
     # your live secret key in production
     # See your keys here https://dashboard.stripe.com/account
