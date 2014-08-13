@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %} - Vehicle Detail{% endblock %}
 
@@ -15,35 +16,44 @@
     <div class="main col-sm-8" role="main">
 
       <div class="page-header">
-        <h1>Title</h1>
+        <h1>Inspections</h1>
       </div>
 
-      <div class="page-main">
+        <!-- Inspections -->
+        <aside class="sidebar col-sm-12" role="complementary">
+
+          <section class="widget nav_menu-2 widget_nav_menu">
+            <div>
+              <ul>
+                {% for inspection in vehicle.inspection_set.all %}
+                  <li>
+                    <dl class="dl-horizontal inspection_select">
+                      <dt>Date:</dt><dd>{{ inspection.date }}</dd>
+                      <dt>Mechanic:</dt><dd>{{ inspection.mechanic.get_full_name }}</a></dd>
+                    </dl>
+                  </li>
+                {% empty %}
+                    <li>There are no inspections for this vehicle.</li>
+                {% endfor %}
+                {{ vehicle.owner }}
+                {{ user.email }}
+                {% if not user.is_authenticated or vehicle.owner.email != user.email %}
+                {% include 'inspection_modal.html' %}
+                {% endif %}
+              </ul>
+            </div>
+          </section>
+
+        </aside><!-- /.inspections -->
 
           <div class="row"><div class="col-md-12">
           {% if vehicle %}
-            <h2>Request Inspection</h2>
-            {% if request_inspection %}
-                <p>Your request for an inspection on {{ request_inspection.request_date }} is pending.
-                <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a></p>
-            {% endif %}
-            {% if vehicle.owner.email == user.email %}
-                <form method="get" action="{% url 'pay_for_inspection' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
-                    <input type="submit" class="btn btn-primary" value="Request New Inspection">
-                </form>
-            {% else %}
-                {% if not request_inspection %}
-                    <p>Contact the seller about requesting an inspection.</p>
-                {% endif %}
-            {% endif %}
+            
           {% else %}
             <h2>You shouldn't be seeing this.</h2>
           {% endif %}
           </div></div>
 
-      </div>
 
     </div><!-- /.main -->
 
@@ -64,23 +74,23 @@
                 <dt>You shouldn't be seeing this.</dt>
             {% endif %}
             </dl>
-            <h3>Inspections</h3>
-            <ul>
-                {% for inspection in vehicle.inspection_set.all %}
-                    <li>
-                        <dl class="dl-horizontal">
-                            <dt>Vehicle:</dt><dd><a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle }}</a></dd>
-                            <dt>Date:</dt><dd>{{ inspection.date }}</dd>
-                            <dt>Comments:</dt><dd>{{ inspection.comments }}</dd>
-                            <dt>Views:</dt><dd>{{ inspection.views }}</dd>
-                            <dt>Mechanic:</dt><dd><a href="{% url 'mechanic_detail' inspection.mechanic.pk %}">{{ inspection.mechanic.get_full_name }}</a></dd>
-                        </dl>
-                    </li>
-                {% empty %}
-                    <li>There are no inspections for this vehicle.</li>
-                {% endfor %}
-                <li><a href="#">Change Me</a></li>
-            </ul>
+
+            <h2>Request Inspection</h2>
+            {% if request_inspection %}
+                <p>Your request for an inspection on {{ request_inspection.request_date }} is pending.
+                <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a></p>
+            {% endif %}
+            {% if vehicle.owner.email == user.email %}
+                <form method="get" action="{% url 'pay_for_inspection' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
+                    <input type="submit" class="btn btn-primary" value="Request New Inspection">
+                </form>
+            {% else %}
+                {% if not request_inspection %}
+                    <p>Contact the seller about requesting an inspection.</p>
+                {% endif %}
+            {% endif %}
         </div>
       </section>
 
@@ -88,4 +98,8 @@
   </div><!-- /.content -->
 </div><!-- /.wrap -->
 
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static "js/inspection.js" %}"></script>
 {% endblock %}
