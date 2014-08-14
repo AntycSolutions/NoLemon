@@ -1,4 +1,6 @@
-from django.core.mail import send_mass_mail
+from smtplib import SMTPException
+
+from django.core.mail import mail_admins
 from django.http.response import Http404
 import stripe
 
@@ -31,12 +33,18 @@ def process_stripe(token, cost):
 
 def send_email():
     admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
-    title = "NoLemon - Inspection Request"
+    title = " Inspection Request"
     content = "An inspection request has been made. Please approve.\n"
 
-    datatuple = []
-    for email in admin_emails:
-        datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
-                          [email['email']]))
+    try:
+        mail_admins(title, content, fail_silently=False)
+        return True
+    except:
+        return False
 
-    send_mass_mail(datatuple, fail_silently=False)
+#     datatuple = []
+#     for email in admin_emails:
+#         datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
+#                           [email['email']]))
+#
+#     send_mass_mail(datatuple, fail_silently=False)
