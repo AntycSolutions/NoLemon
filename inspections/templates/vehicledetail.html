@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title %} - Vehicle Detail{% endblock %}
 
@@ -21,13 +21,12 @@
 
         <!-- Inspections -->
         <aside class="sidebar col-sm-12" role="complementary">
-
           <section class="widget nav_menu-2 widget_nav_menu">
             <div>
               <ul>
                 {% for inspection in vehicle.inspection_set.all %}
                   <li>
-                    <dl class="dl-horizontal inspection_select">
+                    <dl class="dl-horizontal inspection_select" id="{{ inspection.pk }}">
                       <dt>Date:</dt><dd>{{ inspection.date }}</dd>
                       <dt>Mechanic:</dt><dd>{{ inspection.mechanic.get_full_name }}</a></dd>
                     </dl>
@@ -37,22 +36,15 @@
                 {% endfor %}
                 {% if not user.is_authenticated or vehicle.owner.email != user.email %}
                 {% include 'inspection_modal.html' %}
+                {% else %}
+                <script type="text/javascript">
+                var owner = true;
+                </script>
                 {% endif %}
               </ul>
             </div>
           </section>
-
         </aside><!-- /.inspections -->
-
-          <div class="row"><div class="col-md-12">
-          {% if vehicle %}
-            
-          {% else %}
-            <h2>You shouldn't be seeing this.</h2>
-          {% endif %}
-          </div></div>
-
-
     </div><!-- /.main -->
 
     <!-- Sidebar -->
@@ -91,7 +83,6 @@
             {% endif %}
         </div>
       </section>
-
     </aside><!-- /.sidebar -->
   </div><!-- /.content -->
 </div><!-- /.wrap -->

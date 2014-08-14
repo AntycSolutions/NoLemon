@@ -1,12 +1,17 @@
 var vin;
 
-
 jQuery().ready(function($){
 	$('.inspection_select').click(function(){
 		$('#stripeButton').attr('disabled', 'disabled');
 		$('input[name=option]').attr('checked', false);
 		$('#inspection_modal').fadeIn("slow");
 		$('#inspection_modal').css('pointer-events', 'auto');
+
+		if (owner){
+			url = "/inspections/" + $(this).attr("id") + "/";
+			window.location = url;
+		}
+
 	});
 
 	$('.close').click(closeModal);
