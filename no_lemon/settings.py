@@ -104,17 +104,24 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "documentation")
 )
 
+# site admins
+ADMINS = (('Tyler', 'tyler.antyc@gmail.com'),
+          ('Andrew', 'charles7@ualberta.ca'))
+
 # email settings
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # prod
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 # dev
 # run "python -m smtpd -n -c DebuggingServer localhost:1025" first
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = 1025
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
 EMAIL_HOST_USER = 'testnolemon'
 EMAIL_HOST_PASSWORD = 'test1'
+
+EMAIL_SUBJECT_PREFIX = '[NoLemon]'
 
 # media
 # prod
