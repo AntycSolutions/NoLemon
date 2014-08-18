@@ -90,7 +90,8 @@ class PaymentView(CreateView):
                     form.fields[field].label
                     + ". " + error)
         return redirect(reverse_lazy('request_inspection_create',
-                                     kwargs={'vin': form.instance.vehicle.vin}))
+                                     kwargs={'vin': form.instance.vehicle.vin}
+                                     ))
 
     def _send_email(self, emails):
         title = "NoLemon - Inspection Request"
