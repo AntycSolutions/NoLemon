@@ -9,7 +9,7 @@ from django.db import models
 
 YEAR_CHOICES = []
 for r in range(1980, (datetime.datetime.now().year+1)):
-    YEAR_CHOICES.append((r,r))
+    YEAR_CHOICES.append((r, r))
 
 
 class BaseUserManager(DjangoBaseUserManager):
@@ -160,7 +160,8 @@ class Vehicle(models.Model):
     owner = models.ForeignKey(Seller)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
-    year = models.IntegerField(max_length=4, choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    year = models.IntegerField(max_length=4, choices=YEAR_CHOICES,
+                               default=datetime.datetime.now().year)
     vin = models.CharField(
         "vehicle identification number", max_length=17, unique=True)
 
