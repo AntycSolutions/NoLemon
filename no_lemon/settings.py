@@ -106,18 +106,17 @@ STATICFILES_DIRS = (
 
 # site admins
 ADMINS = (('Tyler', 'tyler.antyc@gmail.com'),
-          ('Andrew', 'charles7@ualberta.ca'))
+          ('Andrew', 'and.555@gmail.com'))
 
 # email settings
 EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# prod
+# prod, works in dev too
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 # dev
 # run "python -m smtpd -n -c DebuggingServer localhost:1025" first
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = 1025
 EMAIL_HOST_USER = 'testnolemon'
 EMAIL_HOST_PASSWORD = 'test1'
 
