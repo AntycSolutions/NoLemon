@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from django.test import Client, TestCase
 
 from inspections.models import Seller
+from inspections.utilities import send_email
 from inspections.views import home_page
 
 
@@ -56,3 +57,14 @@ class AuthenticationTest(TestCase):
                                     follow=True)
 
         self.assertRedirects(response, '/')
+
+
+class PaymentTest(TestCase):
+
+    pass
+
+
+class EmailTest(TestCase):
+
+    def test_email_admins(self):
+        self.assertTrue(send_email())
