@@ -35,6 +35,9 @@
                     <li>There are no inspections for this vehicle.</li>
                 {% endfor %}
                 {% if not user.is_authenticated or vehicle.owner.email != user.email %}
+                <script type="text/javascript">
+                var owner = false;
+                </script>
                 {% include 'inspection_modal.html' %}
                 {% else %}
                 <script type="text/javascript">
