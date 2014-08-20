@@ -8,7 +8,7 @@ from django.db import models
 
 
 YEAR_CHOICES = []
-for r in range(1980, (datetime.datetime.now().year+1)):
+for r in range(1980, (datetime.datetime.now().year + 1)):
     YEAR_CHOICES.append((r, r))
 
 
@@ -191,7 +191,7 @@ class Inspection(models.Model):
             + " " + str(self.vehicle)
 
 
-class RequestInspection(models.Model):
+class InspectionRequest(models.Model):
     vehicle = models.ForeignKey(Vehicle)
     seller = models.ForeignKey(Seller)
     mechanic = models.ForeignKey(Mechanic)
@@ -199,3 +199,11 @@ class RequestInspection(models.Model):
 
     def __str__(self):
         return str(self.vehicle) + " " + str(self.seller)
+
+
+class Receipt(models.Model):
+
+    number = models.PositiveIntegerField(primary_key=True,
+                                         verbose_name="Receipt Number")
+    inspection = models.ForeignKey(Inspection)
+    name = models.TextField(help_text="Your Name")

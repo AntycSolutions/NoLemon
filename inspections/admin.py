@@ -12,7 +12,7 @@ from .forms.registration import BaseUserCreationForm, \
     BaseUserChangeForm, SellerChangeForm, \
     MechanicChangeForm
 from .models import BaseUser, Seller, Mechanic, \
-    Vehicle, Inspection, RequestInspection
+    Vehicle, Inspection, InspectionRequest
 
 
 class BaseUserAdmin(UserAdmin):
@@ -96,7 +96,7 @@ admin.site.register(Mechanic, MechanicAdmin)
 
 admin.site.register(Vehicle)
 admin.site.register(Inspection)
-admin.site.register(RequestInspection)
+admin.site.register(InspectionRequest)
 
 admin.site.unregister(Group)
 admin.site.unregister(Site)

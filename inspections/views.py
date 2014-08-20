@@ -10,7 +10,7 @@ from reportlab.pdfgen import canvas
 
 from .forms.request_inspection import RequestInspectionForm
 from .forms.video import VideoForm
-from .models import Inspection, RequestInspection, Mechanic, Vehicle
+from .models import Inspection, InspectionRequest, Mechanic, Vehicle
 
 
 def home_page(request):
@@ -57,7 +57,7 @@ class InspectionDetail(DetailView):
 
 
 class RequestInspectionUpdateView(UpdateView):
-    model = RequestInspection
+    model = InspectionRequest
     success_url = reverse_lazy('vehicle_list')
     form_class = RequestInspectionForm
 
@@ -71,7 +71,7 @@ class RequestInspectionUpdateView(UpdateView):
 
 
 def create_request_inspection_pdf(request, vin, pk):
-    request_inspection = RequestInspection.objects.get(pk=pk)
+    request_inspection = InspectionRequest.objects.get(pk=pk)
 
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')

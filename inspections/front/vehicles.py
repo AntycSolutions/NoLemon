@@ -12,7 +12,7 @@ from no_lemon import settings
 
 from ..forms.request_inspection import RequestInspectionForm
 from ..forms.vehicle import VehicleCreationForm
-from ..models import Vehicle, Seller, RequestInspection
+from ..models import Vehicle, Seller, InspectionRequest
 
 
 class VehicleList(ListView):
@@ -33,7 +33,7 @@ class VehicleDetail(DetailView):
         request_inspection = None
         try:
             seller = Seller.objects.get(email=self.request.user.email)
-            requests = RequestInspection.objects.filter(seller=seller,
+            requests = InspectionRequest.objects.filter(seller=seller,
                                                         vehicle=self.object
                                                         )
             if requests.count() > 0:

@@ -1,6 +1,6 @@
 from django import forms
 
-from ..models import RequestInspection
+from ..models import InspectionRequest
 
 
 class RequestInspectionForm(forms.ModelForm):
@@ -8,4 +8,4 @@ class RequestInspectionForm(forms.ModelForm):
                                        'readonly': 'readonly'}))
 
     class Meta:
-        model = RequestInspection
+        model = InspectionRequest

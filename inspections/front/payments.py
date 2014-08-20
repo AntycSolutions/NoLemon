@@ -4,20 +4,19 @@ from django import forms
 from django.contrib import messages
 from django.core.mail import send_mass_mail
 from django.core.urlresolvers import reverse_lazy
-from django.http.response import Http404
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 
 from inspections.forms.request_inspection import RequestInspectionForm
-from inspections.models import RequestInspection, Seller, Vehicle, BaseUser,\
-    Mechanic
-from inspections.utilities import process_stripe
+from inspections.models import InspectionRequest, Seller, Vehicle,\
+    Mechanic, Receipt
+from inspections.utilities import process_stripe, send_email
 from no_lemon import settings
 
 
 class PaymentView(CreateView):
 
-    model = RequestInspection
+    model = InspectionRequest
     success_url = reverse_lazy('vehicle_list')
     form_class = RequestInspectionForm
     template_name = 'requestinspection.html'
@@ -67,8 +66,9 @@ class PaymentView(CreateView):
         return super(PaymentView, self).post(request, args, kwargs)
 
     def form_valid(self, form):
-        admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
-        self._send_email(admin_emails)
+        #         admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
+        #         self._send_email(admin_emails)
+        send_email()
         messages.add_message(
             self.request, messages.SUCCESS,
             "You've successfully requested an inspection for "
@@ -103,3 +103,9 @@ class PaymentView(CreateView):
                               [email['email']]))
 
         send_mass_mail(datatuple, fail_silently=False)
+
+
+class PayToView(CreateView):
+    template_name = "payment.html"
+    success_url = "/"
+    model = Receipt
