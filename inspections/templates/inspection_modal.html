@@ -1,17 +1,27 @@
 {% load staticfiles %}
+{% load add_css %}
+
 <div id="inspection_modal" class="modalDialog">
 	<div>
 		<div title="Close" class="close">X</div>
 
 		<p>You must pay to view this inspection! (Please change this text)</p>
 
-		<form id="inspection_select_form" method="POST" action="/poop/">
+		<form id="inspection_select_form" method="POST" action="{% url 'pay_to_view' %}">
 		{% csrf_token %}
+		{{ receipt_form }}
+		<!--
 		<input type="radio" name="option" value="1" placeholder="Option #1">Option #1 : $37.00 CAR PROOF REPORT<br>
 		<input type="radio" name="option" value="2" placeholder="Option #2">Option #2 : $29.99 Expert Car Condition Inspection Report and Video<br>
 		<input type="radio" name="option" value="3" placeholder="Option #3"> Option #3:  $56.00 Car Proof + Expert Car Condition Inspection Report and Video (Value Pack)<br><br>
+		<input type="text" name="name" value="" placeholder="Enter your name">
+		<input type="email" name="email" value="" placeholder="Enter your e-mail">
+		<input type="hidden" name="inspection" value="">
+		<br><br>
+		-->
 		<script src="https://checkout.stripe.com/checkout.js"></script>
-		<button id="stripeButton" type="submit" disabled>Pay</button>
+		<input id="stripeButton" type="submit" value="Pay" disabled>
+		{# <button id="stripeButton" type="submit" disabled>Pay</button> #}
 		<script type="text/javascript">
 			var option1 = {{ option1 }};
 			var option2 = {{ option2 }};
