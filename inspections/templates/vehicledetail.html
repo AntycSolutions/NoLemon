@@ -56,6 +56,7 @@
       <section class="widget nav_menu-2 widget_nav_menu">
         <div>
             <h3>Vehicle Information</h3>
+            <ul><li>
             <dl class="dl-horizontal">
             {% if vehicle %}
                 <dt>VIN:</dt><dd>{{ vehicle.vin }}</dd>
@@ -67,8 +68,10 @@
                 <dt>You shouldn't be seeing this.</dt>
             {% endif %}
             </dl>
+            </li></ul>
 
-            <h2>Request Inspection</h2>
+            <h3>Request Inspection</h3>
+            <ul><li>
             {% if request_inspection %}
                 <p>Your request for an inspection on {{ request_inspection.request_date }} is pending.
                 <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a></p>
@@ -84,6 +87,7 @@
                     <p>Contact the seller about requesting an inspection.</p>
                 {% endif %}
             {% endif %}
+            </li></ul>
         </div>
       </section>
     </aside><!-- /.sidebar -->
