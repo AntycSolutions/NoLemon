@@ -106,7 +106,7 @@ def populate():
         vehicles = Vehicle.objects.all()
         vehicle = random.choice(vehicles)
         comment = random.choice(comment_choices)
-        inspection = add_inspection(x-1, mech, vehicle, comment, now, 0)
+        inspection = add_inspection(x, mech, vehicle, comment, now, 0)
     print("... Inspections added.\n")
 
     print_all_sellers()

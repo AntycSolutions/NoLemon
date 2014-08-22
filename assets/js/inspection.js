@@ -15,7 +15,9 @@ jQuery().ready(function($){
 		$('#inspection_modal').fadeIn("slow");
 		$('#inspection_modal').css('pointer-events', 'auto');
 		$('input[name=inspection]').attr('value', id);
-		// $('#id_inspection option').eq(id).prop('selected', true);
+		$('input[type=radio').hide();
+		$('#id_inspection option[value=' + id + ']').prop('selected', true);
+		$('#inspection_select_form').trigger('reset');
 	});
 
 	$('.close').click(closeModal);
@@ -28,6 +30,8 @@ jQuery().ready(function($){
 
 	$('input[name=payment_level]').on('click', function(e){
 		$('#stripeButton').removeAttr('disabled');
+		$('li').css('background-color', 'white');
+		$(this).parent().parent().css('background-color', "blue");
 	});
 
 	$('#stripeButton').click(function(e){
@@ -39,6 +43,8 @@ jQuery().ready(function($){
 		    token: function(token) {
 		      // Use the token to create the charge with a server-side script.
 		      // You can access the token ID with `token.id`
+		      $('inspection_select_form').append($('<input type="hidden" name="stripeToken" />').val(token));
+		      $('#inspection_select_form').submit();
 		    }
 		  });
 		value = $('input[name=payment_level]:checked', '#inspection_select_form').val(); 

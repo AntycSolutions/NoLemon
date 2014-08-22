@@ -109,3 +109,8 @@ class PayToView(CreateView):
     template_name = "payment.html"
     success_url = "/"
     model = Receipt
+
+    def post(self, request, *args, **kwargs):
+        print("You talkin'a me?? With this?? ")
+        print(request.POST)
+        return super(PayToView, self).post(request, *args, **kwargs)

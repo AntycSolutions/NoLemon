@@ -9,20 +9,17 @@
 
 		<form id="inspection_select_form" method="POST" action="{% url 'pay_to_view' %}">
 		{% csrf_token %}
-		<select id="id_inspection" name="Inspection">
-			{% for inspection in receipt_form.fields.inspection.choices %}
-				<option value="{{ inspection.0 }}">{{ inspection }}</option>
-			{% endfor %}
-		</select>
-		<!--
-		<input type="radio" name="option" value="1" placeholder="Option #1">Option #1 : $37.00 CAR PROOF REPORT<br>
-		<input type="radio" name="option" value="2" placeholder="Option #2">Option #2 : $29.99 Expert Car Condition Inspection Report and Video<br>
-		<input type="radio" name="option" value="3" placeholder="Option #3"> Option #3:  $56.00 Car Proof + Expert Car Condition Inspection Report and Video (Value Pack)<br><br>
-		<input type="text" name="name" value="" placeholder="Enter your name">
-		<input type="email" name="email" value="" placeholder="Enter your e-mail">
-		<input type="hidden" name="inspection" value="">
-		<br><br>
-		-->
+		{% for field in receipt_form %}
+		{% if field|gettype != "HiddenInput" %}
+		    <div class="form-group">
+		        {{ field.errors }}
+		        {{ field.label_tag }}
+		        {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+		    </div>
+	    {% else %}
+	    	{{ field }}
+	    {% endif %}
+		{% endfor %}
 		<script src="https://checkout.stripe.com/checkout.js"></script>
 		<input id="stripeButton" type="submit" value="Pay" disabled>
 		{# <button id="stripeButton" type="submit" disabled>Pay</button> #}
