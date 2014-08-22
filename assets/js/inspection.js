@@ -1,4 +1,5 @@
 var vin;
+var id;
 
 jQuery().ready(function($){
 	$('.inspection_select').click(function(){
@@ -14,6 +15,7 @@ jQuery().ready(function($){
 		$('#inspection_modal').fadeIn("slow");
 		$('#inspection_modal').css('pointer-events', 'auto');
 		$('input[name=inspection]').attr('value', id);
+		// $('#id_inspection option').eq(id).prop('selected', true);
 	});
 
 	$('.close').click(closeModal);

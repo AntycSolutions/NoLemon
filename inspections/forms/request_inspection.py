@@ -1,5 +1,7 @@
 from django import forms
 
+from inspections.models import Inspection
+
 from ..models import InspectionRequest, Receipt
 
 
@@ -16,9 +18,12 @@ class ReceiptForm(forms.ModelForm):
                           (2, 'Option #2: $37.00 CAR PROOF REPORT'),
                           (3, 'Option #3: $56.00 Car Proof + Expert Car Condition Inspection Report and Video (Value Pack)')]
 
+    INSPECTIONS = [(i.id, i.__str__()) for i in Inspection.objects.all()]
+
     payment_level = forms.ChoiceField(widget=forms.RadioSelect,
                                       choices=INSPECTION_CHOICES)
     number = forms.IntegerField(widget=forms.HiddenInput)
+    inspection = forms.ChoiceField(choices=INSPECTIONS)
 
     class Meta:
         model = Receipt
