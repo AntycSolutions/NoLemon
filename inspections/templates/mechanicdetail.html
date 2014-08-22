@@ -23,19 +23,19 @@
     <div class="main col-sm-8" role="main">
 
       <div class="page-header">
-        <h1>Maps</h1>
+        <h1>Location</h1>
       </div>
 
       <div class="page-main">
 
           <div class="row"><div class="col-md-12">
-          {% if mechanic %}
-            <h2>Interactive</h2>
-            <p>Interactive map displaying mechanic's location.</p>
-            <div style="height: 640px; width: 640px" id="map-canvas"></div>
-          {% else %}
-            <h2>You shouldn't be seeing this.</h2>
-          {% endif %}
+            {% if mechanic %}
+              <h2>Google Maps</h2>
+              <p>Interactive map displaying mechanic's location.</p>
+              <div style="height: 640px; width: 640px" id="map-canvas"></div>
+            {% else %}
+              <h2>You shouldn't be seeing this.</h2>
+            {% endif %}
           </div></div>
 
       </div>
@@ -48,23 +48,34 @@
       <section class="widget nav_menu-2 widget_nav_menu">
         <div>
           <h3>Mechanic Information</h3>
+          <ul><li>
           <dl class="dl-horizontal">
             {% if mechanic %}
-                    <dt>Email address:</dt><dd>{{ mechanic.email }}</dd>
-                    <dt>First name:</dt><dd>{{ mechanic.first_name }}</dd>
-                    <dt>Last name:</dt><dd>{{ mechanic.last_name }}</dd>
-                    <dt>Phone number:</dt><dd>{{ mechanic.phone_number }}</dd>
-                    <dt>Address:</dt><dd><a href="https://www.google.ca/maps/place/{{ intera_map }}">{{ mechanic.full_address }}</a></dd>
-                <script type="text/javascript">
-                    addresses.push("{{ intera_map }}");
-                </script>
+              <style>
+                /* bs3 has limits on text, embiggen them */
+                .dl-horizontal dt { width: 135px; }
+                .dl-horizontal dd { margin-left: 155px;}
+              </style>
+              <dt>Email address:</dt><dd>{{ mechanic.email }}</dd>
+              <dt>First name:</dt><dd>{{ mechanic.first_name }}</dd>
+              <dt>Last name:</dt><dd>{{ mechanic.last_name }}</dd>
+              <dt>Phone number:</dt><dd>{{ mechanic.phone_number }}</dd>
+              <dt>Address:</dt><dd><a href="https://www.google.ca/maps/place/{{ intera_map }}">{{ mechanic.full_address }}</a></dd>
+              <script type="text/javascript">
+                addresses.push("{{ intera_map }}");
+              </script>
             {% else %}
-                <dt>You shouldn't be seeing this.</dt>
+              <dt>You shouldn't be seeing this.</dt>
             {% endif %}
           </dl>
-          <ul>
-            <li><a href="#">Change Me</a></li>
-          </ul>
+          </li></ul>
+          {% if mechanic and mechanic.email == user.email%}
+            <h3>Update Your Account</h3>
+            <ul><li>
+            <!-- TODO: update mechanic account -->
+              <p><a href="{% url 'update_seller' %}">Click Here</a></p>
+            </li></ul>
+          {% endif %}
         </div>
       </section>
 
