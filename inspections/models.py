@@ -183,6 +183,10 @@ class Inspection(models.Model):
     vehicle = models.ForeignKey(Vehicle)
     video = models.FileField(upload_to='inspections/%Y/%m/%d',
                              null=True, blank=True)
+    report = models.FileField(upload_to='inspections/%Y/%m/%d',
+                              null=True, blank=True)
+    vehicle_history = models.FileField(upload_to='inspections/%Y/%m/%d',
+                                       null=True, blank=True)
 
     def __str__(self):
         return self.comments \
