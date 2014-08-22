@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} - Seller Detail{% endblock %}
+{% block title %} - Admin Detail{% endblock %}
 
 {% block content %}
 
@@ -15,18 +15,32 @@
     <div class="main col-sm-8" role="main">
 
       <div class="page-header">
-        <h1>Seller's Vehicles</h1>
+        <h1>Administration</h1>
       </div>
 
       <div class="page-main">
 
-        <ul>
-            {% for vehicle in seller.vehicle_set.all %}
-                <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
+        <div class="row"><div class="col-md-12">
+          <h2>Inspections</h2>
+          <p>The following inspections require a vehicle history to be added.</p>
+          <ul>
+            {% for inspection in inspections %}
+                <li>Comments: {{ inspection.comments }} Vehicle: {{ inspection.vehicle }}</li>
             {% empty %}
-                <li>There are no vehicles owned by this seller.</li>
+                <li>There are no inspections that require vehicle history.</li>
             {% endfor %}
-        </ul>
+          </ul>
+          <p>&nbsp;</p>
+          <h2>Accounts</h2>
+          <p>The following accounts require approval.</p>
+          <ul>
+            {% for base_user in base_users %}
+                <li>Email: {{ base_user.email }}</li>
+            {% empty %}
+                <li>There are no accounts that require approval.</li>
+            {% endfor %}
+          </ul>
+        </div></div>
 
       </div>
 
@@ -37,26 +51,27 @@
 
       <section class="widget nav_menu-2 widget_nav_menu">
         <div>
-          <h3>Seller Information</h3>
+          <h3>Admin Information</h3>
           <ul><li>
             <dl class="dl-horizontal">
-              {% if seller %}
+              {% if baseuser %}
               <style>
                 /* bs3 has limits on text, embiggen them */
                 .dl-horizontal dt { width: 125px; }
                 .dl-horizontal dd { margin-left: 145px;}
               </style>
-                <dt>First name:</dt><dd>{{ seller.first_name }}</dd>
-                <dt>Last name:</dt><dd>{{ seller.last_name }}</dd>
-                <dt>Email address:</dt><dd>{{ seller.email }}</dd>
+                <dt>First name:</dt><dd>{{ baseuser.first_name }}</dd>
+                <dt>Last name:</dt><dd>{{ baseuser.last_name }}</dd>
+                <dt>Email address:</dt><dd>{{ baseuser.email }}</dd>
               {% else %}
                 <dt>You shouldn't be seeing this.</dt>
               {% endif %}
             </dl>
           </li></ul>
-          {% if seller and seller.email == user.email%}
+          {% if baseuser and baseuser.email == user.email %}
             <h3>Update Your Account</h3>
             <ul><li>
+            <!-- TODO: update admin account -->
               <p><a href="{% url 'update_seller' %}">Click Here</a></p>
             </li></ul>
           {% endif %}

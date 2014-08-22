@@ -11,9 +11,10 @@ from inspections.front.mechanics import MechanicList, MechanicDetail
 from inspections.front.payments import PaymentView
 from inspections.front.sellers import SellerList, SellerDetail
 from inspections.front.statistics import Statistics
-from inspections.front.vehicles import VehicleDetail, VehicleList, VehicleCreationView
+from inspections.front.vehicles import VehicleDetail, VehicleList, \
+    VehicleCreationView
 from inspections.views import InspectionList, InspectionDetail, \
-    RequestInspectionUpdateView
+    RequestInspectionUpdateView, BaseUserDetail
 admin.autodiscover()
 
 
@@ -110,6 +111,8 @@ urlpatterns = patterns(
     url(r'^inspections/', include(inspection_patterns)),
     url(r'^sellers/', include(seller_patterns)),
     url(r'^mechanics/', include(mechanic_patterns)),
+    url(r'^admins/(?P<pk>.+)/$', BaseUserDetail.as_view(),
+        name='base_user_detail'),
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
     #     url(r'^payments/', include(payment_patterns)),
     url(r'^requests/', include(request_inspection_patterns)),

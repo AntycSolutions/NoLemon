@@ -23,19 +23,19 @@
     <div class="main col-sm-8" role="main">
 
       <div class="page-header">
-        <h1>Maps</h1>
+        <h1>Locations</h1>
       </div>
 
       <div class="page-main">
 
           <div class="row"><div class="col-md-12">
-          {% if mechanics.count >= 1 %}
-            <h2>Interactive</h2>
-            <p>Interactive map displaying mechanics' location.</p>
-            <div style="height: 640px; width: 640px" id="map-canvas"></div>
-          {% else %}
-            <h2>There are no mechanics here.</h2>
-          {% endif %}
+            {% if mechanics.count >= 1 %}
+              <h2>Google Maps</h2>
+              <p>Interactive map displaying mechanics' location.</p>
+              <div style="height: 640px; width: 640px" id="map-canvas"></div>
+            {% else %}
+              <h2>There are no mechanics here.</h2>
+            {% endif %}
           </div></div>
 
       </div>
@@ -51,7 +51,7 @@
             <ul>
             {% for mechanic in mechanics %}
                 <li>
-                    <div  class="mechanic_li mech_select">
+                    <div class="mechanic_li mech_select">
                       <strong>{{ mechanic.label }}</strong>
                       <div id="mech_id" style="display: none">{{ mechanic.id }}</div>
                       <div><b>Mechanic Name:</b> {{ mechanic.get_full_name }}</div>
@@ -68,9 +68,6 @@
             {% empty %}
                <li>There are no mechanics here.</li>
             {% endfor %}
-            </ul>
-            <ul>
-                <li><a href="#">Change Me</a></li>
             </ul>
         </div>
       </section>

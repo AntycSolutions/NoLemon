@@ -12,29 +12,36 @@
   <!-- Content -->
   <div class="content row">
     <!-- Main -->
-    <div class="main col-sm-8" role="main">
+    <div class="main col-sm-12" role="main">
 
       <div class="page-header">
-        <h1>Title</h1>
+        <h1>Seller List</h1>
       </div>
 
       <div class="page-main">
 
-          <div class="row"><div class="col-md-12">
+          <ul>
+            {% for seller in sellers %}
+                <li>Email address: <a href="{% url 'seller_detail' seller.pk %}">{{ seller.email }}</a></li>
+            {% empty %}
+               <li>There are no sellers here.</li>
+            {% endfor %}
+          </ul>
+          <!-- <div class="row"><div class="col-md-12">
           {% if sellers.count >= 1 %}
             <h2>Change Me</h2>
             <p>Change Me</p>
           {% else %}
             <h2>There are no sellers here.</h2>
           {% endif %}
-          </div></div>
+          </div></div> -->
 
       </div>
 
     </div><!-- /.main -->
 
     <!-- Sidebar -->
-    <aside class="sidebar col-sm-4" role="complementary">
+    <!-- <aside class="sidebar col-sm-4" role="complementary">
 
       <section class="widget nav_menu-2 widget_nav_menu">
         <div>
@@ -52,7 +59,8 @@
         </div>
       </section>
 
-    </aside><!-- /.sidebar -->
+    </aside> --><!-- /.sidebar -->
+
   </div><!-- /.content -->
 </div><!-- /.wrap -->
 

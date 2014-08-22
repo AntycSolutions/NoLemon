@@ -35,14 +35,14 @@
                     <li>There are no inspections for this vehicle.</li>
                 {% endfor %}
                 {% if not user.is_authenticated or vehicle.owner.email != user.email %}
-                <script type="text/javascript">
-                var owner = false;
-                </script>
-                {% include 'inspection_modal.html' %}
+                  <script type="text/javascript">
+                    var owner = false;
+                  </script>
+                  {% include 'inspection_modal.html' %}
                 {% else %}
-                <script type="text/javascript">
-                var owner = true;
-                </script>
+                  <script type="text/javascript">
+                    var owner = true;
+                  </script>
                 {% endif %}
               </ul>
             </div>
@@ -56,6 +56,7 @@
       <section class="widget nav_menu-2 widget_nav_menu">
         <div>
             <h3>Vehicle Information</h3>
+            <ul><li>
             <dl class="dl-horizontal">
             {% if vehicle %}
                 <dt>VIN:</dt><dd>{{ vehicle.vin }}</dd>
@@ -63,12 +64,15 @@
                 <dt>Make:</dt><dd>{{ vehicle.make }}</dd>
                 <dt>Model:</dt><dd>{{ vehicle.model }}</dd>
                 <dt>Year:</dt><dd>{{ vehicle.year }}</dd>
+                <dt>Photo:</dt><dd>{{ vehicle.photo }}</dd>
             {% else %}
                 <dt>You shouldn't be seeing this.</dt>
             {% endif %}
             </dl>
+            </li></ul>
 
-            <h2>Request Inspection</h2>
+            <h3>Request Inspection</h3>
+            <ul><li>
             {% if request_inspection %}
                 <p>Your request for an inspection on {{ request_inspection.request_date }} is pending.
                 <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a></p>
@@ -84,6 +88,7 @@
                     <p>Contact the seller about requesting an inspection.</p>
                 {% endif %}
             {% endif %}
+            </li></ul>
         </div>
       </section>
     </aside><!-- /.sidebar -->
