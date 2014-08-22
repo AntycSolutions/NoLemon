@@ -21,19 +21,19 @@ def populate():
 
     print("Creating Mechanics...")
     sarahMechanic = add_mechanic(
-        "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801",
+        "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801234567",
         "123 st nw", "edmonton", "ab")
     andreMechanic = add_mechanic(
-        "andre@mechanic.ca", "Andre", "Andreson", password, "7802",
+        "andre@mechanic.ca", "Andre", "Andreson", password, "7802345678",
         "23 st nw", "edmonton", "ab")
     barryMechanic = add_mechanic(
-        "barry@mechanic.ca", "Barry", "Barryson", password, "7803",
+        "barry@mechanic.ca", "Barry", "Barryson", password, "7803456789",
         "83 st nw", "edmonton", "ab")
     susanMechanic = add_mechanic(
-        "susan@mechanic.ca", "Susan", "Susanson", password, "7804",
+        "susan@mechanic.ca", "Susan", "Susanson", password, "7804567890",
         "123 ave nw", "edmonton", "ab")
     wendyMechanic = add_mechanic(
-        "wendy@mechanic.ca", "Wendy", "Wendyson", password, "7805",
+        "wendy@mechanic.ca", "Wendy", "Wendyson", password, "7805678901",
         "23 ave nw", "edmonton", "ab")
     print("... Mechanics added.")
 
@@ -79,17 +79,17 @@ def populate():
                                       'MKC',
                                       'MKS']}
     for x in range(15):
-        vin = random.randint(100,999)
+        vin = random.randint(100, 999)
         owner = random.choice(Seller.objects.all())
         keys = [key for key in make_model_choices.keys()]
         make = random.choice(keys)
         model = random.choice(make_model_choices[make])
-        years = [year for year in range(1950,2014)]
+        years = [year for year in range(1950, 2014)]
         year = random.choice(years)
-        
+
         vehicle = add_vehicle(vin, owner, make, model, year)
-    print("...Vehicles added.")
-    
+    print("... Vehicles added.")
+
     print("Creating Inspections...")
     now = datetime.datetime.now()
     comment_choices = ['Good',
@@ -170,7 +170,7 @@ def add_vehicle(vin, owner, make, model, year):
         return vehicle
     except:
         pass
-        
+
     vehicle, created = Vehicle.objects.get_or_create(
         vin=vin, owner=owner,
         make=make, model=model, year=year
