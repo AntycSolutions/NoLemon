@@ -23,18 +23,30 @@
     <div class="main col-sm-8" role="main">
 
       <div class="page-header">
-        <h1>Location</h1>
+        <h1>
+          {% if mechanic and not mechanic.email == user.email%}
+            Location
+          {% else %}
+            Dashboard
+          {% endif %}
+        </h1>
       </div>
 
       <div class="page-main">
 
           <div class="row"><div class="col-md-12">
-            {% if mechanic %}
+            {% if mechanic and not mechanic.email == user.email%}
               <h2>Google Maps</h2>
               <p>Interactive map displaying mechanic's location.</p>
               <div style="height: 640px; width: 640px" id="map-canvas"></div>
             {% else %}
-              <h2>You shouldn't be seeing this.</h2>
+              <h2>Inspections</h2>
+              <p>The following inspections are pending.</p>
+              <ul>
+                {% for inspection in mechanic.inspection_set.all %}
+                  <li>Comments: {{ inspection.comments }} Vehicle: {{ inspection.vehicle }}</li>
+                {% endfor %}
+              </ul>
             {% endif %}
           </div></div>
 
