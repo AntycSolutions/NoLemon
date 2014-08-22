@@ -15,22 +15,18 @@
     <div class="main col-sm-8" role="main">
 
       <div class="page-header">
-        <h1>Title</h1>
+        <h1>Seller's Vehicles</h1>
       </div>
 
       <div class="page-main">
 
-          <div class="row"><div class="col-md-12">
-          {% if seller %}
-            {% if seller.email == user.email %}
-              <p>&nbsp;</p>
-              <h2>Update Your Account</h2>
-              <p><a href="{% url 'update_seller' %}">Click Here</a></p>
-            {% endif %}
-          {% else %}
-            <h2>You shouldn't be seeing this.</h2>
-          {% endif %}
-          </div></div>
+        <ul>
+            {% for vehicle in seller.vehicle_set.all %}
+                <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
+            {% empty %}
+                <li>There are no vehicles owned by this seller.</li>
+            {% endfor %}
+        </ul>
 
       </div>
 
@@ -42,23 +38,28 @@
       <section class="widget nav_menu-2 widget_nav_menu">
         <div>
           <h3>Seller Information</h3>
-          <dl class="dl-horizontal">
-            {% if seller %}
-                    <dt>First name:</dt><dd>{{ seller.first_name }}</dd>
-                    <dt>Last name:</dt><dd>{{ seller.last_name }}</dd>
-                    <dt>Email address:</dt><dd>{{ seller.email }}</dd>
-            {% else %}
+          <ul><li>
+            <dl class="dl-horizontal">
+              {% if seller %}
+              <style>
+                /* bs3 has limits on text, embiggen them */
+                .dl-horizontal dt { width: 125px; }
+                .dl-horizontal dd { margin-left: 145px;}
+              </style>
+                <dt>First name:</dt><dd>{{ seller.first_name }}</dd>
+                <dt>Last name:</dt><dd>{{ seller.last_name }}</dd>
+                <dt>Email address:</dt><dd>{{ seller.email }}</dd>
+              {% else %}
                 <dt>You shouldn't be seeing this.</dt>
-            {% endif %}
-          </dl>
-          <ul>
-            {% for vehicle in seller.vehicle_set.all %}
-                <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
-            {% empty %}
-                <li>There are no vehicles owned by this seller.</li>
-            {% endfor %}
-            <li><a href="#">Change Me</a></li>
-          </ul>
+              {% endif %}
+            </dl>
+          </li></ul>
+          {% if seller and seller.email == user.email%}
+            <h3>Update Your Account</h3>
+            <ul><li>
+              <p><a href="{% url 'update_seller' %}">Click Here</a></p>
+            </li></ul>
+          {% endif %}
         </div>
       </section>
 
