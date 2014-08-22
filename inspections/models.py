@@ -164,6 +164,8 @@ class Vehicle(models.Model):
                                default=datetime.datetime.now().year)
     vin = models.CharField(
         "vehicle identification number", max_length=17, unique=True)
+    photo = models.ImageField(upload_to='inspections/%Y/%m/%d',
+                              null=True, blank=True)
 
     def __str__(self):
         return self.vin \
