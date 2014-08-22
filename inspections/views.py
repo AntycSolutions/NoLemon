@@ -189,4 +189,6 @@ class BaseUserDetail(DetailView):
             return redirect(reverse_lazy('home'), self.context)
         self.context['inspections'] = Inspection.objects.filter(
             vehicle_history__isnull=False)
+        self.context['base_users'] = BaseUser.objects.filter(
+            is_active=False)
         return self.render_to_response(self.context)
