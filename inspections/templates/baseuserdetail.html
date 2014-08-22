@@ -30,6 +30,16 @@
                 <li>There are no inspections that require vehicle history.</li>
             {% endfor %}
           </ul>
+          <p>&nbsp;</p>
+          <h2>Accounts</h2>
+          <p>The following accounts require approval.</p>
+          <ul>
+            {% for base_user in base_users %}
+                <li>Email: {{ base_user.email }}</li>
+            {% empty %}
+                <li>There are no accounts that require approval.</li>
+            {% endfor %}
+          </ul>
         </div></div>
 
       </div>
