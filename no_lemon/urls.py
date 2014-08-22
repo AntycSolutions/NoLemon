@@ -30,7 +30,7 @@ request_inspection_patterns = patterns(
         login_required(RequestInspectionUpdateView.as_view()),
         name='request_inspection_update'),
     url(r'^(?P<pk>\d+)/print/$',
-        login_required('inspections.views.create_request_inspection_pdf'),
+        'inspections.views.create_request_inspection_pdf',
         name='print_request_inspection')
 )
 

@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from django.views.generic import ListView, DetailView, UpdateView
+from django.contrib.auth.decorators import login_required
+
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
@@ -70,6 +72,7 @@ class RequestInspectionUpdateView(UpdateView):
         return super(RequestInspectionUpdateView, self).form_valid(form)
 
 
+@login_required
 def create_request_inspection_pdf(request, vin, pk):
     request_inspection = InspectionRequest.objects.get(pk=pk)
 
