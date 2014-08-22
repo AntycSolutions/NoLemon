@@ -10,7 +10,7 @@ from reportlab.pdfgen import canvas
 
 from .forms.request_inspection import RequestInspectionForm
 from .forms.video import VideoForm
-from .models import Inspection, InspectionRequest, Mechanic, Vehicle
+from .models import Inspection, InspectionRequest, Mechanic, Vehicle, BaseUser
 
 
 def home_page(request):
@@ -170,3 +170,23 @@ def test_video(request):
         {'inspections': inspections, 'form': form},
         context_instance=RequestContext(request)
     )
+
+
+class BaseUserDetail(DetailView):
+    template_name = 'baseuserdetail.html'
+    model = BaseUser
+
+    def get(self, request, *args, **kwargs):
+        self.context = None
+        try:
+            self.object = self.get_object()
+            self.context = self.get_context_data(object=self.object)
+        except:
+            messages.add_message(
+                request, messages.ERROR,
+                "We're sorry, we don't seem to have any admins "
+                "you're looking for.")
+            return redirect(reverse_lazy('home'), self.context)
+        self.context['inspections'] = Inspection.objects.filter(
+            vehicle_history__isnull=False)
+        return self.render_to_response(self.context)
