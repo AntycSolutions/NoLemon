@@ -35,14 +35,14 @@
                     <li>There are no inspections for this vehicle.</li>
                 {% endfor %}
                 {% if not user.is_authenticated or vehicle.owner.email != user.email %}
-                <script type="text/javascript">
-                var owner = false;
-                </script>
-                {% include 'inspection_modal.html' %}
+                  <script type="text/javascript">
+                    var owner = false;
+                  </script>
+                  {% include 'inspection_modal.html' %}
                 {% else %}
-                <script type="text/javascript">
-                var owner = true;
-                </script>
+                  <script type="text/javascript">
+                    var owner = true;
+                  </script>
                 {% endif %}
               </ul>
             </div>
@@ -64,6 +64,7 @@
                 <dt>Make:</dt><dd>{{ vehicle.make }}</dd>
                 <dt>Model:</dt><dd>{{ vehicle.model }}</dd>
                 <dt>Year:</dt><dd>{{ vehicle.year }}</dd>
+                <dt>Photo:</dt><dd>{{ vehicle.photo }}</dd>
             {% else %}
                 <dt>You shouldn't be seeing this.</dt>
             {% endif %}
