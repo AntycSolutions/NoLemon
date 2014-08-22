@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %} - Admin Detail{% endblock %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+<!-- Wrap -->
+<div class="wrap container" role="document">
+  {% include 'messages.html' %}
+  <!-- Content -->
+  <div class="content row">
+    <!-- Main -->
+    <div class="main col-sm-8" role="main">
+
+      <div class="page-header">
+        <h1>Administration</h1>
+      </div>
+
+      <div class="page-main">
+
+        <div class="row"><div class="col-md-12">
+          <h2>Inspections</h2>
+          <p>The following inspections require a vehicle history to be added.</p>
+          <ul>
+            {% for inspection in inspections %}
+                <li>Comments: {{ inspection.comments }} Vehicle: {{ inspection.vehicle }}</li>
+            {% empty %}
+                <li>There are no inspections that require vehicle history.</li>
+            {% endfor %}
+          </ul>
+        </div></div>
+
+      </div>
+
+    </div><!-- /.main -->
+
+    <!-- Sidebar -->
+    <aside class="sidebar col-sm-4" role="complementary">
+
+      <section class="widget nav_menu-2 widget_nav_menu">
+        <div>
+          <h3>Admin Information</h3>
+          <ul><li>
+            <dl class="dl-horizontal">
+              {% if baseuser %}
+              <style>
+                /* bs3 has limits on text, embiggen them */
+                .dl-horizontal dt { width: 125px; }
+                .dl-horizontal dd { margin-left: 145px;}
+              </style>
+                <dt>First name:</dt><dd>{{ baseuser.first_name }}</dd>
+                <dt>Last name:</dt><dd>{{ baseuser.last_name }}</dd>
+                <dt>Email address:</dt><dd>{{ baseuser.email }}</dd>
+              {% else %}
+                <dt>You shouldn't be seeing this.</dt>
+              {% endif %}
+            </dl>
+          </li></ul>
+          {% if baseuser and baseuser.email == user.email %}
+            <h3>Update Your Account</h3>
+            <ul><li>
+            <!-- TODO: update admin account -->
+              <p><a href="{% url 'update_seller' %}">Click Here</a></p>
+            </li></ul>
+          {% endif %}
+        </div>
+      </section>
+
+    </aside><!-- /.sidebar -->
+  </div><!-- /.content -->
+</div><!-- /.wrap -->
+
+{% endblock %}
