@@ -195,3 +195,19 @@ class BaseUserDetail(DetailView):
         self.context['base_users'] = BaseUser.objects.filter(
             is_active=False)
         return self.render_to_response(self.context)
+
+
+class UpdateInspectionView(UpdateView):
+    template_name = 'update.html'
+    model = Inspection
+
+    def get(self, request, **kwargs):
+        self.object = self.get_object()
+        if not self.object:
+            return redirect('/')
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(
+            self.get_context_data(form=form, url_end='inspection',
+                                  model_type='Inspection')
+        )
