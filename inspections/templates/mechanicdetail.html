@@ -44,7 +44,7 @@
               <p>The following inspections are pending.</p>
               <ul>
                 {% for inspection in mechanic.inspection_set.all %}
-                  <li>Comments: {{ inspection.comments }} Vehicle: {{ inspection.vehicle }}</li>
+                  <li>Comments: {{ inspection.comments }} Vehicle: {{ inspection.vehicle }} Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a></li>
                 {% endfor %}
               </ul>
             {% endif %}
