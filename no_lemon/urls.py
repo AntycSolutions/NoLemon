@@ -14,7 +14,7 @@ from inspections.front.statistics import Statistics
 from inspections.front.vehicles import VehicleDetail, VehicleList, \
     VehicleCreationView
 from inspections.views import InspectionList, InspectionDetail, \
-    RequestInspectionUpdateView, BaseUserDetail
+    RequestInspectionUpdateView, BaseUserDetail, UpdateInspectionView
 admin.autodiscover()
 
 
@@ -51,7 +51,7 @@ seller_patterns = patterns(
     '',
     url(r'^$',
         SellerList.as_view(), name='seller_list'),
-    url(r'^(?P<pk>.+)/$',
+    url(r'^(?P<pk>\d+)/$',
         SellerDetail.as_view(), name='seller_detail'),
 )
 
@@ -59,7 +59,7 @@ mechanic_patterns = patterns(
     '',
     url(r'^$',
         MechanicList.as_view(), name='mechanic_list'),
-    url(r'^(?P<pk>.+)/$',
+    url(r'^(?P<pk>\d+)/$',
         MechanicDetail.as_view(), name='mechanic_detail'),
 )
 
@@ -73,12 +73,12 @@ inspection_patterns = patterns(
 
 update_patterns = patterns(
     '',
-    url(r'^seller/$',
-        UpdateSellerView.as_view(),
+    url(r'^seller/$', UpdateSellerView.as_view(),
         name='update_seller'),
-    url(r'^mechanic/$',
-        UpdateMechanicView.as_view(),
+    url(r'^mechanic/$', UpdateMechanicView.as_view(),
         name='update_mechanic'),
+    url(r'^inspection/(?P<pk>\d+)/$', UpdateInspectionView.as_view(),
+        name='update_inspection')
 )
 
 registration_patterns = patterns(
