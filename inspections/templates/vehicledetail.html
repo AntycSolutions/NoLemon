@@ -15,6 +15,16 @@
     <!-- Main -->
     <div class="main col-sm-8" role="main">
 
+      <div class="row">
+        <div class="col-md-12">
+          {% if vehicle.photo %}
+            <img src="{{ vehicle.photo.url }}" />
+          {% else %}
+            <img width="256px" src="{% static 'img/car-icon.png' %}" alt="NoLemon" draggable="false" style="display: block; margin-left: auto; margin-right: auto" /></a>
+          {% endif %}
+        </div>
+      </div>
+
       <div class="page-header">
         <h1>Inspections</h1>
       </div>
@@ -64,13 +74,17 @@
                 <dt>Make:</dt><dd>{{ vehicle.make }}</dd>
                 <dt>Model:</dt><dd>{{ vehicle.model }}</dd>
                 <dt>Year:</dt><dd>{{ vehicle.year }}</dd>
-                <dt>Photo:</dt><dd>{{ vehicle.photo }}</dd>
             {% else %}
                 <dt>You shouldn't be seeing this.</dt>
             {% endif %}
             </dl>
             </li></ul>
-
+            {% if vehicle and vehicle.owner.email == user.email%}
+              <h3>Update Your Vehicle</h3>
+              <ul><li>
+                <p><a href="{% url 'update_vehicle' vehicle.pk %}">Click Here</a></p>
+              </li></ul>
+            {% endif %}
             <h3>Request Inspection</h3>
             <ul><li>
             {% if request_inspection %}
