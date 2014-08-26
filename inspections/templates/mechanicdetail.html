@@ -44,7 +44,7 @@
               <p>The following inspections are pending.</p>
               <ul>
                 {% for inspection in mechanic.inspection_set.all %}
-                  <li>Comments: {{ inspection.comments }} Vehicle: {{ inspection.vehicle }} Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a></li>
+                  <li>Vehicle VIN: <a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle.vin }}</a> Seller: <a href="{% url 'seller_detail' inspection.vehicle.owner.pk %}"> {{ inspection.vehicle.owner.get_full_name }}</a> Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a></li>
                 {% endfor %}
               </ul>
             {% endif %}
@@ -84,8 +84,7 @@
           {% if mechanic and mechanic.email == user.email%}
             <h3>Update Your Account</h3>
             <ul><li>
-            <!-- TODO: update mechanic account -->
-              <p><a href="{% url 'update_seller' %}">Click Here</a></p>
+              <p><a href="{% url 'update_mechanic' %}">Click Here</a></p>
             </li></ul>
           {% endif %}
         </div>
