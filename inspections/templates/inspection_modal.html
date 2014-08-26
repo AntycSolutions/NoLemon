@@ -20,9 +20,15 @@
 	    	{{ field }}
 	    {% endif %}
 		{% endfor %}
-		<script src="https://checkout.stripe.com/checkout.js"></script>
-		<input id="stripeButton" type="submit" value="Pay" disabled>
-		{# <button id="stripeButton" type="submit" disabled>Pay</button> #}
+		<script
+		  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+		  data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+
+		  data-amount="20000"
+		  data-name="NoLemon"
+		  data-description="1 Inspection ($200.00)"
+		  data-image="{% static "img/NL yellow-icon.png" %}">
+		</script>
 		<script type="text/javascript">
 			var option1 = {{ option1 }};
 			var option2 = {{ option2 }};
