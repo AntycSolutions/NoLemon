@@ -22,7 +22,6 @@
 
     <nav class="nav-main hidden-xs" role="navigation">
       <ul id="menu-main" class="nav navbar-nav">
-        <!-- TODO: fix me, find out which page, make link active class -->
         <li class="{% active_page request 'home' %}">
             <a href="{% url 'home' %}">Home</a></li>
         <li class="{% active_page request 'about' %}">
@@ -63,9 +62,8 @@
             <li><a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
             <li><a href="{% url 'contact' %}">Contact Us</a></li>
             {% if user.is_authenticated %}
-                <!-- TODO: fix me, generalize to all users -->]
-                <li><a href="{% url 'seller_detail' user.pk %}">Welcome, {{ user.first_name }}</a></li>
-                <li><a class="responsive-submenu" href="{% url 'seller_detail' user.pk %}">Your Account</a></li>
+                <li><a href="{% url user|get_class_type user.pk %}">Welcome, {{ user.first_name }}</a></li>
+                <li><a class="responsive-submenu" href="{% url user|get_class_type user.pk %}">Your Account</a></li>
                 {% if user.is_admin %}
                     <li><a class="responsive-submenu" href="{% url 'statistics' %}">Site Statistics</a></li>
                     <li><a class="responsive-submenu" href="/admin/">Administration</a></li>

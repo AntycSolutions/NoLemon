@@ -25,7 +25,7 @@
           <p>The following inspections require a vehicle history to be added.</p>
           <ul>
             {% for inspection in inspections %}
-                <li>Comments: {{ inspection.comments }} Vehicle: {{ inspection.vehicle }}</li>
+                <li>Vehicle VIN: {{ inspection.vehicle.vin }} Seller: {{ inspection.vehicle.owner.get_full_name }} Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a></li>
             {% empty %}
                 <li>There are no inspections that require vehicle history.</li>
             {% endfor %}

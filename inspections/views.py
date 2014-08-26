@@ -195,3 +195,47 @@ class BaseUserDetail(DetailView):
         self.context['base_users'] = BaseUser.objects.filter(
             is_active=False)
         return self.render_to_response(self.context)
+
+
+class UpdateInspectionView(UpdateView):
+    template_name = 'update.html'
+    model = Inspection
+
+    def get_success_url(self):
+        if 'pk' in self.kwargs:
+            pk = self.kwargs['pk']
+            return reverse('update_inspection', kwargs={'pk': pk})
+
+    def get(self, request, **kwargs):
+        self.object = self.get_object()
+        if not self.object:
+            return redirect('/')
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(
+            self.get_context_data(form=form, url_end='inspection',
+                                  model_type='Inspection',
+                                  form_type='multipart/form-data')
+        )
+
+
+class UpdateVehicleView(UpdateView):
+    template_name = 'update.html'
+    model = Vehicle
+
+    def get_success_url(self):
+        if 'pk' in self.kwargs:
+            pk = self.kwargs['pk']
+            return reverse('update_vehicle', kwargs={'pk': pk})
+
+    def get(self, request, **kwargs):
+        self.object = self.get_object()
+        if not self.object:
+            return redirect('/')
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(
+            self.get_context_data(form=form, url_end='vehicle',
+                                  model_type='Vehicle',
+                                  form_type='multipart/form-data')
+        )
