@@ -14,7 +14,8 @@ from inspections.front.statistics import Statistics
 from inspections.front.vehicles import VehicleDetail, VehicleList, \
     VehicleCreationView
 from inspections.views import InspectionList, InspectionDetail, \
-    RequestInspectionUpdateView, BaseUserDetail, UpdateInspectionView
+    RequestInspectionUpdateView, BaseUserDetail, UpdateInspectionView, \
+    UpdateVehicleView
 admin.autodiscover()
 
 
@@ -78,7 +79,9 @@ update_patterns = patterns(
     url(r'^mechanic/$', UpdateMechanicView.as_view(),
         name='update_mechanic'),
     url(r'^inspection/(?P<pk>\d+)/$', UpdateInspectionView.as_view(),
-        name='update_inspection')
+        name='update_inspection'),
+    url(r'^vehicle/(?P<pk>\d+)/$', UpdateVehicleView.as_view(),
+        name='update_vehicle')
 )
 
 registration_patterns = patterns(
