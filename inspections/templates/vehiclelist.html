@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block title %} - Vehicles for Sale{% endblock %}
 
 {% block content %}
@@ -20,21 +22,37 @@
 
       <div class="page-main">
 
-        <ul>
-            {% for vehicle in vehicles %}
-                <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
-            {% empty %}
-               <li>There are no vehicles here.</li>
-            {% endfor %}
-        </ul>
-          <!-- <div class="row"><div class="col-md-12">
-          {% if vehicles.count >= 1 %}
-            <h2>Change Me</h2>
-            <p>Change Me</p>
-          {% else %}
-            <h2>There are no vehicles here.</h2>
-          {% endif %}
-          </div></div> -->
+        {% for vehicle in vehicles %}
+          <div class="row">
+          <div class="col-md-4">
+            {% if vehicle.photo %}
+              <img src="{{ vehicle.photo.url }}" />
+            {% else %}
+              <img width="256px" src="{% static 'img/car-icon.png' %}" alt="NoLemon" draggable="false"/></a>
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <p>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></p>
+            <p>Make: {{ vehicle.make }} Model: {{ vehicle.model }} Year: {{ vehicle.year }}</p>
+            <p>Kilometer(s): {{ vehicle.odometer }}</p>
+            <p>City: {{ vehicle.owner.city }}</p>
+            <p style="margin-top: 5px"><a class="blog-more btn btn-xxs btn-primary" href="{% url 'vehicle_detail' vehicle.vin %}">Read more</a></p>
+          </div>
+          </div>
+          <hr>
+        {% empty %}
+          <div class="row"><div class="col-md-12">
+            There are no vehicles.
+          </div></div>
+        {% endfor %}
+        <!-- <div class="row"><div class="col-md-12">
+        {% if vehicles.count >= 1 %}
+          <h2>Change Me</h2>
+          <p>Change Me</p>
+        {% else %}
+          <h2>There are no vehicles here.</h2>
+        {% endif %}
+        </div></div> -->
 
       </div>
 
