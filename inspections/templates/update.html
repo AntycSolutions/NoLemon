@@ -19,7 +19,7 @@
                 <h1>Update Your {{ model_type }} Here:</h1>
             </div>
             <div class="page-main">
-                <form id="user_form" method="post" action="/update/{{ url_end }}/">
+                <form enctype="{{ form_type }}" method="post" action="">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="form-group">
