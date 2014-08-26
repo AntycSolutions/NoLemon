@@ -88,7 +88,8 @@ class SellerCreationForm(BaseUserCreationForm):
     """ Form to be used in creation of a new Seller. """
 
     class Meta:
-        fields = ['email', 'password1', 'password2', 'first_name', 'last_name']
+        fields = ['email', 'password1', 'password2', 'first_name', 'last_name',
+                  'city']
         model = Seller
 
 
@@ -98,7 +99,7 @@ class MechanicCreationForm(BaseUserCreationForm):
 
     class Meta:
         fields = ['email', 'password1', 'password2', 'first_name',
-                  'last_name', 'phone_number', 'address']
+                  'last_name', 'phone_number', 'address', 'city', 'province']
         model = Mechanic
 
 
