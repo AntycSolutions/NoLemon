@@ -3,11 +3,11 @@ import datetime
 from django import forms
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
+from inspections.forms.request_inspection import ReceiptForm
 from no_lemon import settings
 
 from ..forms.request_inspection import RequestInspectionForm
@@ -56,10 +56,14 @@ class VehicleDetail(DetailView):
             form.fields['seller'].widget = forms.HiddenInput()
             form.fields['vehicle'].widget = forms.HiddenInput()
         except Exception as e:
-            #print("Exception:", e)
-            pass
+            print("Exception:", e)
+
+        # receipt form
+        receipt_form = ReceiptForm()
+
         context['form'] = form
         context['request_inspection'] = request_inspection
+        context['receipt_form'] = receipt_form
 
         context['option1'] = settings.VIEW_INSPECTION_CHARGE_LVL_1
         context['option2'] = settings.VIEW_INSPECTION_CHARGE_LVL_2
