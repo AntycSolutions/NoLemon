@@ -48,7 +48,7 @@ class BaseUserManager(DjangoBaseUserManager):
 
 class SellerManager(DjangoBaseUserManager):
 
-    def create_user(self, email, first_name, last_name,
+    def create_user(self, email, first_name, last_name, city,
                     password=None):
         """
         Creates and saves a User with the given email and password.
@@ -59,7 +59,8 @@ class SellerManager(DjangoBaseUserManager):
         user = Seller(
             email=SellerManager.normalize_email(email),
             first_name=first_name,
-            last_name=last_name
+            last_name=last_name,
+            city=city
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -136,6 +137,8 @@ class BaseUser(AbstractBaseUser):
 
 
 class Seller(BaseUser):
+    city = models.CharField(max_length=255)
+
     objects = SellerManager()
 
 
@@ -164,7 +167,8 @@ class Vehicle(models.Model):
                                default=datetime.datetime.now().year)
     vin = models.CharField(
         "vehicle identification number", max_length=17, unique=True)
-    photo = models.ImageField(upload_to='inspections/%Y/%m/%d',
+    odometer = models.IntegerField()
+    photo = models.ImageField(upload_to='inspections/vehicles/%Y/%m/%d',
                               null=True, blank=True)
 
     def __str__(self):
@@ -183,12 +187,13 @@ class Inspection(models.Model):
     views = models.IntegerField()
     mechanic = models.ForeignKey(Mechanic)
     vehicle = models.ForeignKey(Vehicle)
-    video = models.FileField(upload_to='inspections/%Y/%m/%d',
+    video = models.FileField(upload_to='inspections/videos/%Y/%m/%d',
                              null=True, blank=True)
-    report = models.FileField(upload_to='inspections/%Y/%m/%d',
+    report = models.FileField(upload_to='inspections/reports/%Y/%m/%d',
                               null=True, blank=True)
-    vehicle_history = models.FileField(upload_to='inspections/%Y/%m/%d',
-                                       null=True, blank=True)
+    vehicle_history = models.FileField(
+        upload_to='inspections/history/%Y/%m/%d',
+        null=True, blank=True)
 
     def __str__(self):
         return self.comments \
