@@ -6,35 +6,36 @@ import random
 
 def populate():
     password = "nolemon"
+    etown = "Edmonton"
 
-    admin = add_seller('admin@nolemon.ca', 'Admin', 'Man', password)
+    admin = add_seller('admin@nolemon.ca', 'Admin', 'Man', etown, password)
     admin.is_admin = True
     admin.save()
 
     print("Creating Sellers...")
-    bobSeller = add_seller("bob@seller.ca", "Bob", "Bobson", password)
-    samSeller = add_seller("sam@seller.ca", "Sam", "Samson", password)
-    timSeller = add_seller("tim@seller.ca", "Tim", "Timson", password)
-    tomSeller = add_seller("tom@seller.ca", "Tom", "Tomson", password)
-    patSeller = add_seller("pat@seller.ca", "Pat", "Patson", password)
+    bobSeller = add_seller("bob@seller.ca", "Bob", "Bobson", etown, password)
+    samSeller = add_seller("sam@seller.ca", "Sam", "Samson", etown, password)
+    timSeller = add_seller("tim@seller.ca", "Tim", "Timson", etown, password)
+    tomSeller = add_seller("tom@seller.ca", "Tom", "Tomson", etown, password)
+    patSeller = add_seller("pat@seller.ca", "Pat", "Patson", etown, password)
     print("... Sellers added.")
 
     print("Creating Mechanics...")
     sarahMechanic = add_mechanic(
         "sarah@mechanic.ca", "Sarah", "Sarahson", password, "7801234567",
-        "123 st nw", "edmonton", "ab")
+        "123 st nw", etown, "ab")
     andreMechanic = add_mechanic(
         "andre@mechanic.ca", "Andre", "Andreson", password, "7802345678",
-        "23 st nw", "edmonton", "ab")
+        "23 st nw", etown, "ab")
     barryMechanic = add_mechanic(
         "barry@mechanic.ca", "Barry", "Barryson", password, "7803456789",
-        "83 st nw", "edmonton", "ab")
+        "83 st nw", etown, "ab")
     susanMechanic = add_mechanic(
         "susan@mechanic.ca", "Susan", "Susanson", password, "7804567890",
-        "123 ave nw", "edmonton", "ab")
+        "123 ave nw", etown, "ab")
     wendyMechanic = add_mechanic(
         "wendy@mechanic.ca", "Wendy", "Wendyson", password, "7805678901",
-        "23 ave nw", "edmonton", "ab")
+        "23 ave nw", etown, "ab")
     print("... Mechanics added.")
 
     print("Creating Vehicles...")
@@ -86,8 +87,9 @@ def populate():
         model = random.choice(make_model_choices[make])
         years = [year for year in range(1950, 2014)]
         year = random.choice(years)
+        odometer = random.randint(0, 500000)
 
-        vehicle = add_vehicle(vin, owner, make, model, year)
+        vehicle = add_vehicle(vin, owner, make, model, year, odometer)
     print("... Vehicles added.")
 
     print("Creating Inspections...")
@@ -115,7 +117,7 @@ def populate():
     print_all_vehicles()
 
 
-def add_seller(email, firstName, lastName, password):
+def add_seller(email, firstName, lastName, city, password):
     seller = None
     try:
         seller = Seller.objects.get(email=email)
@@ -124,7 +126,7 @@ def add_seller(email, firstName, lastName, password):
     except:
         pass
     seller = Seller.objects.create_user(
-        email=email, first_name=firstName, last_name=lastName,
+        email=email, first_name=firstName, last_name=lastName, city=city,
         password=password
     )
     if not seller:
@@ -163,7 +165,7 @@ def add_inspection(pk, mechanic, vehicle, comments, date, views):
     return inspection
 
 
-def add_vehicle(vin, owner, make, model, year):
+def add_vehicle(vin, owner, make, model, year, odometer):
     try:
         vehicle = Vehicle.objects.get(vin=vin)
         print("Already exists, vehicle:", vehicle)
@@ -173,7 +175,7 @@ def add_vehicle(vin, owner, make, model, year):
 
     vehicle, created = Vehicle.objects.get_or_create(
         vin=vin, owner=owner,
-        make=make, model=model, year=year
+        make=make, model=model, year=year, odometer=odometer
     )
     if created:
         vehicle.save()
