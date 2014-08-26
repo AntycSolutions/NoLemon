@@ -47,12 +47,12 @@ class SellerAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2',
-                       'first_name', 'last_name')}
+                       'first_name', 'last_name', 'city')}
          ),
     )
     fieldsets = (
         (None, {'fields': ('email', 'password',)}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name',
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'city'
                                          )}),
         (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
         (_('Important dates'), {'fields': ('last_login',)}),
