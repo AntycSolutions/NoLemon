@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import FormView, View, UpdateView
+from django.core.urlresolvers import reverse_lazy
 
 from ..forms.registration import SellerCreationForm, \
     MechanicCreationForm
@@ -96,6 +97,7 @@ class LoginRegisterView(FormView):
 class UpdateSellerView(UpdateView):
     template_name = 'update.html'
     model = Seller
+    success_url = reverse_lazy('update_seller')
     fields = ['first_name', 'last_name', ]
 
     def get_object(self):
@@ -164,6 +166,7 @@ class RegisterMechanicView(FormView):
 class UpdateMechanicView(UpdateView):
     template_name = 'update.html'
     model = Mechanic
+    success_url = reverse_lazy('update_mechanic')
     fields = ['first_name', 'last_name',
               'address', 'city', 'province', ]
 
@@ -182,7 +185,8 @@ class UpdateMechanicView(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         return self.render_to_response(
-            self.get_context_data(form=form, url_end='mechanic')
+            self.get_context_data(form=form, url_end='mechanic',
+                                  model_type='Account')
         )
 
 
