@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block title %} - Seller Detail{% endblock %}
 
 {% block content %}
@@ -20,13 +22,27 @@
 
       <div class="page-main">
 
-        <ul>
-            {% for vehicle in seller.vehicle_set.all %}
-                <li>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></li>
-            {% empty %}
-                <li>There are no vehicles owned by this seller.</li>
-            {% endfor %}
-        </ul>
+          {% for vehicle in seller.vehicle_set.all %}
+            <div class="row">
+            <div class="col-md-4">
+              {% if vehicle.photo %}
+                <img src="{{ vehicle.photo.url }}" />
+              {% else %}
+                <img width="256px" src="{% static 'img/car-icon.png' %}" alt="NoLemon" draggable="false"/></a>
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <p>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></p>
+              <p>Make: {{ vehicle.make }} Model: {{ vehicle.model }} Year: {{ vehicle.year }}</p>
+              <p style="margin-top: 5px"><a class="blog-more btn btn-xxs btn-primary" href="{% url 'vehicle_detail' vehicle.vin %}">Read more</a></p>
+            </div>
+            </div>
+            <hr>
+          {% empty %}
+            <div class="row"><div class="col-md-12">
+              There are no vehicles owned by this seller.
+            </div></div>
+          {% endfor %}
 
       </div>
 
@@ -49,6 +65,7 @@
                 <dt>First name:</dt><dd>{{ seller.first_name }}</dd>
                 <dt>Last name:</dt><dd>{{ seller.last_name }}</dd>
                 <dt>Email address:</dt><dd>{{ seller.email }}</dd>
+                <dt>City:</dt><dd>{{ seller.city }}</dd>
               {% else %}
                 <dt>You shouldn't be seeing this.</dt>
               {% endif %}
