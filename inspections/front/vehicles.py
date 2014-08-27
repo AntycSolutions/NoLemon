@@ -55,6 +55,7 @@ class VehicleDetail(DetailView):
                                                )
             form.fields['seller'].widget = forms.HiddenInput()
             form.fields['vehicle'].widget = forms.HiddenInput()
+            form.fields['request_date'].widget = forms.HiddenInput()
         except Exception as e:
             print("Exception:", e)
 
