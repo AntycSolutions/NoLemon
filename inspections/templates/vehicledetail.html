@@ -92,10 +92,17 @@
                 <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a></p>
             {% endif %}
             {% if vehicle.owner.email == user.email %}
-                <form method="get" action="{% url 'pay_for_inspection' %}">
+                <form method="post" action="{% url 'pay_for_inspection' %}" id="request_form">
                     {% csrf_token %}
-                    <input type="hidden" name="vehicle" value="{{ vehicle.vin }}">
-                    <input type="submit" class="btn btn-primary" value="Request New Inspection">
+                    {{ form }}
+                      <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+                        data-amount="10000"
+                        data-name="Request an Inspection"
+                        data-description="1 Inspection ($100.00)"
+                        data-image="{% static "img/NL yellow-icon.png" %}">
+                      </script>
                 </form>
             {% else %}
                 {% if not request_inspection %}

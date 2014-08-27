@@ -1240,7 +1240,7 @@ article.faq h3 {
 }
 
 .modalDialog > div {
-   width: 400px;
+   width: 80%;
    position: relative;
    margin: 10% auto;
    padding: 5px 20px 13px 20px;

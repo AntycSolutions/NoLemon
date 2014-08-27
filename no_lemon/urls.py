@@ -8,7 +8,7 @@ from inspections.front.authenticationViews import LoginRegisterView, \
     Logout, RegisterMechanicView, \
     UpdateSellerView, UpdateMechanicView
 from inspections.front.mechanics import MechanicList, MechanicDetail
-from inspections.front.payments import PaymentView
+from inspections.front.payments import PaymentView, PayToView
 from inspections.front.sellers import SellerList, SellerDetail
 from inspections.front.statistics import Statistics
 from inspections.front.vehicles import VehicleDetail, VehicleList, \
@@ -97,6 +97,7 @@ registration_patterns = patterns(
 payment_patterns = patterns(
     '',
     url(r'^$', PaymentView.as_view(), name='payment'),
+    url(r'^view/', PayToView.as_view(), name='pay_to_view'),
 )
 
 urlpatterns = patterns(
@@ -117,7 +118,7 @@ urlpatterns = patterns(
     url(r'^admins/(?P<pk>.+)/$', BaseUserDetail.as_view(),
         name='base_user_detail'),
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
-    #     url(r'^payments/', include(payment_patterns)),
+    url(r'^payments/', include(payment_patterns)),
     url(r'^requests/', include(request_inspection_patterns)),
     url(r'^email/(?P<email>.+)/$', 'inspections.views.test_email',
         name='test_email'),

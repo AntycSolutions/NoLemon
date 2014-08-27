@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 
-from inspections.forms.request_inspection import RequestInspectionForm
+from inspections.forms.request_inspection import RequestInspectionForm,\
+    ReceiptForm
 from inspections.models import InspectionRequest, Seller, Vehicle,\
     Mechanic, Receipt
 from inspections.utilities import process_stripe, send_email
@@ -34,7 +35,6 @@ class PaymentView(CreateView):
         )
         form.fields['seller'].widget = forms.HiddenInput()
         form.fields['vehicle'].widget = forms.HiddenInput()
-        form.fields['mechanic'].widget = forms.HiddenInput()
         form.fields['request_date'].widget = forms.HiddenInput()
 
         return self.render_to_response(self.get_context_data(form=form,
@@ -109,3 +109,9 @@ class PayToView(CreateView):
     template_name = "payment.html"
     success_url = "/"
     model = Receipt
+    form_class = ReceiptForm
+
+    def post(self, request, *args, **kwargs):
+        print("You talkin'a me?? With this?? ")
+        print(request.POST)
+        return super(PayToView, self).post(request, *args, **kwargs)

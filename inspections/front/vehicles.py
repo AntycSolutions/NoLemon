@@ -3,11 +3,12 @@ import datetime
 from django import forms
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
+from inspections.forms.request_inspection import ReceiptForm
+from inspections.utilities import process_stripe, send_email
 from no_lemon import settings
 
 from ..forms.request_inspection import RequestInspectionForm
@@ -55,11 +56,16 @@ class VehicleDetail(DetailView):
                                                )
             form.fields['seller'].widget = forms.HiddenInput()
             form.fields['vehicle'].widget = forms.HiddenInput()
+            form.fields['request_date'].widget = forms.HiddenInput()
         except Exception as e:
-            #print("Exception:", e)
-            pass
+            print("Exception:", e)
+
+        # receipt form
+        receipt_form = ReceiptForm()
+
         context['form'] = form
         context['request_inspection'] = request_inspection
+        context['receipt_form'] = receipt_form
 
         context['option1'] = settings.VIEW_INSPECTION_CHARGE_LVL_1
         context['option2'] = settings.VIEW_INSPECTION_CHARGE_LVL_2
@@ -86,6 +92,7 @@ class VehicleCreationView(CreateView):
     model = Vehicle
     form_class = VehicleCreationForm
     template_name = 'vehiclecreate.html'
+    success_url = reverse_lazy('vehicle_list')
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -102,11 +109,27 @@ class VehicleCreationView(CreateView):
         initial = {'owner': owner}
         return initial
 
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        # TODO: Integrate payment level options
+        cost = settings.INSPECTION_REQUEST
+
+        process_stripe(request.POST['stripeToken'], cost)
+
+        return super(VehicleCreationView, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
         """
         If the form is valid, redirect to the supplied URL.
         """
         vehicle = self.request.POST['vin']
-        self.success_url = reverse_lazy('pay_for_inspection',
-                                        kwargs={'vin': vehicle})
+        self.success_url += vehicle
+
+        send_email()
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            "You've successfully requested an inspection for "
+            + form.instance.__str__() + ". " +
+            "You will be contacted by a NoLemon administrator " +
+            "within 1 business days to confirm your request.")
         return super(VehicleCreationView, self).form_valid(form)
