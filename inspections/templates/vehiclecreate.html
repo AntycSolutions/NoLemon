@@ -33,7 +33,14 @@
                             {{ field|addcss:"class: form-control" }} {{ field.help_text }}
                         </div>
                     {% endfor %}
-                    <input type="submit" class="btn btn-primary" name="form" value="Add New Vehicle" />
+                    <script
+                      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                      data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
+                      data-amount="10000"
+                      data-name="Request an Inspection"
+                      data-description="1 Inspection ($100.00)"
+                      data-image="{% static "img/NL yellow-icon.png" %}">
+                    </script>
                 </form>
             </div>
         </div><!-- /.main -->
