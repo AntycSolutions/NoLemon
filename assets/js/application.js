@@ -7,7 +7,7 @@ jQuery(document).ready(function ($) {
 
   // responsive videos with fitvids
   $('.fitvids').fitVids();
-  $(".hero-image").backstretch("assets/img/hero.jpg");
+  $(".hero-image").backstretch("static/img/engine_hero_bg.jpg");
   $('.trigger-tooltio').tooltip()
 
 
