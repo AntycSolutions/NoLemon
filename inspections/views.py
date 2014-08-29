@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import messages
 from django.core.mail import send_mass_mail
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -212,6 +213,8 @@ class UpdateInspectionView(UpdateView):
             return redirect('/')
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+        form.fields['vehicle'].widget.attrs['disabled'] = True
+        form.fields['mechanic'].widget.attrs['disabled'] = True
         return self.render_to_response(
             self.get_context_data(form=form, url_end='inspection',
                                   model_type='Inspection',
@@ -234,6 +237,7 @@ class UpdateVehicleView(UpdateView):
             return redirect('/')
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+        form.fields['owner'].widget.attrs['disabled'] = True
         return self.render_to_response(
             self.get_context_data(form=form, url_end='vehicle',
                                   model_type='Vehicle',
