@@ -74,6 +74,8 @@
                 <dt>Make:</dt><dd>{{ vehicle.make }}</dd>
                 <dt>Model:</dt><dd>{{ vehicle.model }}</dd>
                 <dt>Year:</dt><dd>{{ vehicle.year }}</dd>
+                <dt>Kilometer(s):</dt><dd>{{ vehicle.odometer }}</dd>
+                <dt>City:</dt><dd>{{ vehicle.owner.city }}</dd>
             {% else %}
                 <dt>You shouldn't be seeing this.</dt>
             {% endif %}
