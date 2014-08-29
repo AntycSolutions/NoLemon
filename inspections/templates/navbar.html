@@ -23,32 +23,34 @@
     <nav class="nav-main hidden-xs" role="navigation">
       <ul id="menu-main" class="nav navbar-nav">
         <li class="{% active_page request 'home' %}">
-            <a href="{% url 'home' %}">Home</a></li>
+            <a href="{% url 'home' %}">HOME</a></li>
         <li class="{% active_page request 'about' %}">
-            <a href="{% url 'about' %}">What We Do</a></li>
+            <a href="{% url 'about' %}">WHAT WE DO</a></li>
+        <li class="{% active_page request 'vehicle_list' %}">
+            <a href="{% url 'vehicle_list' %}">BROWSE VEHICLES</a></li>
         <li class="{% active_page request 'mechanic_list' %}">
-            <a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
+            <a href="{% url 'mechanic_list' %}">OUR MECHANICS</a></li>
         <li class="{% active_page request 'contact' %}">
-            <a href="{% url 'contact' %}">Contact Us</a></li>
+            <a href="{% url 'contact' %}">CONTACT US</a></li>
         {% if user.is_authenticated %}
             <li class="{% active_page request user|get_class_type %} dropdown">
-                <a class="dropdown-toggle" href="{% url user|get_class_type user.pk %}">Welcome, {{ user.first_name }}</a>
+                <a class="dropdown-toggle" href="{% url user|get_class_type user.pk %}">WELCOME, {{ user.first_name }}</a>
                 <ul class="dropdown-menu">
                     <li class="{% active_page request user|get_class_type %}">
-                        <a href="{% url user|get_class_type user.pk %}">Your Account</a></li>
+                        <a href="{% url user|get_class_type user.pk %}">YOUR ACCOUNT</a></li>
                     {% if user.is_admin %}
                         <li class="{% active_page request 'statistics' %}">
-                            <a href="{% url 'statistics' %}">Site Statistics</a></li>
+                            <a href="{% url 'statistics' %}">SITE STATISTICS</a></li>
                         <li>
-                            <a href="/admin/">Administration</a></li>
+                            <a href="/admin/">ADMINISTRATION</a></li>
                     {% endif %}
                     <li>
-                        <a href="{% url 'logout' %}">Logout</a></li>
+                        <a style="color: #FBD802" href="{% url 'logout' %}">LOGOUT</a></li>
                 </ul>
             </li>
         {% else %}
             <li class="{% active_page request 'register' %}">
-                <a href="{% url 'register' %}">Login/Register</a></li>
+                <a style="color: #FBD802" href="{% url 'register' %}">LOGIN / REGISTER</a></li>
         {% endif %}
       </ul>
     </nav>
@@ -57,20 +59,21 @@
     <div class="visible-xs">
       <nav class="nav-responsive collapse" role="navigation">
         <ul class="nav">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'about' %}">What We Do</a></li>
-            <li><a href="{% url 'mechanic_list' %}">Our Mechanics</a></li>
-            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'about' %}">WHAT WE DO</a></li>
+            <li><a href="{% url 'vehicle_list' %}">BROWSE VEHICLES</a></li>
+            <li><a href="{% url 'mechanic_list' %}">OUR MECHANICS</a></li>
+            <li><a href="{% url 'contact' %}">CONTACT US</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url user|get_class_type user.pk %}">Welcome, {{ user.first_name }}</a></li>
-                <li><a class="responsive-submenu" href="{% url user|get_class_type user.pk %}">Your Account</a></li>
+                <li><a href="{% url user|get_class_type user.pk %}">WELCOME, {{ user.first_name }}</a></li>
+                <li><a class="responsive-submenu" href="{% url user|get_class_type user.pk %}">YOUR ACCOUNT</a></li>
                 {% if user.is_admin %}
-                    <li><a class="responsive-submenu" href="{% url 'statistics' %}">Site Statistics</a></li>
-                    <li><a class="responsive-submenu" href="/admin/">Administration</a></li>
+                    <li><a class="responsive-submenu" href="{% url 'statistics' %}">SITE STATISTICS</a></li>
+                    <li><a class="responsive-submenu" href="/admin/">ADMINISTRATION</a></li>
                 {% endif %}
-                <li><a class="responsive-submenu" href="{% url 'logout' %}">Logout</a></li>
+                <li><a style="color: #FBD802" class="responsive-submenu" href="{% url 'logout' %}">LOGOUT</a></li>
             {% else %}
-                <li><a href="{% url 'register' %}">Login/Register</a></li>
+                <li><a style="color: #FBD802" href="{% url 'register' %}">LOGIN / REGISTER</a></li>
             {% endif %}
         </ul>
       </nav>
