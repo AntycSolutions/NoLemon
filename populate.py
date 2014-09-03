@@ -8,9 +8,10 @@ def populate():
     password = "nolemon"
     etown = "Edmonton"
 
-    admin = add_seller('admin@nolemon.ca', 'Admin', 'Man', etown, password)
-    admin.is_admin = True
-    admin.save()
+    print("Creating BaseUser Admins...")
+    admin = add_baseuser_admin('admin@nolemon.ca', 'Admin', 'Man', password)
+    print("... BaseUser Admins added.")
+
 
     print("Creating Sellers...")
     bobSeller = add_seller("bob@seller.ca", "Bob", "Bobson", etown, password)
@@ -116,6 +117,21 @@ def populate():
     print_all_inspections()
     print_all_vehicles()
 
+def add_baseuser_admin(email, first_name, last_name, password):
+    baseuser = None
+    try:
+        baseuser = BaseUser.objects.get(email=email)
+        print ("Already exists, baseuser admin:", baseuser)
+        return baseuser
+    except:
+        pass
+    baseuser = BaseUser.objects.create_superuser(
+        email=email, first_name=first_name, last_name=last_name,
+        password=password)
+    if not baseuser:
+        print("Did not create baseuser admin:", baseuser)
+    return baseuser
+
 
 def add_seller(email, firstName, lastName, city, password):
     seller = None
@@ -212,6 +228,6 @@ if __name__ == '__main__':
     print("Starting NoLemon database population script...")
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'no_lemon.settings')
     from inspections.models import Seller, Mechanic, \
-        Inspection, Vehicle
+        Inspection, Vehicle, BaseUser
     populate()
     print("Finished populate script.")
