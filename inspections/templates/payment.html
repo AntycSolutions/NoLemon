@@ -1,6 +1,12 @@
+{% extends "base.html" %}
 {% load staticfiles %}
 {% load add_css %}
 
+{% block title %} - Payment Detail{% endblock %}
+
+{% block content %}
+
+{% include 'header.html' %}
 
 <!-- Wrap -->
 <div class="wrap container" role="document">
@@ -67,3 +73,5 @@
         </aside><!-- /.sidebar -->
     </div><!-- /.content -->
 </div><!-- /.wrap -->
+
+{% endblock %}
