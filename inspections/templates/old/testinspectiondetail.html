@@ -1,20 +1,65 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %} - Inspection Detail{% endblock %}
 
 {% block content %}
 
-{% if inspection %}
-    <p>Vehicle: <a href="/vehicles/{{ inspection.vehicle.vin }}">{{ inspection.vehicle }}</a></p>
-    <p>Date: {{ inspection.date }}</p>
-    <p>Comments: {{ inspection.comments }}</p>
-    <p>Views: {{ inspection.views }}</p>
-    <p>Mechanic: <a href="/mechanics/{{ inspection.mechanic.email }}">{{ inspection.mechanic }}</a></p>
-    {% if inspection.video %}
-        <p>Video: <a href="{{ inspection.video.url }}">{{ inspection.video.name }}</a></p>
-    {% endif %}
-{% else %}
-    <p>You shouldn't be seeing this</p>
-{% endif %}
+{% include 'header.html' %}
+
+<!-- Wrap -->
+<div class="wrap container" role="document">
+  {% include 'messages.html' %}
+  <!-- Content -->
+  <div class="content row">
+    <!-- Main -->
+    <div class="main col-sm-12" role="main">
+
+      <div class="page-header">
+        <h1>Inspection Report</h1>
+      </div>
+
+      <div class="page-main">
+
+        {% if inspection %}
+          <div class="row">
+          <div class="col-md-4">
+            {% if inspection.video %}
+               <p>Video: <a href="{{ inspection.video.url }}">{{ inspection.video.name }}</a></p>
+            {% else %}
+                <p>No video.</p>
+                <img width="256px" src="{% static 'img/car-icon.png' %}" alt="NoLemon" draggable="false"/></a>
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <p>Vehicle: <a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle }}</a></p>
+            <p>Date: {{ inspection.date }}</p>
+            <p>Comments: {{ inspection.comments }}</p>
+            <p>Views: {{ inspection.views }}</p>
+            <p>Mechanic: <a href="{% url 'mechanic_detail' inspection.mechanic.pk %}">{{ inspection.mechanic }}</a></p>
+            {% if inspection.report %}
+                <p>Report: {{ inspection.report.url }}</p>
+            {% else %}
+                <p>There is no report.</p>
+            {% endif %}
+            {% if inspection.vehicle_history %}
+                <p>Vehicle History: {{ inspection.vehicle_history.url }}</p>
+            {% else %}
+                <p>There is no vehicle history.</p>
+            {% endif %}
+          </div>
+          </div>
+        {% else %}
+            <div class="row"><div class="col-md-12">
+            There is no inspection with that ID.
+          </div></div>
+        {% endif %}
+
+      </div>
+
+    </div><!-- /.main -->
+
+  </div><!-- /.content -->
+</div><!-- /.wrap -->
 
 {% endblock %}
