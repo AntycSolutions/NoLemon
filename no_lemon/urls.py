@@ -69,7 +69,7 @@ inspection_patterns = patterns(
     url(r'^$',
         InspectionList.as_view(), name='inspection_list'),
     url(r'^(?P<pk>\d+)/$',
-        login_required(InspectionDetail.as_view()), name='inspection_detail')
+        InspectionDetail.as_view(), name='inspection_detail')
 )
 
 update_patterns = patterns(
