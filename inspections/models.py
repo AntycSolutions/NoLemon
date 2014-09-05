@@ -213,12 +213,12 @@ class InspectionRequest(models.Model):
 
 class Receipt(models.Model):
     # TODO: Pick better choice names
-    INSPECTION_CHOICES = [(29.00, 'level1'),
+    INSPECTION_CHOICES = [(29.99, 'level1'),
                           (37.00, 'level2'),
                           (56.00, 'level3')]
 
-    number = models.PositiveIntegerField(primary_key=True,
-                                         verbose_name="Receipt Number")
+    number = models.CharField(max_length=64, primary_key=True,
+                              verbose_name="Receipt Number")
     inspection = models.ForeignKey(Inspection)
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
