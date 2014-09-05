@@ -1,4 +1,6 @@
 import datetime
+import time
+import hashlib
 
 from django import forms
 from django.contrib import messages
@@ -66,8 +68,8 @@ class PaymentView(CreateView):
         return super(PaymentView, self).post(request, args, kwargs)
 
     def form_valid(self, form):
-        #         admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
-        #         self._send_email(admin_emails)
+        # admin_emails = BaseUser.objects.filter(is_admin=True).values('email')
+        # self._send_email(admin_emails)
         send_email()
         messages.add_message(
             self.request, messages.SUCCESS,
@@ -93,25 +95,64 @@ class PaymentView(CreateView):
                                      kwargs={'vin': form.instance.vehicle.vin}
                                      ))
 
-    def _send_email(self, emails):
-        title = "NoLemon - Inspection Request"
-        content = "An inspection request has been made. Please approve.\n"
+    # def _send_email(self, emails):
+    #     title = "NoLemon - Inspection Request"
+    #     content = "An inspection request has been made. Please approve.\n"
 
-        datatuple = []
-        for email in emails:
-            datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
-                              [email['email']]))
+    #     datatuple = []
+    #     for email in emails:
+    #         datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
+    #                           [email['email']]))
 
-        send_mass_mail(datatuple, fail_silently=False)
+    #     send_mass_mail(datatuple, fail_silently=False)
 
 
 class PayToView(CreateView):
     template_name = "payment.html"
-    success_url = "/"
     model = Receipt
     form_class = ReceiptForm
 
+    def form_valid(self, form):
+        # Email receipt
+        self._send_email([form.instance.email], form.instance.number)
+
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            "You've successfully purchased an inspection report!")
+        return super(PayToView, self).form_valid(form)
+
     def post(self, request, *args, **kwargs):
-        print("You talkin'a me?? With this?? ")
-        print(request.POST)
+        request.POST = request.POST.copy()  # Make mutable
+
+        # Current time in seconds + random number to string
+        # Concatenate above with name and email
+        # SHA1 hash all three
+        number = None
+        while True:  # do while
+            receipt = str(time.time() + 666666) + request.POST['name'] + \
+                request.POST['email']
+            number = hashlib.sha1(receipt.encode()).hexdigest()
+            if Receipt.objects.filter(number=number).count() == 0:
+                break
+
+        request.POST['number'] = number
+
         return super(PayToView, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('inspection_detail',
+                            kwargs={'pk': self.object.inspection.pk})
+
+    def _send_email(self, emails, number):
+        title = "Inspection Report Purchase"
+        content = "You have purchased an Inspection Report!\n" + \
+            "Congratulations. Your receipt number is " + number + ".\n" + \
+            "Please keep this email and its included receipt number for" + \
+            " future reference.\n"
+
+        datatuple = []
+        for email in emails:
+            datatuple.append((title, content, 'NoLemon <no-reply@nolemon.ca>',
+                              [email]))
+
+        send_mass_mail(datatuple, fail_silently=False)
