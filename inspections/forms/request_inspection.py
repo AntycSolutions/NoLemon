@@ -14,17 +14,21 @@ class RequestInspectionForm(forms.ModelForm):
 
 
 class ReceiptForm(forms.ModelForm):
-    INSPECTION_CHOICES = [(1, 'Option #1: $29.99 Expert Car Condition Inspection Report and Video'),
-                          (2, 'Option #2: $37.00 CAR PROOF REPORT'),
-                          (3, 'Option #3: $56.00 Car Proof + Expert Car Condition Inspection Report and Video (Value Pack)')]
+    INSPECTION_CHOICES = [(29.99, 'Option #1: $29.99 Expert Car Condition' +
+                           ' Inspection Report and Video'),
+                          (37.00, 'Option #2: $37.00 CAR PROOF REPORT'),
+                          (56.00, 'Option #3: $56.00 Car Proof + Expert' +
+                           ' Car Condition Inspection Report and Video' +
+                           ' (Value Pack)')]
 
-    INSPECTIONS = [(i.pk, i.__str__()) for i in Inspection.objects.all()]
+    # INSPECTIONS = [(i.pk, i) for i in Inspection.objects.all()]
 
     payment_level = forms.ChoiceField(widget=forms.RadioSelect,
                                       choices=INSPECTION_CHOICES)
-    number = forms.IntegerField(widget=forms.HiddenInput)
-    inspection = forms.ChoiceField(widget=forms.HiddenInput,
-                                   choices=INSPECTIONS)
+    number = forms.CharField(max_length=64, widget=forms.HiddenInput)
+    inspection = forms.ModelChoiceField(queryset=Inspection.objects.all(),
+                                        widget=forms.HiddenInput)
+    #                                choices=INSPECTIONS)
 
     class Meta:
         model = Receipt
