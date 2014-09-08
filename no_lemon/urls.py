@@ -13,7 +13,7 @@ from inspections.front.sellers import SellerList, SellerDetail
 from inspections.front.statistics import Statistics
 from inspections.front.vehicles import VehicleDetail, VehicleList, \
     VehicleCreationView
-from inspections.views import InspectionList, InspectionDetail, \
+from inspections.views import InspectionDetail, \
     RequestInspectionUpdateView, BaseUserDetail, UpdateInspectionView, \
     UpdateVehicleView
 admin.autodiscover()
