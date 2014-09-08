@@ -142,4 +142,5 @@ STRIPE_KEY = 'pk_test_3aCn8J9IdHtqTUaCMWrABmQI'
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages'
 )
