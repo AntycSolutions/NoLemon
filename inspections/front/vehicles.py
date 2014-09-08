@@ -58,7 +58,8 @@ class VehicleDetail(DetailView):
             form.fields['vehicle'].widget = forms.HiddenInput()
             form.fields['request_date'].widget = forms.HiddenInput()
         except Exception as e:
-            print("Exception:", e)
+            #print("Exception:", e)
+            pass
 
         # receipt form
         receipt_form = ReceiptForm()
