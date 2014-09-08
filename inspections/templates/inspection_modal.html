@@ -7,18 +7,32 @@
 
 		<p>You must pay to view this inspection! (Please change this text)</p>
 
+		<form method="GET" class="form-search" action="javascript:clickReceipt()">
+			<div class="form-group">
+				<input name="receipt_num" type="text" class="form-control" placeholder="Enter your receipt number here!" />
+				<input type="submit" value="I have my receipt number!" class="btn btn-primary" style="margin-top: 5px;" />
+			</div>
+		</form>
+		<script type="text/javascript">
+			clickReceipt = function () {
+				receipt = document.getElementsByName('receipt_num')[0];
+				url = "/inspections/" + id + "/" + receipt.value;
+				window.location.pathname = url;
+			};
+	    </script>
+
 		<form id="inspection_select_form" method="POST" action="{% url 'pay_to_view' %}">
 			{% csrf_token %}
 			{% for field in receipt_form %}
-			{% if field|gettype != "HiddenInput" %}
-			    <div class="form-group">
-			        {{ field.errors }}
-			        {{ field.label_tag }}
-			        {{ field|addcss:"class: form-control" }} {{ field.help_text }}
-			    </div>
-		    {% else %}
-		    	{{ field }}
-		    {% endif %}
+				{% if field|gettype != "HiddenInput" %}
+				    <div class="form-group">
+				        {{ field.errors }}
+				        {{ field.label_tag }}
+				        {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+				    </div>
+			    {% else %}
+			    	{{ field }}
+			    {% endif %}
 			{% endfor %}
 <!-- 			<div id="stripe_area">
 				<script
