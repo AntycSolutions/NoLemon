@@ -12,7 +12,8 @@ from reportlab.pdfgen import canvas
 
 from .forms.request_inspection import RequestInspectionForm
 from .forms.video import VideoForm
-from .models import Inspection, InspectionRequest, Mechanic, Vehicle, BaseUser
+from .models import Inspection, InspectionRequest, Mechanic, Vehicle, \
+    BaseUser, Receipt
 
 
 def home_page(request):
@@ -34,10 +35,8 @@ class InspectionList(ListView):
 
 
 class InspectionDetail(DetailView):
-    template_name = "old/testinspectiondetail.html"
+    template_name = "inspectiondetail.html"
     model = Inspection
-    slug_field = "pk"
-    slug_url_kwarg = "pk"
 
     def get(self, request, *args, **kwargs):
         self.context = None
@@ -49,7 +48,19 @@ class InspectionDetail(DetailView):
                 request, messages.ERROR,
                 "We're sorry, we don't seem to have any inspections "
                 "you're looking for.")
-            return redirect(reverse_lazy('inspections_list'), self.context)
+            return redirect(reverse_lazy('vehicle_list'), self.context)
+        try:
+            Receipt.objects.get(inspection=self.object,
+                                number=self.kwargs['receipt'])
+        except:
+            messages.add_message(
+                request, messages.ERROR,
+                "We're sorry, the receipt number that was entered was "
+                "incorrect.")
+            vehicle_vin = self.object.vehicle.vin
+            return redirect(reverse_lazy('vehicle_detail',
+                                         kwargs={'vin': vehicle_vin}),
+                            self.context)
         return self.render_to_response(self.context)
 
 
