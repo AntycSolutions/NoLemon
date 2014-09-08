@@ -114,7 +114,8 @@ class PayToView(CreateView):
 
     def form_valid(self, form):
         # Email receipt
-        self._send_email([form.instance.email], form.instance.number)
+        self._send_email([form.instance.email], form.instance.number,
+                         form.instance.inspection.id)
 
         messages.add_message(
             self.request, messages.SUCCESS,
@@ -141,14 +142,20 @@ class PayToView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('inspection_detail',
-                            kwargs={'pk': self.object.inspection.pk})
+                            kwargs={'pk': self.object.inspection.pk,
+                                    'receipt': self.object.number})
 
-    def _send_email(self, emails, number):
+    def _send_email(self, emails, number, id):
         title = "Inspection Report Purchase"
-        content = "You have purchased an Inspection Report!\n" + \
+        content = "You have purchased an Inspection Report!\n\n" + \
             "Congratulations. Your receipt number is " + number + ".\n" + \
             "Please keep this email and its included receipt number for" + \
-            " future reference.\n"
+            " future reference.\n\n" + \
+            "You can use the following link to view your Inspection " + \
+            "Report:\n\n" + \
+            self.request.build_absolute_uri(str(
+                reverse_lazy('inspection_detail',
+                             kwargs={'pk': id, 'receipt': number}))) + "\n"
 
         datatuple = []
         for email in emails:
