@@ -66,9 +66,9 @@ mechanic_patterns = patterns(
 
 inspection_patterns = patterns(
     '',
-    url(r'^$',
-        InspectionList.as_view(), name='inspection_list'),
-    url(r'^(?P<pk>\d+)/$',
+    # url(r'^$',
+    #     InspectionList.as_view(), name='inspection_list'),
+    url(r'^(?P<pk>\d+)/(?P<receipt>\w+)/$',
         InspectionDetail.as_view(), name='inspection_detail')
 )
 
