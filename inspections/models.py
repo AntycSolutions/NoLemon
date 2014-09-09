@@ -223,3 +223,7 @@ class Receipt(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     payment_level = models.FloatField(choices=INSPECTION_CHOICES)
+
+
+class SiteStatistics(models.Model):
+    home_page_views = models.IntegerField(default=0)
