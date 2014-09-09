@@ -13,10 +13,13 @@ from reportlab.pdfgen import canvas
 from .forms.request_inspection import RequestInspectionForm
 from .forms.video import VideoForm
 from .models import Inspection, InspectionRequest, Mechanic, Vehicle, \
-    BaseUser, Receipt
+    BaseUser, Receipt, SiteStatistics
 
 
 def home_page(request):
+    statistics = SiteStatistics.objects.get_or_create(pk=0)[0]
+    statistics.home_page_views += 1
+    statistics.save()
     return render(request, 'index.html')
 
 
