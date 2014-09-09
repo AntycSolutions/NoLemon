@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 
-from ..models import Mechanic, Seller, Inspection
+from ..models import Mechanic, Seller, Inspection, SiteStatistics
 
 
 class Statistics(TemplateView):
@@ -13,6 +13,8 @@ class Statistics(TemplateView):
         mechanicsTotal = Mechanic.objects.all().count()
         sellersTotal = Seller.objects.all().count()
         inspectionsTotal = Inspection.objects.all().count()
+        statistics = SiteStatistics.objects.get_or_create(pk=0)[0]
+
         viewsTotal = 0
         for i in Inspection.objects.all():
             viewsTotal += i.views
@@ -21,5 +23,6 @@ class Statistics(TemplateView):
         self.context['sellersTotal'] = sellersTotal
         self.context['inspectionsTotal'] = inspectionsTotal
         self.context['viewsTotal'] = viewsTotal
+        self.context['home_page_views'] = statistics.home_page_views
 
         return self.render_to_response(self.context)
