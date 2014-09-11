@@ -43,7 +43,23 @@
               <h2>Inspections</h2>
               <p>The following inspections are pending.</p>
               <ul>
-                {% for inspection in mechanic.inspection_set.all %}
+                {% for inspection in inspections_pend %}
+                  <li>
+                    Vehicle VIN: <a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle.vin }}</a>
+                    Seller: <a href="{% url 'seller_detail' inspection.vehicle.owner.pk %}"> {{ inspection.vehicle.owner.get_full_name }}</a>
+                    Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a>
+                    {% if inspection.video == "" %}
+                        Needs Video
+                    {% endif %}
+                    {% if inspection.report == "" %}
+                        Needs Report
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+              <p>The following inspections are completed.</p>
+              <ul>
+                {% for inspection in inspections_comp %}
                   <li>Vehicle VIN: <a href="{% url 'vehicle_detail' inspection.vehicle.vin %}">{{ inspection.vehicle.vin }}</a> Seller: <a href="{% url 'seller_detail' inspection.vehicle.owner.pk %}"> {{ inspection.vehicle.owner.get_full_name }}</a> Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a></li>
                 {% endfor %}
               </ul>
