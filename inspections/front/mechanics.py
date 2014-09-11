@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
+from django.db.models import Q
 from django.views.generic import ListView, DetailView
 
 from ..models import Mechanic
@@ -35,6 +36,14 @@ class MechanicDetail(DetailView):
         try:
             self.object = self.get_object()
             self.context = self.get_context_data(object=self.object)
+
+            inspections_pend = self.object.inspection_set.filter(
+                Q(video="") | Q(report=""))
+            inspections_comp = self.object.inspection_set.filter(
+                ~Q(video=""), ~Q(report=""))
+
+            self.context['inspections_pend'] = inspections_pend
+            self.context['inspections_comp'] = inspections_comp
         except:
             messages.add_message(
                 request, messages.ERROR,
