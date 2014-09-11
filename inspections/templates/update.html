@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 
 {% load add_css %}
 
@@ -22,11 +22,19 @@
                 <form enctype="{{ form_type }}" method="post" action="">
                     {% csrf_token %}
                     {% for field in form %}
-                        <div class="form-group">
-                            {{ field.errors }}
-                            {{ field.label_tag }}
-                            {{ field|addcss:"class: form-control" }} {{ field.help_text }}
-                        </div>
+                        {% if field|gettype|is_not_text %}
+                            <div class="form-group">
+                                {{ field.errors }}
+                                {{ field.label_tag }}
+                                {{ field }} {{ field.help_text }}
+                            </div>
+                        {% else %}
+                            <div class="form-group">
+                                {{ field.errors }}
+                                {{ field.label_tag }}
+                                {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                     <input type="submit" class="btn btn-primary" value="Update" />
                 </form>
