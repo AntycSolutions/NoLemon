@@ -24,10 +24,16 @@
           <h2>Inspections</h2>
           <p>The following inspections require a vehicle history to be added.</p>
           <ul>
-            {% for inspection in inspections %}
+            {% for inspection in inspections_pend %}
                 <li>Vehicle VIN: {{ inspection.vehicle.vin }} Seller: {{ inspection.vehicle.owner.get_full_name }} Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a></li>
             {% empty %}
                 <li>There are no inspections that require vehicle history.</li>
+            {% endfor %}
+          </ul>
+          <p>The following inspections have a vehicle history added.</p>
+          <ul>
+            {% for inspection in inspections_comp %}
+                <li>Vehicle VIN: {{ inspection.vehicle.vin }} Seller: {{ inspection.vehicle.owner.get_full_name }} Update: <a href="{% url 'update_inspection' inspection.pk %}">Click Here</a></li>
             {% endfor %}
           </ul>
           <p>&nbsp;</p>
