@@ -3,6 +3,7 @@ from django.core.mail import send_mass_mail
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
+from django.db.models import Q
 from django.template import RequestContext
 from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.auth.decorators import login_required
@@ -12,6 +13,8 @@ from reportlab.pdfgen import canvas
 
 from .forms.request_inspection import RequestInspectionForm
 from .forms.video import VideoForm
+from .forms.inspection import InspectionUpdateForm
+from .forms.vehicle import VehicleUpdateForm
 from .models import Inspection, InspectionRequest, Mechanic, Vehicle, \
     BaseUser, Receipt, SiteStatistics
 
@@ -204,8 +207,10 @@ class BaseUserDetail(DetailView):
                 "We're sorry, we don't seem to have any admins "
                 "you're looking for.")
             return redirect(reverse_lazy('home'), self.context)
-        self.context['inspections'] = Inspection.objects.filter(
-            vehicle_history__isnull=False)
+        self.context['inspections_pend'] = Inspection.objects.filter(
+            vehicle_history="")
+        self.context['inspections_comp'] = Inspection.objects.filter(
+            ~Q(vehicle_history=""))
         self.context['base_users'] = BaseUser.objects.filter(
             is_active=False)
         return self.render_to_response(self.context)
@@ -214,6 +219,7 @@ class BaseUserDetail(DetailView):
 class UpdateInspectionView(UpdateView):
     template_name = 'update.html'
     model = Inspection
+    form_class = InspectionUpdateForm
 
     def get_success_url(self):
         if 'pk' in self.kwargs:
@@ -226,18 +232,23 @@ class UpdateInspectionView(UpdateView):
             return redirect('/')
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        form.fields['vehicle'].widget.attrs['disabled'] = True
-        form.fields['mechanic'].widget.attrs['disabled'] = True
-        return self.render_to_response(
-            self.get_context_data(form=form, url_end='inspection',
-                                  model_type='Inspection',
-                                  form_type='multipart/form-data')
-        )
+
+        form.fields['vehicle'].widget.attrs['readonly'] = True
+        form.fields['mechanic'].widget.attrs['readonly'] = True
+        form.fields['views'].widget.attrs['readonly'] = True
+
+        context = self.get_context_data(form=form)
+        context['url_end'] = 'inspection'
+        context['model_type'] = 'Inspection'
+        context['form_type'] = 'multipart/form-data'
+
+        return self.render_to_response(context)
 
 
 class UpdateVehicleView(UpdateView):
     template_name = 'update.html'
     model = Vehicle
+    form_class = VehicleUpdateForm
 
     def get_success_url(self):
         if 'pk' in self.kwargs:
@@ -250,9 +261,12 @@ class UpdateVehicleView(UpdateView):
             return redirect('/')
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        form.fields['owner'].widget.attrs['disabled'] = True
-        return self.render_to_response(
-            self.get_context_data(form=form, url_end='vehicle',
-                                  model_type='Vehicle',
-                                  form_type='multipart/form-data')
-        )
+
+        form.fields['owner'].widget.attrs['readonly'] = True
+
+        context = self.get_context_data(form=form)
+        context['url_end'] = 'vehicle'
+        context['model_type'] = 'Vehicle'
+        context['form_type'] = 'multipart/form-data'
+
+        return self.render_to_response(context)
