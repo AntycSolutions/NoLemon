@@ -1,9 +1,13 @@
 from django import forms
 
+from bootstrap3_datetime.widgets import DateTimePicker
+
 from inspections.models import Inspection
 
 
 class InspectionUpdateForm(forms.ModelForm):
+
+    date = forms.DateTimeField(widget=DateTimePicker())
 
     def clean_vehicle(self):
         return self.instance.vehicle
