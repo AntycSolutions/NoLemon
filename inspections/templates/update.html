@@ -1,8 +1,8 @@
-    {% extends "base.html" %}
-
-{% load add_css %}
+{% extends "base.html" %}
 
 {% block title %} - Update Your {{ model_type }}{% endblock %}
+
+{% block head_content %}{{ form.media }}{% endblock %}
 
 {% block content %}
 
@@ -10,7 +10,7 @@
 
 <!-- Wrap -->
 <div class="wrap container" role="document">
-    {% include 'messages.html' %}
+    {% include 'snippets/messages.html' %}
     <!-- Content -->
     <div class="content row">
         <!-- Main -->
@@ -22,21 +22,11 @@
                 <form enctype="{{ form_type }}" method="post" action="">
                     {% csrf_token %}
                     {% for field in form %}
-                        {% if field|gettype|is_not_text %}
-                            <div class="form-group">
-                                {{ field.errors }}
-                                {{ field.label_tag }}
-                                {{ field }} {{ field.help_text }}
-                            </div>
-                        {% else %}
-                            <div class="form-group">
-                                {{ field.errors }}
-                                {{ field.label_tag }}
-                                {{ field|addcss:"class: form-control" }} {{ field.help_text }}
-                            </div>
-                        {% endif %}
+                        {% include 'snippets/form.html' %}
                     {% endfor %}
-                    <input type="submit" class="btn btn-primary" value="Update" />
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Update" />
+                    </div>
                 </form>
             </div>
         </div><!-- /.main -->
