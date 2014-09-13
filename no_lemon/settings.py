@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'inspections',
     'stripe',
+    'bootstrap3_datetime',
     # 'mod_wsgi.server',
 )
 
