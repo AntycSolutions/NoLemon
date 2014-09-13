@@ -26,5 +26,15 @@ def gettype(field):
 
 
 @register.filter
-def is_not_text(type):
-    return type in ["NumberInput", "ClearableFileInput"]
+def is_number(type):
+    return type in ["NumberInput"]
+
+
+@register.filter
+def is_file(type):
+    return type in ["ClearableFileInput"]
+
+
+@register.filter
+def is_datetimepicker(type):
+    return type in ["DateTimePicker"]
