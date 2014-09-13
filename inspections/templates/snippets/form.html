@@ -1,0 +1,35 @@
+{% load add_css %}
+
+{# Not full width #}
+{% if field|gettype|is_number or field|gettype|is_datetimepicker %}
+    <div class="row"><div class="col-md-3">
+    <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+    </div>
+    </div></div>
+    {# datetimepicker usually only opens by button click, so add to input #}
+    {% if field|gettype|is_datetimepicker %}
+        <script>
+            $(function() {
+                $("#{{ field.auto_id }}").datetimepicker({"language": "en-ca", "format": "YYYY-MM-DD HH:mm"});
+            });
+        </script>
+    {% endif %}
+{# Not full width, dont add form-control class #}
+{% elif field|gettype|is_file %}
+    <div class="row"><div class="col-md-3">
+    <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {{ field }} {{ field.help_text }}
+    </div>
+    </div></div>
+{% else %}
+    <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+    </div>
+{% endif %}
