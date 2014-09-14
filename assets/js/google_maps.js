@@ -1,4 +1,20 @@
 <!-- Compatability
+
+/*  To use include:
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vNlhTCDa-R9HRfEmquZdIXIGmEp_Kuo"></script>
+    <script type="text/javascript"
+            src="{% static 'js/google_maps.js' %}"></script>
+
+    Contains map:
+    <div style="height: 640px; width: 640px" id="map-canvas"></div>
+
+    For each marker:
+    <script type="text/javascript">
+        addresses.push("{~ Change ~}");
+    </script>
+ */
+
 var geocoder;
 var map;
 var markers;
