@@ -57,7 +57,7 @@ class VehicleDetail(DetailView):
             form.fields['seller'].widget = forms.HiddenInput()
             form.fields['vehicle'].widget = forms.HiddenInput()
             form.fields['request_date'].widget = forms.HiddenInput()
-        except Exception as e:
+        except Exception:  # as e:
             #print("Exception:", e)
             pass
 
@@ -99,14 +99,24 @@ class VehicleCreationView(CreateView):
         self.object = None
 
         form_class = self.get_form_class()
-        form = self.get_form(form_class)
+        try:
+            form = self.get_form(form_class)
+        except Seller.DoesNotExist:
+            messages.add_message(
+                request, messages.ERROR,
+                "We're sorry, only sellers can order inspection reports.")
+            return redirect(reverse_lazy('home'))
 
         form.fields['owner'].widget = forms.HiddenInput()
 
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_initial(self):
-        owner = Seller.objects.get(email=self.request.user.email)
+        try:
+            owner = Seller.objects.get(email=self.request.user.email)
+        except:
+            raise
+
         initial = {'owner': owner}
         return initial
 
