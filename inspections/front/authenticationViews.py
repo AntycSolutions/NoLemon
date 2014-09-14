@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse_lazy
 
 from ..forms.registration import SellerCreationForm, \
     MechanicCreationForm
-from ..models import Seller, Mechanic
+from ..models import Seller, Mechanic, BaseUser
 
 
 class LoginRegisterView(FormView):
@@ -98,7 +98,7 @@ class UpdateSellerView(UpdateView):
     template_name = 'update.html'
     model = Seller
     success_url = reverse_lazy('update_seller')
-    fields = ['first_name', 'last_name', ]
+    fields = ['first_name', 'last_name', 'city']
 
     def get_object(self):
         seller = None
@@ -115,8 +115,7 @@ class UpdateSellerView(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         return self.render_to_response(
-            self.get_context_data(form=form, url_end='seller',
-                                  model_type='Account')
+            self.get_context_data(form=form, model_type='Account')
         )
 
 
@@ -158,8 +157,7 @@ class RegisterMechanicView(FormView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         return self.render_to_response(
-            self.get_context_data(form=form,
-                                  url_end='mechanic')
+            self.get_context_data(form=form, url_end='mechanic')
         )
 
 
@@ -168,7 +166,7 @@ class UpdateMechanicView(UpdateView):
     model = Mechanic
     success_url = reverse_lazy('update_mechanic')
     fields = ['first_name', 'last_name',
-              'address', 'city', 'province', ]
+              'address', 'city', 'province']
 
     def get_object(self):
         mechanic = None
@@ -185,8 +183,32 @@ class UpdateMechanicView(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         return self.render_to_response(
-            self.get_context_data(form=form, url_end='mechanic',
-                                  model_type='Account')
+            self.get_context_data(form=form, model_type='Account')
+        )
+
+
+class UpdateBaseUserView(UpdateView):
+    template_name = 'update.html'
+    model = Mechanic
+    success_url = reverse_lazy('update_base_user')
+    fields = ['first_name', 'last_name']
+
+    def get_object(self):
+        base_user = None
+        try:
+            base_user = BaseUser.objects.get(email=self.request.user.email)
+        except:
+            pass
+        return base_user
+
+    def get(self, request):
+        self.object = self.get_object()
+        if not self.object:
+            return redirect('/')
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        return self.render_to_response(
+            self.get_context_data(form=form, model_type='Account')
         )
 
 
