@@ -238,7 +238,6 @@ class UpdateInspectionView(UpdateView):
         form.fields['views'].widget.attrs['readonly'] = True
 
         context = self.get_context_data(form=form)
-        context['url_end'] = 'inspection'
         context['model_type'] = 'Inspection'
         context['form_type'] = 'multipart/form-data'
 
@@ -265,7 +264,6 @@ class UpdateVehicleView(UpdateView):
         form.fields['owner'].widget.attrs['readonly'] = True
 
         context = self.get_context_data(form=form)
-        context['url_end'] = 'vehicle'
         context['model_type'] = 'Vehicle'
         context['form_type'] = 'multipart/form-data'
 
