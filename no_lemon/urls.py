@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from inspections.front.authenticationViews import LoginRegisterView, \
     Logout, RegisterMechanicView, \
-    UpdateSellerView, UpdateMechanicView
+    UpdateSellerView, UpdateMechanicView, UpdateBaseUserView
 from inspections.front.mechanics import MechanicList, MechanicDetail
 from inspections.front.payments import PaymentView, PayToView
 from inspections.front.sellers import SellerList, SellerDetail
@@ -78,6 +78,8 @@ update_patterns = patterns(
         name='update_seller'),
     url(r'^mechanic/$', UpdateMechanicView.as_view(),
         name='update_mechanic'),
+    url(r'^base_user/$', UpdateBaseUserView.as_view(),
+        name='update_base_user'),
     url(r'^inspection/(?P<pk>\d+)/$', UpdateInspectionView.as_view(),
         name='update_inspection'),
     url(r'^vehicle/(?P<pk>\d+)/$', UpdateVehicleView.as_view(),
