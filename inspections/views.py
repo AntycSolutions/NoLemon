@@ -16,7 +16,7 @@ from .forms.video import VideoForm
 from .forms.inspection import InspectionUpdateForm
 from .forms.vehicle import VehicleUpdateForm
 from .models import Inspection, InspectionRequest, Mechanic, Vehicle, \
-    BaseUser, Receipt, SiteStatistics
+    BaseUser, Receipt, SiteStatistics, Seller
 
 
 def home_page(request):
@@ -227,6 +227,26 @@ class UpdateInspectionView(UpdateView):
             return reverse('update_inspection', kwargs={'pk': pk})
 
     def get(self, request, **kwargs):
+        try:
+            # Check if mechanic is updating inspection first as it's more
+            #  common, then check if admin is updating inspection
+            Mechanic.objects.get(email=self.request.user.email)
+            return self._get()
+        except:
+            try:
+                base_user = BaseUser.objects.get(email=self.request.user.email)
+                if base_user.is_admin:
+                    return self._get()
+                else:
+                    raise
+            except:
+                messages.add_message(
+                    request, messages.ERROR,
+                    "We're sorry, only mechanics or admins can update"
+                    " inspection reports.")
+                return redirect(reverse_lazy('home'))
+
+    def _get(self):
         self.object = self.get_object()
         if not self.object:
             return redirect('/')
@@ -255,6 +275,16 @@ class UpdateVehicleView(UpdateView):
             return reverse('update_vehicle', kwargs={'pk': pk})
 
     def get(self, request, **kwargs):
+        try:
+            Seller.objects.get(email=self.request.user.email)
+            return self._get()
+        except:
+            messages.add_message(
+                request, messages.ERROR,
+                "We're sorry, only sellers can update vehicles.")
+            return redirect(reverse_lazy('home'))
+
+    def _get(self):
         self.object = self.get_object()
         if not self.object:
             return redirect('/')
