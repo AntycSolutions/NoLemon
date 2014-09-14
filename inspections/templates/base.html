@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 {% load class_tag %}
-{% load staticfiles %}
+{% load static %}
 
 <html lang="en">
 <head>
@@ -41,11 +41,11 @@
 
 <body class="home-1">
 
-{% include 'navbar.html' %}
+{% include 'snippets/navbar.html' %}
 
 {% block content %}{% endblock %}
 
-{% include 'footer.html' %}
+{% include 'snippets/footer.html' %}
 
 <!-- Javascript
 ================================================== -->
