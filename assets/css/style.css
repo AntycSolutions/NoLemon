@@ -31,14 +31,22 @@
    src: url('/static/fonts/Oswald-Regular.otf');
 }*/
 
+/* Sicky Footer */
+html {
+   position: relative;
+   min-height: 100%;
+}
+
 body {
    line-height: 1.6em; /*1em;*/
    font-weight: 300;
    color: #222;
    font-family: Open Sans, sans-serif; /*NoLemonFont;*/
-   background-color: #58555A; /*#F8F8F8;*/
+   background-color: #DFDFDF; /*#F8F8F8;*/ /*#58555A;*/
    /*font-size: 16px; */
    font-size: 1.625em; /*2em;*/
+   /* Sticky Footer */
+   margin-bottom: 84px;
 }
 h1, h2, h3, h4, h5, h6 {
    color: #121212;
@@ -604,7 +612,7 @@ border-top: 1px solid #e6e6e6;
 }
 
 #boxes {
-   color: #58555A; /*#333;*/
+   color: #000; /*#58555A;*/ /*#333;*/
    padding-top: 50px;
    padding-bottom: 57px;
    text-align: center;
@@ -615,7 +623,7 @@ border-top: 1px solid #e6e6e6;
    box-shadow:0px 0px 6px #dddddd;
 }
 #boxes h2, #boxes h3 a {
-   color: #58555A !important;
+   /*color: #58555A !important;*/
 }
 .box {
    padding: 0 20px;
@@ -698,7 +706,7 @@ border-top: 1px solid #e6e6e6;
 
 #home-featured {
    padding: 50px 0 40px;
-   background-color: #FBD802; /*#2c3e50;*/
+   background-color: #FBD802; /*#FBD802;*/ /*#2c3e50;*/
 }
 #home-featured article.post {
    background-color: transparent;
@@ -754,7 +762,13 @@ border-top: 1px solid #e6e6e6;
 .box-video-list .icon-chevron-right {
    color: #fff;
 }
+/* Added */
+#home-video h2,
+#home-video p {
+   color: #fff;
+}
 #home-video h3 {
+   color: #fff; /* Added */
    font-size: 26px;
    margin-bottom: 20px;
 }
@@ -797,13 +811,13 @@ border-top: 1px solid #e6e6e6;
 #home-featured a,
 #home-featured a:hover,
 #home-featured i {
-   color: #fff;
+   color: #58555A; /*#fff;*/
 }
 #home-featured {
    padding-top: 60px;
 }
 #home-video {
-   background-color: #58555A; /*#fff;*/
+   background-color: #000; /*#58555A;*/ /*#fff;*/
    padding: 60px 0;
 }
 #home-featured .btn-primary {
@@ -972,6 +986,16 @@ ul.subcat {
 /* ==========================================================================
    14 - Footer
    ========================================================================== */
+
+/* Sticky Footer */
+.footer {
+   position: absolute;
+   bottom: 0;
+   width: 100%;
+   /* Set the fixed height of the footer here */
+   height: 84px;
+   background-color: #f5f5f5;
+}
 
 .footer-widgets {
    background-color: #3498db;
