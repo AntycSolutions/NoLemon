@@ -4,6 +4,98 @@
 
 {% block title %} - Vehicles for Sale{% endblock %}
 
+{% block head_content %}
+<style>
+/*  .list {
+    font-family:sans-serif;
+    margin:0;
+    padding:20px 0 0;
+  }*/
+  .list > li {
+    display:block;
+    /*background-color: #eee;*/
+    /*padding:10px;*/
+    /*box-shadow: inset 0 1px 0 #fff;*/
+  }
+/*  .avatar {
+    max-width: 150px;
+  }*/
+/*  img {
+    max-width: 100%;
+  }*/
+/*  h3 {
+    font-size: 16px;
+    margin:0 0 0.3rem;
+    font-weight: normal;
+    font-weight:bold;
+  }*/
+/*  p {
+    margin:0;
+  }*/
+
+/*  input {
+    border:solid 1px #ccc;
+    border-radius: 5px;
+    padding:7px 14px;
+    margin-bottom:10px
+  }
+  input:focus {
+    outline:none;
+    border-color:#aaa;
+  }*/
+  .sort {
+    padding:8px 30px;
+    border-radius: 6px;
+    border:none;
+    display:inline-block;
+    color:#fff;
+    text-decoration: none;
+    background-color: #28a8e0;
+    height:30px;
+  }
+  .sort:hover {
+    text-decoration: none;
+    background-color:#1b8aba;
+  }
+  .sort:focus {
+    outline:none;
+  }
+  .sort:after {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    content:"";
+    position: relative;
+    top:-10px;
+    right:-5px;
+  }
+  .sort.asc:after {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #fff;
+    content:"";
+    position: relative;
+    top:13px;
+    right:-5px;
+  }
+  .sort.desc:after {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #fff;
+    content:"";
+    position: relative;
+    top:-10px;
+    right:-5px;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 
 {% include 'snippets/header.html' %}
@@ -22,7 +114,32 @@
 
       <div class="page-main">
 
+        <div id="vehicle_list">
+        <div class="form-group">
+        <div class="col-md-3">
+          <label for="vehicle_search">Filter:</label>
+          <input id="vehicle_search" class="search form-control input-lg" placeholder="Search" />
+        </div> <!-- col-md-3 -->
+          <label>Sort by:</label>
+          <button class="sort btn" data-sort="vin">VIN</button>
+          <button class="sort btn" data-sort="make">Make</button>
+          <button class="sort btn" data-sort="model">Model</button>
+          <button class="sort btn" data-sort="year">Year</button>
+          <button class="sort btn" data-sort="kilometers">Kilometers</button>
+          <button class="sort btn" data-sort="city">City</button>
+        </div> <!-- form-group -->
+        <label for="year_range_start">Year:</label>
+        <input id="year_range_start" class="input-sm" type="number" placeholder="From" onkeyup="filter_year()" />
+        <label for="year_range_end">-</label>
+        <input id="year_range_end" class="input-sm" type="number" placeholder="To" onkeyup="filter_year()" />
+        <label for="kms_range_start">Kilometers:</label>
+        <input id="kms_range_start" class="input-sm" type="number" placeholder="From" onkeyup="filter_kms()" />
+        <label for="kms_range_end">-</label>
+        <input id="kms_range_end" class="input-sm" type="number" placeholder="To" onkeyup="filter_kms()" />
+        <br><hr>
+        <ul class="list">
         {% for vehicle in vehicles %}
+        <li>
           <div class="row">
           <div class="col-md-4">
             {% if vehicle.photo %}
@@ -30,21 +147,36 @@
             {% else %}
               <img width="256px" src="{% static 'img/car-icon.png' %}" alt="NoLemon" draggable="false"/></a>
             {% endif %}
-          </div>
+          </div> <!-- col -->
           <div class="col-md-8">
-            <p>VIN: <a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></p>
-            <p>Make: {{ vehicle.make }} Model: {{ vehicle.model }} Year: {{ vehicle.year }}</p>
-            <p>Kilometer(s): {{ vehicle.odometer }}</p>
-            <p>City: {{ vehicle.owner.city }}</p>
-            <p style="margin-top: 5px"><a class="blog-more btn btn-xxs btn-primary" href="{% url 'vehicle_detail' vehicle.vin %}">Read more</a></p>
-          </div>
-          </div>
+            <p>
+              VIN: <span class="vin"><a href="{% url 'vehicle_detail' vehicle.vin %}">{{ vehicle.vin }}</a></span>
+            </p>
+            <p>
+              Make: <span class="make">{{ vehicle.make }}</span>
+              Model: <span class="model"> {{ vehicle.model }}</span>
+              Year: <span class="year">{{ vehicle.year }}</span>
+            </p>
+            <p>
+              Kilometer(s): <span class="kilometers">{{ vehicle.odometer }}</span>
+            </p>
+            <p>
+              City: <span class="city">{{ vehicle.owner.city }}</span>
+            </p>
+            <p style="margin-top: 5px">
+              <a class="blog-more btn btn-xxs btn-primary" href="{% url 'vehicle_detail' vehicle.vin %}">Read more</a>
+            </p>
+          </div> <!-- col -->
+          </div> <!-- row -->
           <hr>
+        </li>
         {% empty %}
           <div class="row"><div class="col-md-12">
             There are no vehicles.
           </div></div>
         {% endfor %}
+        </ul> <!-- list -->
+        </div> <!-- vehicle_list -->
         <!-- <div class="row"><div class="col-md-12">
         {% if vehicles.count >= 1 %}
           <h2>Change Me</h2>
@@ -81,4 +213,98 @@
   </div><!-- /.content -->
 </div><!-- /.wrap -->
 
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/list.js' %}"></script>
+<script type="text/javascript">
+  // list.js
+  var options = {
+    valueNames: [ 'vin', 'make', 'model', 'year', 'kilometers', 'city' ]
+  };
+
+  var vehicleList = new List('vehicle_list', options);
+
+  // filter by range
+  var year_input_start = document.getElementById("year_range_start");
+  var year_input_end = document.getElementById("year_range_end");
+  var kms_input_start = document.getElementById("kms_range_start");
+  var kms_input_end = document.getElementById("kms_range_end");
+
+  var filters = {};
+
+  // onchange
+  function filter_year() {
+    var start = parseInt(year_input_start.value);
+    var end = parseInt(year_input_end.value);
+    if (!filter_validate(start, end, year_input_start, year_input_end,
+        function(value) {
+          return value.length != 4;
+        })) {
+      delete filters["year"];
+      return;
+    }
+    year_input_start.style.borderColor = "#CCC";
+    year_input_end.style.borderColor = "#CCC";
+    filters["year"] = {'start': start, 'end': end};
+    filter_range();
+  }
+
+  // onchange
+  function filter_kms() {
+    var start = parseInt(kms_input_start.value);
+    var end = parseInt(kms_input_end.value);
+    if (!filter_validate(start, end, kms_input_start, kms_input_end,
+        function(value) {
+          return value.length == 0;
+        })) {
+      delete filters["kilometers"];
+      return;
+    }
+    kms_input_start.style.borderColor = "#CCC";
+    kms_input_end.style.borderColor = "#CCC";
+    filters["kilometers"] = {'start': start, 'end': end};
+    filter_range();
+  }
+
+  function filter_validate(start, end, input_start, input_end, filter_func) {
+    var validated = true;
+    if (isNaN(start) || start < 0 || filter_func(input_start.value))
+    {
+      input_start.style.borderColor = "red";
+      validated = false;
+    }
+    else
+    {
+      input_start.style.borderColor = "#CCC";
+    }
+    if (isNaN(end) || end < 0 || filter_func(input_end.value))
+    {
+      input_end.style.borderColor = "red";
+      validated = false;
+    }
+    else
+    {
+      input_end.style.borderColor = "#CCC";
+    }
+    if (validated && end < start) {
+      input_start.style.borderColor = "red";
+      input_end.style.borderColor = "red";
+      validated = false;
+    }
+    return validated;
+  }
+
+  function filter_range() {
+    vehicleList.filter(function(item) {
+      for (var key in filters) {
+        if (!filters.hasOwnProperty(key)) continue;
+        var field = parseInt(item.values()[key]);
+        if (!(field >= filters[key].start && field <= filters[key].end))
+          return false;
+      }
+      return true;
+    });
+  }
+</script>
 {% endblock %}
