@@ -25,7 +25,7 @@ jQuery().ready(function($){
 
 	$('#inspection_modal').keypress(function(e){
 		if (e.keyCode == 27) {
-	        $("#inspection_modal").fadeOut(500);
+	        $("#inspection_modal").fadeOut(250);
 	    }
 	});
 
@@ -105,7 +105,7 @@ jQuery().ready(function($){
 				break;
 		}
 
-		$('#inspection_modal').fadeOut(500);
+		$('#inspection_modal').fadeOut(250);
 
 		email = $('input[name=email]', '#inspection_select_form').val();
 		StripeCheckout.open({
