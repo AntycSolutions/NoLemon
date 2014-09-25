@@ -118,7 +118,7 @@
         <div class="form-group">
         <div class="col-md-3">
           <label for="vehicle_search">Filter:</label>
-          <input id="vehicle_search" class="search form-control input-lg" placeholder="Search" />
+          <input id="vehicle_search" class="search form-control input-lg" type="text" placeholder="Search" />
         </div> <!-- col-md-3 -->
           <label>Sort by:</label>
           <button class="sort btn" data-sort="vin">VIN</button>
@@ -129,13 +129,21 @@
           <button class="sort btn" data-sort="city">City</button>
         </div> <!-- form-group -->
         <label for="year_range_start">Year:</label>
-        <input id="year_range_start" class="input-sm" type="number" placeholder="From" onkeyup="filter_year()" />
+        <input id="year_range_start" class="input-sm"
+               type="number" min="1"
+               placeholder="From" onkeyup="filter_year()" />
         <label for="year_range_end">-</label>
-        <input id="year_range_end" class="input-sm" type="number" placeholder="To" onkeyup="filter_year()" />
+        <input id="year_range_end" class="input-sm"
+               type="number"  min="1"
+               placeholder="To" onkeyup="filter_year()" />
         <label for="kms_range_start">Kilometers:</label>
-        <input id="kms_range_start" class="input-sm" type="number" placeholder="From" onkeyup="filter_kms()" />
+        <input id="kms_range_start" class="input-sm"
+               type="number" min="0"
+               placeholder="From" onkeyup="filter_kms()" />
         <label for="kms_range_end">-</label>
-        <input id="kms_range_end" class="input-sm" type="number" placeholder="To" onkeyup="filter_kms()" />
+        <input id="kms_range_end" class="input-sm"
+               type="number" min="0"
+               placeholder="To" onkeyup="filter_kms()" />
         <br><hr>
         <ul class="list">
         {% for vehicle in vehicles %}
