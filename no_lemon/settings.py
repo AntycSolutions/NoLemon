@@ -25,7 +25,7 @@ SECRET_KEY = 'n_ynsu$)ru=zk06&3bm2uyas7$--&!s$xpnkpaq3u*ix&y==69'
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nolemon.antyc.ca']
 
 # Application definition
 INSTALLED_APPS = (
@@ -137,3 +137,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages'
 )
+
+if os.path.isfile("../../test"):
+    from configs.test_settings import *
+elif os.path.isfile("../../prod"):
+    from configs.prod_settings import *
+elif os.path.isfile("../../devl"):
+    pass  # Use settings.py as devl
+else:
+    raise Exception("There is no settings decision file.")
