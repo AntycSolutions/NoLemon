@@ -23,7 +23,7 @@ SECRET_KEY = 'n_ynsu$)ru=zk06&3bm2uyas7$--&!s$xpnkpaq3u*ix&y==69'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
