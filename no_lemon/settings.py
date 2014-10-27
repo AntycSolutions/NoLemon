@@ -141,9 +141,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 if os.path.isfile(os.path.join(BASE_DIR, "../prod")):
-    from configs.prod_settings import *
+    from .configs.prod_settings import *
 elif os.path.isfile(os.path.join(BASE_DIR, "../test")):
-    from configs.test_settings import *
+    from .configs.test_settings import *
 elif os.path.isfile(os.path.join(BASE_DIR, "../devl")):
     pass  # Use settings.py (this file) as devl
 else:
