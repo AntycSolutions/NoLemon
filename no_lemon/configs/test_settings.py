@@ -8,12 +8,11 @@ ALLOWED_HOSTS = ['nolemon.antyc.ca']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nolemon',
         'USER': 'django',
-        'PASSWORD': 'testdjangomysql',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'PASSWORD': 'testdjangopostgresql',
+        'HOST': ''  # localhost
     }
 }
 
