@@ -12,7 +12,7 @@ DATABASES = {
         'NAME': 'nolemon',
         'USER': 'django',
         'PASSWORD': 'testdjangopostgresql',
-        'HOST': ''  # localhost
+        'HOST': 'localhost'
     }
 }
 
