@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
+# Devl settings
+
 SITE_ID = 1
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +27,7 @@ SECRET_KEY = 'n_ynsu$)ru=zk06&3bm2uyas7$--&!s$xpnkpaq3u*ix&y==69'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['nolemon.antyc.ca']
+ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = (
@@ -113,7 +115,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'testnolemon'
 EMAIL_HOST_PASSWORD = 'test1'
 
-EMAIL_SUBJECT_PREFIX = '[NoLemon]'
+EMAIL_SUBJECT_PREFIX = '[NoLemon - Devl]'
 
 # media
 # prod
@@ -138,11 +140,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages'
 )
 
-if os.path.isfile("../../test"):
-    from configs.test_settings import *
-elif os.path.isfile("../../prod"):
+if os.path.isfile(os.path.join(BASE_DIR, "../prod")):
     from configs.prod_settings import *
-elif os.path.isfile("../../devl"):
-    pass  # Use settings.py as devl
+elif os.path.isfile(os.path.join(BASE_DIR, "../test")):
+    from configs.test_settings import *
+elif os.path.isfile(os.path.join(BASE_DIR, "../devl")):
+    pass  # Use settings.py (this file) as devl
 else:
-    raise Exception("There is no settings decision file.")
+    raise Exception("Please create a settings decision file.")
