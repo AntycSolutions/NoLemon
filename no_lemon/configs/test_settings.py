@@ -26,6 +26,9 @@ DATABASES = {
 }
 
 # Get from file
+ADMINS = ()
+
+# Get from file
 EMAIL_HOST_USER = ''
 # Get from file
 EMAIL_HOST_PASSWORD = ''
