@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n_ynsu$)ru=zk06&3bm2uyas7$--&!s$xpnkpaq3u*ix&y==69'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'inspections',
     'stripe',
     'bootstrap3_datetime',
-    # 'mod_wsgi.server',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -100,8 +99,7 @@ STATICFILES_DIRS = (
 )
 
 # site admins
-ADMINS = (('Tyler', 'tyler.antyc@gmail.com'),
-          ('Andrew', 'and.555@gmail.com'))
+ADMINS = ()
 
 # email settings
 EMAIL_USE_TLS = True
@@ -112,8 +110,8 @@ EMAIL_PORT = 587
 # run "python -m smtpd -n -c DebuggingServer localhost:1025" first
 #EMAIL_HOST = 'localhost'
 #EMAIL_PORT = 1025
-EMAIL_HOST_USER = 'testnolemon'
-EMAIL_HOST_PASSWORD = 'test1'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 EMAIL_SUBJECT_PREFIX = '[NoLemon - Devl]'
 
@@ -132,7 +130,7 @@ VIEW_INSPECTION_CHARGE_LVL_2 = 3700
 VIEW_INSPECTION_CHARGE_LVL_3 = 5600
 
 # Stripe keys
-STRIPE_KEY = 'pk_test_3aCn8J9IdHtqTUaCMWrABmQI'
+STRIPE_KEY = ''
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',

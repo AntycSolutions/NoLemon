@@ -10,8 +10,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nolemon',
-        'USER': 'django',
-        'PASSWORD': 'testdjangopostgresql',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost'
     }
 }

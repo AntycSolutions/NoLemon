@@ -10,13 +10,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nolemon',
-        'USER': 'django',
-        'PASSWORD': 'proddjangopostgresql',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost'
     }
 }
 
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+
 EMAIL_SUBJECT_PREFIX = '[NoLemon]'
 
 #Change
-STRIPE_KEY = 'pk_test_3aCn8J9IdHtqTUaCMWrABmQI'
+STRIPE_KEY = ''
