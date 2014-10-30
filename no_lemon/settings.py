@@ -21,12 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Different per environment
 SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Different per environment
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# Different per environment
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -69,12 +72,8 @@ LOGOUT_REDIRECT_URL = '/'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# Different per environment
+DATABASES = {}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -99,6 +98,7 @@ STATICFILES_DIRS = (
 )
 
 # site admins
+# Different per environment
 ADMINS = ()
 
 # email settings
@@ -110,10 +110,13 @@ EMAIL_PORT = 587
 # run "python -m smtpd -n -c DebuggingServer localhost:1025" first
 #EMAIL_HOST = 'localhost'
 #EMAIL_PORT = 1025
+# Different per environment
 EMAIL_HOST_USER = ''
+# Different per environment
 EMAIL_HOST_PASSWORD = ''
 
-EMAIL_SUBJECT_PREFIX = '[NoLemon - Devl]'
+# Different per environment
+EMAIL_SUBJECT_PREFIX = ''
 
 # media
 # prod
@@ -130,6 +133,7 @@ VIEW_INSPECTION_CHARGE_LVL_2 = 3700
 VIEW_INSPECTION_CHARGE_LVL_3 = 5600
 
 # Stripe keys
+# Different per environment
 STRIPE_KEY = ''
 
 TEMPLATE_CONTEXT_PROCESSORS = (

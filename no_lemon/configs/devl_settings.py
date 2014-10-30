@@ -1,4 +1,4 @@
-# Test settings
+# Devl settings
 
 import os
 
@@ -11,17 +11,12 @@ SECRET_KEY = ''
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['nolemon.antyc.ca']
+ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nolemon',
-        # Get from file
-        'USER': '',
-        # Get from file
-        'PASSWORD': '',
-        'HOST': 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -30,7 +25,7 @@ EMAIL_HOST_USER = ''
 # Get from file
 EMAIL_HOST_PASSWORD = ''
 
-EMAIL_SUBJECT_PREFIX = '[NoLemon - Test]'
+EMAIL_SUBJECT_PREFIX = '[NoLemon - Devl]'
 
 # Get from file
 STRIPE_KEY = ''
