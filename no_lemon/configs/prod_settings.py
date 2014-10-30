@@ -4,18 +4,15 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
-#Change
-ALLOWED_HOSTS = ['nolemon.antyc.ca']
+ALLOWED_HOSTS = ['nolemon.ca']
 
-#Change
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nolemon',
         'USER': 'django',
-        'PASSWORD': 'testdjangomysql',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'PASSWORD': 'proddjangopostgresql',
+        'HOST': 'localhost'
     }
 }
 
