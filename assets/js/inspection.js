@@ -92,11 +92,11 @@ jQuery().ready(function($){
 				amount = option1;
 				description = "NoLemon Report";
 				break;
-			case '37.00':
+			case '37.0':
 				amount = option2;
 				description = "Expert Car Condition Inspection Report and Video";
 				break;
-			case '56.00':
+			case '56.0':
 				amount = option3;
 				description = "NoLemon + Expert Car Condition Inspection Report and Video (Value Pack)";
 				break;
