@@ -21,7 +21,7 @@
                 <p><h1>Enter the vehicle's information:</h1></p>
             </div>
             <div class="page-main">
-                <form id="create_vehicle_form" method="post" action="{% url 'vehicle_create' %}">
+                <form id="create_vehicle_form" method="post" action="{% url 'vehicle_create' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="form-group">
@@ -38,6 +38,7 @@
                       data-key="pk_test_3aCn8J9IdHtqTUaCMWrABmQI"
                       data-amount="10000"
                       data-name="Request an Inspection"
+                      data-email="{{ user.email }}"
                       data-description="1 Inspection ($100.00)"
                       data-image="{% static "img/NL yellow-icon.png" %}">
                     </script>
