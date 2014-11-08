@@ -182,9 +182,9 @@ class Vehicle(models.Model):
 
 
 class Inspection(models.Model):
-    comments = models.TextField()
-    date = models.DateTimeField()
-    views = models.IntegerField()
+    comments = models.TextField(blank=True)
+    date = models.DateTimeField(null=True, blank=True)
+    views = models.IntegerField(default=0, blank=True)
     mechanic = models.ForeignKey(Mechanic)
     vehicle = models.ForeignKey(Vehicle)
     video = models.FileField(upload_to='inspections/videos/%Y/%m/%d',
