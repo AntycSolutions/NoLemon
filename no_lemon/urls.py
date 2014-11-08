@@ -4,18 +4,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
-from inspections.front.authenticationViews import LoginRegisterView, \
+from inspections.views.authenticationViews import LoginRegisterView, \
     Logout, RegisterMechanicView, \
     UpdateSellerView, UpdateMechanicView, UpdateBaseUserView
-from inspections.front.mechanics import MechanicList, MechanicDetail
-from inspections.front.payments import PaymentView, PayToView
-from inspections.front.sellers import SellerList, SellerDetail
-from inspections.front.statistics import Statistics
-from inspections.front.vehicles import VehicleDetail, VehicleList, \
+from inspections.views.mechanics import MechanicList, MechanicDetail
+from inspections.views.payments import PaymentView, PayToView
+from inspections.views.sellers import SellerList, SellerDetail
+from inspections.views.statistics import Statistics
+from inspections.views.vehicles import VehicleDetail, VehicleList, \
     VehicleCreationView
-from inspections.views import InspectionDetail, \
+from inspections.views.views import InspectionDetail, \
     RequestInspectionUpdateView, BaseUserDetail, UpdateInspectionView, \
-    UpdateVehicleView
+    UpdateVehicleView, CreateInspectionView
 admin.autodiscover()
 
 
@@ -31,7 +31,7 @@ request_inspection_patterns = patterns(
         login_required(RequestInspectionUpdateView.as_view()),
         name='request_inspection_update'),
     url(r'^(?P<pk>\d+)/print/$',
-        'inspections.views.create_request_inspection_pdf',
+        'inspections.views.views.create_request_inspection_pdf',
         name='print_request_inspection')
 )
 
@@ -68,6 +68,9 @@ inspection_patterns = patterns(
     '',
     # url(r'^$',
     #     InspectionList.as_view(), name='inspection_list'),
+    url(r'^create/(?P<pk>\d+)/$',
+        login_required(CreateInspectionView.as_view()),
+        name='create_inspection'),
     url(r'^(?P<pk>\d+)/(?P<receipt>\w+)/$',
         InspectionDetail.as_view(), name='inspection_detail')
 )
@@ -104,9 +107,9 @@ payment_patterns = patterns(
 
 urlpatterns = patterns(
     '',  # Tells django to view the rest as str
-    url(r'^$', 'inspections.views.home_page', name='home'),
-    url(r'^about/$', 'inspections.views.about_page', name='about'),
-    url(r'^contact/$', 'inspections.views.contact_page', name='contact'),
+    url(r'^$', 'inspections.views.views.home_page', name='home'),
+    url(r'^about/$', 'inspections.views.views.about_page', name='about'),
+    url(r'^contact/$', 'inspections.views.views.contact_page', name='contact'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^register/', include(registration_patterns)),
@@ -117,13 +120,13 @@ urlpatterns = patterns(
     url(r'^inspections/', include(inspection_patterns)),
     url(r'^sellers/', include(seller_patterns)),
     url(r'^mechanics/', include(mechanic_patterns)),
-    url(r'^admins/(?P<pk>.+)/$', BaseUserDetail.as_view(),
+    url(r'^admins/(?P<pk>.+)/$', login_required(BaseUserDetail.as_view()),
         name='base_user_detail'),
     url(r'^statistics/$', Statistics.as_view(), name='statistics'),
     url(r'^payments/', include(payment_patterns)),
     url(r'^requests/', include(request_inspection_patterns)),
-    url(r'^email/(?P<email>.+)/$', 'inspections.views.test_email',
+    url(r'^email/(?P<email>.+)/$', 'inspections.views.views.test_email',
         name='test_email'),
-    url(r'^video/$', 'inspections.views.test_video',
+    url(r'^video/$', 'inspections.views.views.test_video',
         name='test_video')
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
