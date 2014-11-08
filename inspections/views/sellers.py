@@ -7,13 +7,13 @@ from ..models import Seller
 
 
 class SellerList(ListView):
-    template_name = "sellerlist.html"
+    template_name = "old/sellerlist.html"
     model = Seller
     context_object_name = "sellers"
 
 
 class SellerDetail(DetailView):
-    template_name = "sellerdetail.html"
+    template_name = "seller/sellerdetail.html"
     model = Seller
 
     def get(self, request, *args, **kwargs):

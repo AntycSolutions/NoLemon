@@ -3,28 +3,28 @@ import datetime
 from django import forms
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from inspections.forms.request_inspection import ReceiptForm
 from inspections.utilities import process_stripe, send_email
 from no_lemon import settings
 
 from ..forms.request_inspection import RequestInspectionForm
-from ..forms.vehicle import VehicleCreationForm
+from ..forms.vehicle import VehicleCreationForm, VehicleUpdateForm
 from ..models import Vehicle, Seller, InspectionRequest
 
 
 class VehicleList(ListView):
-    template_name = "vehiclelist.html"
+    template_name = "vehicle/vehiclelist.html"
     model = Vehicle
     context_object_name = "vehicles"
 
 
 class VehicleDetail(DetailView):
-    template_name = "vehicledetail.html"
+    template_name = "vehicle/vehicledetail.html"
     model = Vehicle
     slug_field = "vin"
     slug_url_kwarg = "vin"
@@ -93,7 +93,7 @@ class VehicleCreationView(CreateView):
 
     model = Vehicle
     form_class = VehicleCreationForm
-    template_name = 'vehiclecreate.html'
+    template_name = 'vehicle/vehiclecreate.html'
     success_url = reverse_lazy('vehicle_list')
 
     def get(self, request, *args, **kwargs):
@@ -151,3 +151,39 @@ class VehicleCreationView(CreateView):
             "You will be contacted by a NoLemon administrator " +
             "within 1 business days to confirm your request.")
         return HttpResponseRedirect(self.success_url)
+
+
+class UpdateVehicleView(UpdateView):
+    template_name = 'update.html'
+    model = Vehicle
+    form_class = VehicleUpdateForm
+
+    def get_success_url(self):
+        if 'pk' in self.kwargs:
+            pk = self.kwargs['pk']
+            return reverse('update_vehicle', kwargs={'pk': pk})
+
+    def get(self, request, **kwargs):
+        try:
+            Seller.objects.get(email=self.request.user.email)
+            return self._get()
+        except:
+            messages.add_message(
+                request, messages.ERROR,
+                "We're sorry, only sellers can update vehicles.")
+            return redirect(reverse_lazy('home'))
+
+    def _get(self):
+        self.object = self.get_object()
+        if not self.object:
+            return redirect('/')
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        form.fields['owner'].widget.attrs['readonly'] = True
+
+        context = self.get_context_data(form=form)
+        context['model_type'] = 'Vehicle'
+        context['form_type'] = 'multipart/form-data'
+
+        return self.render_to_response(context)

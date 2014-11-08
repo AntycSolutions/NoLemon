@@ -12,10 +12,11 @@ from inspections.views.payments import PaymentView, PayToView
 from inspections.views.sellers import SellerList, SellerDetail
 from inspections.views.statistics import Statistics
 from inspections.views.vehicles import VehicleDetail, VehicleList, \
-    VehicleCreationView
-from inspections.views.views import InspectionDetail, \
-    RequestInspectionUpdateView, BaseUserDetail, UpdateInspectionView, \
-    UpdateVehicleView, CreateInspectionView
+    VehicleCreationView, UpdateVehicleView
+from inspections.views.base_users import BaseUserDetail
+from inspections.views.inspection import InspectionDetail, \
+    UpdateInspectionView, CreateInspectionView
+from inspections.views.views import RequestInspectionUpdateView
 admin.autodiscover()
 
 
