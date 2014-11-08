@@ -13,7 +13,10 @@
     {% if field|gettype|is_datetimepicker %}
         <script>
             $(function() {
-                $("#{{ field.auto_id }}").datetimepicker({"language": "en-ca", "format": "YYYY-MM-DD HH:mm"});
+                // This is the same as DateTimePicker widget
+                $("#{{ field.auto_id }}").datetimepicker({"language": "en-ca", "format": "YYYY-MM-DD hh:mm a"});
+                // am/pm -> AM/PM
+                $("#{{ field.auto_id }}")[0].style = "text-transform:uppercase";
             });
         </script>
     {% endif %}

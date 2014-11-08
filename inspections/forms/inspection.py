@@ -7,7 +7,9 @@ from inspections.models import Inspection
 
 class InspectionUpdateForm(forms.ModelForm):
 
-    date = forms.DateTimeField(widget=DateTimePicker())
+    date = forms.DateTimeField(
+        input_formats=['%Y-%m-%d %I:%M %p'],
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD hh:mm a"}))
 
     def clean_vehicle(self):
         return self.instance.vehicle
