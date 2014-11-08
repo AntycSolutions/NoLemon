@@ -147,6 +147,6 @@ if os.path.isfile(os.path.join(BASE_DIR, "../prod")):
 elif os.path.isfile(os.path.join(BASE_DIR, "../test")):
     from .configs.test_settings import *
 elif os.path.isfile(os.path.join(BASE_DIR, "../devl")):
-    pass  # Use settings.py (this file) as devl
+    from .configs.devl_settings import *
 else:
     raise Exception("Please create a settings decision file.")
