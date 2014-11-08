@@ -109,7 +109,7 @@ def populate():
         vehicles = Vehicle.objects.all()
         vehicle = random.choice(vehicles)
         comment = random.choice(comment_choices)
-        inspection = add_inspection(x, mech, vehicle, comment, now, 0)
+        inspection = add_inspection(mech, vehicle, comment, now, 0)
     print("... Inspections added.\n")
 
     print_all_sellers()
@@ -169,9 +169,9 @@ def add_mechanic(email, firstName, lastName, password,
     return mechanic
 
 
-def add_inspection(pk, mechanic, vehicle, comments, date, views):
+def add_inspection(mechanic, vehicle, comments, date, views):
     inspection, created = Inspection.objects.get_or_create(
-        pk=pk, mechanic=mechanic, comments=comments, date=date,
+        mechanic=mechanic, comments=comments, date=date,
         vehicle=vehicle, views=views
     )
     if created:
