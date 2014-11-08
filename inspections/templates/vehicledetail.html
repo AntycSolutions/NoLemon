@@ -94,6 +94,7 @@
                 <a href="{% url 'print_request_inspection' vehicle.vin request_inspection.pk %}">Print requested inspection</a></p>
             {% endif %}
             {% if vehicle.owner.email == user.email %}
+                {% if form %}
                 <form method="post" action="{% url 'pay_for_inspection' %}" id="request_form">
                     {% csrf_token %}
                     {{ form }}
@@ -106,6 +107,7 @@
                         data-image="{% static "img/NL yellow-icon.png" %}">
                       </script>
                 </form>
+                {% endif %}
             {% else %}
                 {% if not request_inspection %}
                     <p>Contact the seller about requesting an inspection.</p>
