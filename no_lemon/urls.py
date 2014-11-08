@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
-from inspections.views.authenticationViews import LoginRegisterView, \
+from inspections.views.authentication import LoginRegisterView, \
     Logout, RegisterMechanicView, \
     UpdateSellerView, UpdateMechanicView, UpdateBaseUserView
 from inspections.views.mechanics import MechanicList, MechanicDetail
@@ -14,7 +14,7 @@ from inspections.views.statistics import Statistics
 from inspections.views.vehicles import VehicleDetail, VehicleList, \
     VehicleCreationView, UpdateVehicleView
 from inspections.views.base_users import BaseUserDetail
-from inspections.views.inspection import InspectionDetail, \
+from inspections.views.inspections import InspectionDetail, \
     UpdateInspectionView, CreateInspectionView
 from inspections.views.views import RequestInspectionUpdateView
 admin.autodiscover()
