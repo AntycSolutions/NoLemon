@@ -20,3 +20,9 @@ class InspectionUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Inspection
+
+
+class InspectionCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = Inspection
