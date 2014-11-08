@@ -83,12 +83,19 @@ class UpdateInspectionView(UpdateView):
         form.fields['vehicle'].widget.attrs['readonly'] = True
         form.fields['mechanic'].widget.attrs['readonly'] = True
         form.fields['views'].widget.attrs['readonly'] = True
+        print(form.initial['date'].strftime('%Y-%m-%d %I:%M %p'))
 
         context = self.get_context_data(form=form)
         context['model_type'] = 'Inspection'
         context['form_type'] = 'multipart/form-data'
 
         return self.render_to_response(context)
+
+    def form_valid(self, form):
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            "You've successfully updated an inspection!")
+        return super(UpdateInspectionView, self).form_valid(form)
 
 
 class CreateInspectionView(CreateView):  # DERP
