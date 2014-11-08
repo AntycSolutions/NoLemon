@@ -3,9 +3,8 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 from django.test import Client, TestCase
 
-from inspections.models import Seller
 from inspections.utilities import send_email
-from inspections.views import home_page
+from inspections.views.views import home_page
 
 
 class HomePageTest(TestCase):
