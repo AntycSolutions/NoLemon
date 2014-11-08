@@ -117,11 +117,12 @@ def populate():
     print_all_inspections()
     print_all_vehicles()
 
+
 def add_baseuser_admin(email, first_name, last_name, password):
     baseuser = None
     try:
         baseuser = BaseUser.objects.get(email=email)
-        print ("Already exists, baseuser admin:", baseuser)
+        print("Already exists, baseuser admin:", baseuser)
         return baseuser
     except:
         pass
@@ -170,14 +171,19 @@ def add_mechanic(email, firstName, lastName, password,
 
 
 def add_inspection(mechanic, vehicle, comments, date, views):
-    inspection, created = Inspection.objects.get_or_create(
-        mechanic=mechanic, comments=comments, date=date,
-        vehicle=vehicle, views=views
-    )
-    if created:
+    inspection = None
+    try:
+        inspection = Inspection.objects.get(
+            mechanic=mechanic, comments=comments, date=date,
+            vehicle=vehicle, views=views
+        )
+        print("Already exists, inspection:", inspection)
+    except:
+        inspection = Inspection(
+            mechanic=mechanic, comments=comments, date=date,
+            vehicle=vehicle, views=views
+        )
         inspection.save()
-    else:
-        print("Did not create inspection:", comments)
     return inspection
 
 
