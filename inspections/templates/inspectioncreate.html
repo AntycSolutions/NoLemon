@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load add_css %}
+
+{% block title %} - New Inspection{% endblock %}
+
+{% block content %}
+
+{% include 'snippets/header.html' %}
+
+<!-- Wrap -->
+<div class="wrap container" role="document">
+    {% include 'snippets/messages.html' %}
+    <!-- Content -->
+    <div class="content row">
+
+        <!-- Main Register -->
+        <div class="main col-sm-12" role="main">
+            <div class="page-header">
+                <p><h1>Enter the inspections's information:</h1></p>
+            </div>
+            <div class="page-main">
+                <form id="create_inspection_form" method="post" action="{% url 'create_inspection' form.initial.inspection_request_pk %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label_tag }}
+                            {{ field|addcss:"class: form-control" }} {{ field.help_text }}
+                        </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Create" />
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.main -->
+
+    </div><!-- /.content -->
+</div><!-- /.wrap -->
+
+{% endblock %}
