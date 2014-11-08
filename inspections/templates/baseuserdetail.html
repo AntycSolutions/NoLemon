@@ -21,6 +21,16 @@
       <div class="page-main">
 
         <div class="row"><div class="col-md-12">
+          <h2>Inspection Requests</h2>
+          <p>The following inspection requests require assignment to a mechanic.</p>
+          <ul>
+            {% for request in inspection_requests %}
+                <li>Vehicle VIN: {{ request.vehicle.vin }} Seller: {{ request.vehicle.owner.get_full_name }} Create: <a href="{% url 'create_inspection' request.pk %}">Click Here</a></li>
+            {% empty %}
+                <li>There are no inspection requests.</li>
+            {% endfor %}
+          </ul>
+          <p>&nbsp;</p>
           <h2>Inspections</h2>
           <p>The following inspections require a vehicle history to be added.</p>
           <ul>
