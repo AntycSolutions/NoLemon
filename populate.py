@@ -236,4 +236,4 @@ if __name__ == '__main__':
     from inspections.models import Seller, Mechanic, \
         Inspection, Vehicle, BaseUser
     populate()
-    print("Finished populate script.")
+    print("Finished NoLemon database population script.")
